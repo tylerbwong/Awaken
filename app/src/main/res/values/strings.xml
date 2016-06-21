@@ -1,6 +1,15 @@
 <resources>
     <!-- TITLES -->
     <string name="app_name">Awaken</string>
+    <string name="intro_one_title">Access Wake-On-LAN Devices</string>
+    <string name="intro_two_title">Send A Wake Up Packet to Your Device</string>
+
+    <!-- DESCRIPTIONS -->
+    <string name="intro_one_description">Make sure your device is Wake-On-LAN enabled.</string>
+    <string name="intro_two_description">Remotely wake up your Wake-On-LAN enabled devices!</string>
+
+    <!-- LABELS -->
+    <string name="enter">ENTER</string>
 
     <!-- VALUES -->
     <string name="logo_transition">Logo transition</string>
