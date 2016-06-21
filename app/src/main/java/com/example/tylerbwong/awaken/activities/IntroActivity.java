@@ -2,26 +2,45 @@ package com.example.tylerbwong.awaken.activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import com.example.tylerbwong.awaken.R;
-import com.github.paolorotolo.appintro.AppIntro2;
-import com.github.paolorotolo.appintro.AppIntro2Fragment;
+import com.github.paolorotolo.appintro.AppIntro;
+import com.github.paolorotolo.appintro.AppIntroFragment;
 
 /**
  * @author Tyler Wong
  */
-public class IntroActivity extends AppIntro2 {
+public class IntroActivity extends AppIntro {
    @Override
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
 
-      addSlide(AppIntro2Fragment.newInstance(getResources().getString(R.string.intro_one_title),
+      addSlide(AppIntroFragment.newInstance(getResources().getString(R.string.intro_one_title),
             getResources().getString(R.string.intro_one_description), R.drawable.server,
             Color.parseColor("#1D5189")));
 
-      addSlide(AppIntro2Fragment.newInstance(getResources().getString(R.string.intro_two_title),
+      addSlide(AppIntroFragment.newInstance(getResources().getString(R.string.intro_two_title),
             getResources().getString(R.string.intro_two_description), R.drawable.computer_device,
             Color.parseColor("#1D5189")));
+   }
+
+   private void switchToMain() {
+
+   }
+
+   @Override
+   public void onSkipPressed(Fragment currentFragment) {
+      super.onSkipPressed(currentFragment);
+
+      switchToMain();
+   }
+
+   @Override
+   public void onDonePressed(Fragment currentFragment) {
+      super.onDonePressed(currentFragment);
+
+      switchToMain();
    }
 
    @Override
