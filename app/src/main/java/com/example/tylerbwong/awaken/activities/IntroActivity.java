@@ -1,5 +1,6 @@
 package com.example.tylerbwong.awaken.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,7 +27,8 @@ public class IntroActivity extends AppIntro {
    }
 
    private void switchToMain() {
-
+      Intent mainIntent = new Intent(IntroActivity.this, MainActivity.class);
+      startActivity(mainIntent);
    }
 
    @Override
