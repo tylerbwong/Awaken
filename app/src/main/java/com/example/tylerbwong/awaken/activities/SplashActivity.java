@@ -1,4 +1,4 @@
-package com.example.tylerbwong.awaken;
+package com.example.tylerbwong.awaken.activities;
 
 import android.support.v7.app.AppCompatActivity;
 

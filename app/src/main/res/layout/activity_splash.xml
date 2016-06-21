@@ -6,7 +6,7 @@
               android:gravity="center"
               android:orientation="vertical"
               android:background="@color/colorPrimary"
-              tools:context=".SplashActivity">
+              tools:context=".activities.SplashActivity">
 
     <LinearLayout
         android:id="@+id/logo"
