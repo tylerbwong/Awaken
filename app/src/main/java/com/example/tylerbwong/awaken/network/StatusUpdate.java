@@ -48,8 +48,4 @@ public final class StatusUpdate {
 
       return status;
    }
-
-   public static void main(String[] args) {
-      System.out.println(StatusUpdate.getStatus("cdubthecoolcat.ddns.net", 1285));
-   }
 }
