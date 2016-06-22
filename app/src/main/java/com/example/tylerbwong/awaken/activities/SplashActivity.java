@@ -1,6 +1,8 @@
 package com.example.tylerbwong.awaken.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -19,6 +21,18 @@ public class SplashActivity extends AppCompatActivity {
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_splash);
+
+      SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
+
+      if (preferences.getBoolean("appIntroFinished", false)) {
+         skipToMain();
+      }
+   }
+
+   private void skipToMain() {
+      Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
+      startActivity(mainIntent);
+      finish();
    }
 
    @Override

@@ -3,6 +3,8 @@ package com.example.tylerbwong.awaken.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.example.tylerbwong.awaken.R;
 import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
+import com.example.tylerbwong.awaken.fragments.ConnectionsFragment;
 
 /**
  * @author Tyler Wong
@@ -21,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
    private NavigationView mNavigationView;
    private DrawerLayout mDrawerLayout;
    private Toolbar mToolbar;
+
+   private Fragment mCurrentFragment;
+   private FragmentTransaction fragmentTransaction;
 
    private ConnectionDatabaseHelper databaseHelper;
 
@@ -35,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
       mToolbar = (Toolbar) findViewById(R.id.toolbar);
       setSupportActionBar(mToolbar);
 
+      mNavigationView.getMenu().getItem(0).setChecked(true);
+      ConnectionsFragment connectionsFragment = new ConnectionsFragment();
+      mCurrentFragment = connectionsFragment;
+      fragmentTransaction = getSupportFragmentManager().beginTransaction();
+      fragmentTransaction.replace(R.id.frame, connectionsFragment);
+      fragmentTransaction.commit();
+
       mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
          @Override
@@ -42,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
             mDrawerLayout.closeDrawers();
 
             switch (menuItem.getItemId()) {
+               case R.id.connections:
+                  ConnectionsFragment connectionsFragment = new ConnectionsFragment();
+                  mCurrentFragment = connectionsFragment;
+                  fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                  fragmentTransaction.replace(R.id.frame, connectionsFragment);
+                  fragmentTransaction.commit();
+                  return true;
                default:
                   return false;
             }

@@ -21,6 +21,15 @@ public class Location {
    private Map locationData;
 
    private final static String DATA_URL = "http://api.db-ip.com/v2/9d5870706ebd1cfd8b0c679ca249110633efc9fc/";
+   private final static String CITY_KEY = "city";
+   private final static String STATE_KEY = "stateProv";
+   private final static String COUNTRY_CODE_KEY = "countryCode";
+   private final static String IP_KEY = "ipAddress";
+   private final static String COUNTRY_NAME_KEY = "countryName";
+   private final static String CONTINENT_NAME_KEY = "continentName";
+   private final static String CONTINENT_CODE_KEY = "continentCode";
+
+   private final static int DATA_LENGTH = 1024;
 
    public Location(String ipAddress) {
       try {
@@ -37,31 +46,31 @@ public class Location {
    }
 
    public String getCity() {
-      return (String) dataJson.get("city");
+      return (String) dataJson.get(CITY_KEY);
    }
 
    public String getStateProv() {
-      return (String) dataJson.get("stateProv");
+      return (String) dataJson.get(STATE_KEY);
    }
 
    public String getCountryCode() {
-      return (String) dataJson.get("countryCode");
+      return (String) dataJson.get(COUNTRY_CODE_KEY);
    }
 
    public String getIpAddress() {
-      return (String) dataJson.get("ipAddress");
+      return (String) dataJson.get(IP_KEY);
    }
 
    public String getCountryName() {
-      return (String) dataJson.get("countryName");
+      return (String) dataJson.get(COUNTRY_NAME_KEY);
    }
 
    public String getContinentName() {
-      return (String) dataJson.get("continentName");
+      return (String) dataJson.get(CONTINENT_NAME_KEY);
    }
 
    public String getContinentCode() {
-      return (String) dataJson.get("continentCode");
+      return (String) dataJson.get(CONTINENT_CODE_KEY);
    }
 
    private static String convertIpByteArray(byte[] ipAddress) {
@@ -81,12 +90,13 @@ public class Location {
    private String readUrl(String urlString) {
       BufferedReader reader;
       String result = "";
+
       try {
          URL url = new URL(urlString);
          reader = new BufferedReader(new InputStreamReader(url.openStream()));
          StringBuffer buffer = new StringBuffer();
          int read;
-         char[] chars = new char[1024];
+         char[] chars = new char[DATA_LENGTH];
          while ((read = reader.read(chars)) != -1)
             buffer.append(chars, 0, read);
 

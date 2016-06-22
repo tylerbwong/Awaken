@@ -1,6 +1,8 @@
 package com.example.tylerbwong.awaken.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,6 +29,10 @@ public class IntroActivity extends AppIntro {
    }
 
    private void switchToMain() {
+      SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
+      SharedPreferences.Editor editor = preferences.edit();
+      editor.putBoolean("appIntroFinished", true);
+      editor.apply();
       Intent mainIntent = new Intent(IntroActivity.this, MainActivity.class);
       startActivity(mainIntent);
    }
@@ -34,14 +40,12 @@ public class IntroActivity extends AppIntro {
    @Override
    public void onSkipPressed(Fragment currentFragment) {
       super.onSkipPressed(currentFragment);
-
       switchToMain();
    }
 
    @Override
    public void onDonePressed(Fragment currentFragment) {
       super.onDonePressed(currentFragment);
-
       switchToMain();
    }
 
