@@ -26,8 +26,8 @@ public class IntroActivity extends AppIntro {
             Color.parseColor("#1D5189")));
    }
 
-   private void switchToMain() {
-      Intent mainIntent = new Intent(IntroActivity.this, MainActivity.class);
+   private void switchToLock() {
+      Intent mainIntent = new Intent(IntroActivity.this, LockActivity.class);
       startActivity(mainIntent);
    }
 
@@ -35,14 +35,14 @@ public class IntroActivity extends AppIntro {
    public void onSkipPressed(Fragment currentFragment) {
       super.onSkipPressed(currentFragment);
 
-      switchToMain();
+      switchToLock();
    }
 
    @Override
    public void onDonePressed(Fragment currentFragment) {
       super.onDonePressed(currentFragment);
 
-      switchToMain();
+      switchToLock();
    }
 
    @Override
