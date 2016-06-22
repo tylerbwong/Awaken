@@ -1,7 +1,7 @@
 package com.example.tylerbwong.awaken.network;
 
 import java.io.IOException;
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
@@ -38,14 +38,18 @@ public final class StatusUpdate {
       String status = RUNNING;
 
       try {
-         InetAddress address = InetAddress.getByName(host);
-         Socket statusSocket = new Socket(address, devicePort);
-         statusSocket.setSoTimeout(TIMEOUT);
+         InetSocketAddress address = new InetSocketAddress(host, devicePort);
+         Socket statusSocket = new Socket();
+         statusSocket.connect(address, TIMEOUT);
       }
       catch (IOException e) {
          status = INACTIVE;
       }
 
       return status;
+   }
+
+   public static void main(String[] args) {
+      System.out.println(StatusUpdate.getStatus("cdubthecoolcat.ddns.net", 1285));
    }
 }
