@@ -3,8 +3,6 @@ package com.example.tylerbwong.awaken.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.tylerbwong.awaken.R;
+import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
 
 /**
  * @author Tyler Wong
@@ -23,8 +22,7 @@ public class MainActivity extends AppCompatActivity {
    private DrawerLayout mDrawerLayout;
    private Toolbar mToolbar;
 
-   private Fragment mCurrentFragment;
-   private FragmentTransaction fragmentTransaction;
+   private ConnectionDatabaseHelper databaseHelper;
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
       setContentView(R.layout.activity_main);
 
       mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-      final View headerView = mNavigationView.getHeaderView(0);
       mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
       mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -69,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
       mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
       actionBarDrawerToggle.syncState();
+
+      databaseHelper = new ConnectionDatabaseHelper(this);
    }
 
    private void hideKeyboard() {

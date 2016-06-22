@@ -9,6 +9,7 @@ import com.andrognito.pinlockview.PinLockView;
 import com.example.tylerbwong.awaken.R;
 
 /**
+ * VERSION 2.0 FEATURE
  * @author Tyler Wong
  */
 public class LockActivity extends AppCompatActivity implements PinLockListener {

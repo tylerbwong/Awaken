@@ -12,14 +12,15 @@ import java.net.URL;
 import java.util.Map;
 
 /**
- * Created by cdub on 6/21/16.
+ * @author Connor Wong
  */
 public class Location {
-   private final static String DATA_URL = "http://api.db-ip.com/v2/9d5870706ebd1cfd8b0c679ca249110633efc9fc/";
    private String data;
    private JSONObject dataJson;
    private JSONParser parser;
    private Map locationData;
+
+   private final static String DATA_URL = "http://api.db-ip.com/v2/9d5870706ebd1cfd8b0c679ca249110633efc9fc/";
 
    public Location(String ipAddress) {
       try {

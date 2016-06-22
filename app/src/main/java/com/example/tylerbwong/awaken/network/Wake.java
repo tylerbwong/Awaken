@@ -11,17 +11,17 @@ public class Wake {
    /**
     * The target device's host name or ip address.
     */
-   private String mHost;
+   private String host;
 
    /**
     * The target device's MAC address.
     */
-   private String mMac;
+   private String mac;
 
    /**
     * The port that WOL is used on (default is 7).
     */
-   private int mPort = 7;
+   private int port = 7;
 
    /**
     * The length of the MAC address.
@@ -52,8 +52,8 @@ public class Wake {
     * @param mac the MAC address of the device
     */
    public Wake(String host, String mac) {
-      this.mHost = host;
-      this.mMac = mac;
+      this.host = host;
+      this.mac = mac;
    }
 
    /**
@@ -65,9 +65,9 @@ public class Wake {
     * @param port the port that WOL is used on
     */
    public Wake(String host, String mac, int port) {
-      this.mHost = host;
-      this.mMac = mac;
-      this.mPort = port;
+      this.host = host;
+      this.mac = mac;
+      this.port = port;
    }
 
    /**
@@ -75,7 +75,7 @@ public class Wake {
     */
    public void sendPacket() {
       try {
-         byte[] macBytes = getMacBytes(mMac);
+         byte[] macBytes = getMacBytes(mac);
          byte[] bytes = new byte[MAC_LENGTH + UDP_MULTIPLIER * macBytes.length];
 
          for (int index = 0; index < MAC_LENGTH; index++) {
@@ -86,8 +86,8 @@ public class Wake {
             System.arraycopy(macBytes, 0, bytes, index, macBytes.length);
          }
 
-         InetAddress address = InetAddress.getByName(mHost);
-         DatagramPacket packet = new DatagramPacket(bytes, bytes.length, address, mPort);
+         InetAddress address = InetAddress.getByName(host);
+         DatagramPacket packet = new DatagramPacket(bytes, bytes.length, address, port);
          DatagramSocket socket = new DatagramSocket();
 
          socket.send(packet);
@@ -104,7 +104,7 @@ public class Wake {
     * @return the host name/ip address as String
     */
    public String getHost() {
-      return mHost;
+      return host;
    }
 
    /**
@@ -113,7 +113,7 @@ public class Wake {
     * @return the mac address as a String
     */
    public String getMac() {
-      return mMac;
+      return mac;
    }
 
    /**
@@ -122,7 +122,7 @@ public class Wake {
     * @return the wol port as an int
     */
    public int getPort() {
-      return mPort;
+      return port;
    }
 
    private byte[] getMacBytes(String macStr) {
