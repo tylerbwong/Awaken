@@ -34,7 +34,6 @@ public class Wake {
     */
    private final static int MAC_LENGTH = 6;
 
-   private final static int BYTE_LENGTH = 6;
    /**
     * Magic packets must be 102 bytes. Length
     * of the UDP packet.
@@ -55,8 +54,6 @@ public class Wake {
    private final static String INVALID_MAC = "Invalid MAC Address";
 
    private final static String INVALID_PASS = "Invalid SecureOn Password";
-
-   private static byte[] bytes;
    /**
     * Creates a new wakeable device using the default port 7.
     *
@@ -101,24 +98,15 @@ public class Wake {
    public void sendPacket() {
       try {
          byte[] macBytes = getMacBytes(mac);
-         byte[] passBytes = getPassBytes(pass);
-         if (passBytes.length != 0) {
-            bytes = new byte[BYTE_LENGTH + UDP_MULTIPLIER * MAC_LENGTH + passBytes.length];
-         }
-         else {
-            bytes = new byte[MAC_LENGTH + UDP_MULTIPLIER * MAC_LENGTH];
-         }
+         byte[] bytes = new byte[MAC_LENGTH + UDP_MULTIPLIER * macBytes.length];
 
 
-         for (int index = 0; index < BYTE_LENGTH; index++) {
+         for (int index = 0; index < MAC_LENGTH; index++) {
             bytes[index] = (byte) 0xff;
          }
 
-         for (int index = BYTE_LENGTH; index < bytes.length; index += macBytes.length) {
+         for (int index = MAC_LENGTH; index < bytes.length; index += macBytes.length) {
             System.arraycopy(macBytes, 0, bytes, index, macBytes.length);
-         }
-         if (passBytes.length != 0) {
-            System.arraycopy(passBytes, 0, bytes, 102, passBytes.length);
          }
 
          InetAddress address = InetAddress.getByName(host);
