@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="70dp"
         android:lines="2"
         android:text="@string/new_connection"
         android:textAlignment="textStart"
@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/nickname"
             android:imeOptions="actionDone"
+            android:maxLength="15"
             android:inputType="text"
             android:textColor="@color/colorAccent"
             android:textSize="20sp"/>

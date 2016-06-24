@@ -3,6 +3,7 @@ package com.example.tylerbwong.awaken.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,8 +19,12 @@ import android.widget.LinearLayout;
 import com.example.tylerbwong.awaken.R;
 import com.example.tylerbwong.awaken.activities.NewConnectionActivity;
 import com.example.tylerbwong.awaken.adapters.ConnectionsAdapter;
+import com.example.tylerbwong.awaken.components.Connection;
 import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
+import com.example.tylerbwong.awaken.network.StatusUpdate;
 import com.github.fabtransitionactivity.SheetLayout;
+
+import java.util.List;
 
 /**
  * @author Tyler Wong
@@ -30,13 +35,16 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
    private FloatingActionButton mFab;
    private RecyclerView mConnectionsList;
    private SwipeRefreshLayout mRefreshLayout;
+   LinearLayoutManager layoutManager;
    private LinearLayout mEmptyView;
+   private List<Connection> connections;
 
    private ConnectionsAdapter connectionsAdapter;
 
    private ConnectionDatabaseHelper databaseHelper;
 
    private final static int REQUEST_CODE = 1;
+   private final static int DURATION = 5000;
 
    @Nullable
    @Override
@@ -49,10 +57,18 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
       mFab = (FloatingActionButton) view.findViewById(R.id.fab);
       mEmptyView = (LinearLayout) view.findViewById(R.id.empty_layout);
 
+      databaseHelper = new ConnectionDatabaseHelper(getContext());
+
       mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
          @Override
          public void onRefresh() {
-            // TODO refresh statuses
+            new Handler().postDelayed(new Runnable() {
+               @Override
+               public void run() {
+                  refreshConnections();
+                  mRefreshLayout.setRefreshing(false);
+               }
+            }, DURATION);
          }
       });
 
@@ -71,19 +87,32 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
          actionBar.setTitle(R.string.connections);
       }
 
-      databaseHelper = new ConnectionDatabaseHelper(getContext());
+      connections = databaseHelper.getAllConnections();
 
-      LinearLayoutManager llm = new LinearLayoutManager(getContext());
-      llm.setOrientation(LinearLayoutManager.VERTICAL);
-      mConnectionsList.setLayoutManager(llm);
-      connectionsAdapter = new ConnectionsAdapter(getContext(), databaseHelper.getAllConnections());
+      layoutManager = new LinearLayoutManager(getContext());
+      layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+      mConnectionsList.setLayoutManager(layoutManager);
+      connectionsAdapter = new ConnectionsAdapter(getContext(), connections);
       mConnectionsList.setAdapter(connectionsAdapter);
+
+      refreshConnections();
 
       return view;
    }
 
    private void onFabClick() {
       mSheetLayout.expandFab();
+   }
+
+   private void refreshConnections() {
+      for (Connection connection : connections) {
+         String status = String.valueOf(StatusUpdate.refreshStatus(connection.getHost(),
+               Integer.valueOf(connection.getPortDev())));
+         databaseHelper.updateStatus(connection.getMac(), status);
+      }
+      connections = databaseHelper.getAllConnections();
+      connectionsAdapter = new ConnectionsAdapter(getContext(), connections);
+      mConnectionsList.setAdapter(connectionsAdapter);
    }
 
    @Override
