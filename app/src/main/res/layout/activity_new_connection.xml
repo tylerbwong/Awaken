@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:background="@color/colorPrimary"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:background="@color/colorPrimary"
+              android:orientation="vertical">
 
     <TextView
         android:id="@+id/title_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:layout_marginTop="30dp"
         android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
         android:lines="2"
         android:text="@string/new_connection"
         android:textAlignment="textStart"
@@ -29,9 +29,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nickname"
-            android:textColor="@color/colorAccent"
-            android:inputType="text"
             android:imeOptions="actionDone"
+            android:inputType="text"
+            android:textColor="@color/colorAccent"
             android:textSize="20sp"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -48,9 +48,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/host_ip"
-            android:textColor="@color/colorAccent"
-            android:inputType="text"
             android:imeOptions="actionDone"
+            android:inputType="textNoSuggestions"
+            android:textColor="@color/colorAccent"
             android:textSize="20sp"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -67,9 +67,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/mac"
-            android:textColor="@color/colorAccent"
-            android:inputType="text"
             android:imeOptions="actionDone"
+            android:inputType="text"
+            android:textColor="@color/colorAccent"
             android:textSize="20sp"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -86,9 +86,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/wol"
-            android:textColor="@color/colorAccent"
-            android:inputType="number"
             android:imeOptions="actionDone"
+            android:inputType="number"
+            android:textColor="@color/colorAccent"
             android:textSize="20sp"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -105,9 +105,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/port"
-            android:textColor="@color/colorAccent"
-            android:inputType="number"
             android:imeOptions="actionDone"
+            android:inputType="number"
+            android:textColor="@color/colorAccent"
             android:textSize="20sp"/>
 
     </android.support.design.widget.TextInputLayout>
