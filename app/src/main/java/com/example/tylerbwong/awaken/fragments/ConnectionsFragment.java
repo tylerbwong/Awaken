@@ -44,7 +44,7 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
    private ConnectionDatabaseHelper databaseHelper;
 
    private final static int REQUEST_CODE = 1;
-   private final static int DURATION = 5000;
+   private final static int DURATION = 1000;
 
    @Nullable
    @Override

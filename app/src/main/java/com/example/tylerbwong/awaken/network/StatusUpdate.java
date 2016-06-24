@@ -18,7 +18,7 @@ public final class StatusUpdate extends AsyncTask<Pair<String, Integer>, Void, B
     * How long the socket should wait for a response
     * before stopping.
     */
-   private final static int TIMEOUT = 1000;
+   private final static int TIMEOUT = 500;
 
    /**
     * The device is running.
