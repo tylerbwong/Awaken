@@ -19,12 +19,12 @@ public final class StatusUpdate {
    /**
     * The device is running.
     */
-   public final static String RUNNING = "running";
+   public final static boolean RUNNING = true;
 
    /**
     * The device is not running.
     */
-   public final static String INACTIVE = "not running";
+   public final static boolean INACTIVE = false;
 
    /**
     * Gets the current status of the device in question. The method
@@ -34,13 +34,14 @@ public final class StatusUpdate {
     *
     * @param host - the ip address, or name of the host
     * @param devicePort - the port that the network is forwarding
-    * @return the current status of the machine RUNNING or INACTIVE
+    * @return true if the current status of the machine is RUNNING or false if the current status is
+    * INACTIVE
     */
-   public static String getStatus(String host, int devicePort) {
+   public static boolean getStatus(String host, int devicePort) {
       StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
       StrictMode.setThreadPolicy(policy);
 
-      String status = RUNNING;
+      boolean status = RUNNING;
 
       try {
          InetSocketAddress address = new InetSocketAddress(host, devicePort);

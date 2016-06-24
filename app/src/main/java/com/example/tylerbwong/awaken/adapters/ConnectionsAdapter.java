@@ -49,8 +49,14 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolde
       holder.mMac.setText(curConnection.getMac());
       holder.mLocation.setText(curConnection.getCity() + ", " + curConnection.getState() + ", " +
             curConnection.getCountry());
-      holder.mStatus.setText(StatusUpdate.getStatus(curConnection.getHost(),
-            Integer.parseInt(curConnection.getPortDev())));
+      boolean status = StatusUpdate.getStatus(curConnection.getHost(),
+            Integer.parseInt(curConnection.getPortDev()));
+      if (status) {
+         holder.mStatus.setImageResource(R.drawable.active_marker);
+      }
+      else {
+         holder.mStatus.setImageResource(R.drawable.inactive_marker);
+      }
    }
 
    @Override
