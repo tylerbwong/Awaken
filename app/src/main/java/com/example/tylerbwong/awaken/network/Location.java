@@ -5,10 +5,10 @@ import android.os.StrictMode;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.URL;
 import java.util.Map;
@@ -38,8 +38,13 @@ public class Location {
       StrictMode.setThreadPolicy(policy);
 
       try {
-         InetAddress ip = InetAddress.getByName(ipAddress);
-         ipAddress = convertIpByteArray(ip.getAddress());
+         InetAddress[] ip = InetAddress.getAllByName(ipAddress);
+         for (InetAddress address : ip) {
+            System.out.println(address.toString());
+            if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
+               ipAddress = convertIpByteArray(address.getAddress());
+            }
+         }
          data = readUrl(DATA_URL + ipAddress);
          parser = new JSONParser();
          locationData = (Map) parser.parse(data);

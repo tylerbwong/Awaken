@@ -29,6 +29,8 @@ public class Wake {
     */
    private int port = 7;
 
+   private byte[] bytes;
+
    /**
     * The length of the MAC address.
     */
@@ -98,7 +100,9 @@ public class Wake {
    public void sendPacket() {
       try {
          byte[] macBytes = getMacBytes(mac);
-         byte[] bytes = new byte[MAC_LENGTH + UDP_MULTIPLIER * macBytes.length];
+         if (pass.length() == 0) {
+            bytes = new byte[MAC_LENGTH + UDP_MULTIPLIER * macBytes.length];
+         }
 
 
          for (int index = 0; index < MAC_LENGTH; index++) {
@@ -158,7 +162,7 @@ public class Wake {
 
       try {
          for (int index = 0; index < MAC_LENGTH; index++) {
-            bytes[index] = (byte) Integer.parseInt(mac[index], UDP_MULTIPLIER);
+            bytes[index] = (byte) Integer.parseInt(mac[index], HEXADECIMAL);
          }
       }
       catch (NumberFormatException e) {
