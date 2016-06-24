@@ -2,15 +2,14 @@ package com.example.tylerbwong.awaken.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ import com.example.tylerbwong.awaken.adapters.ConnectionsAdapter;
 import com.example.tylerbwong.awaken.components.Connection;
 import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
 import com.example.tylerbwong.awaken.network.StatusUpdate;
+import com.example.tylerbwong.awaken.utilities.AnimatedRecyclerView;
 import com.github.fabtransitionactivity.SheetLayout;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
 
    private SheetLayout mSheetLayout;
    private FloatingActionButton mFab;
-   private RecyclerView mConnectionsList;
+   private AnimatedRecyclerView mConnectionsList;
    private SwipeRefreshLayout mRefreshLayout;
    LinearLayoutManager layoutManager;
    private LinearLayout mEmptyView;
@@ -52,7 +52,7 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
       View view = inflater.inflate(R.layout.connections_fragment, container, false);
 
       mSheetLayout = (SheetLayout) view.findViewById(R.id.bottom_sheet);
-      mConnectionsList = (RecyclerView) view.findViewById(R.id.connection_list);
+      mConnectionsList = (AnimatedRecyclerView) view.findViewById(R.id.connection_list);
       mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
       mFab = (FloatingActionButton) view.findViewById(R.id.fab);
       mEmptyView = (LinearLayout) view.findViewById(R.id.empty_layout);
@@ -105,10 +105,10 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
    }
 
    private void refreshConnections() {
-      for (Connection connection : connections) {
-         String status = String.valueOf(StatusUpdate.refreshStatus(connection.getHost(),
-               Integer.valueOf(connection.getPortDev())));
-         databaseHelper.updateStatus(connection.getMac(), status);
+      for (int index = 0; index < connections.size(); index++) {
+         String status = String.valueOf(StatusUpdate.refreshStatus(connections.get(index).getHost(),
+               Integer.valueOf(connections.get(index).getPortDev())));
+         databaseHelper.updateStatus(connections.get(index).getMac(), status);
       }
       connections = databaseHelper.getAllConnections();
       connectionsAdapter = new ConnectionsAdapter(getContext(), connections);
