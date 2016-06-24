@@ -100,10 +100,7 @@ public class Wake {
    public void sendPacket() {
       try {
          byte[] macBytes = getMacBytes(mac);
-         if (pass.length() == 0) {
-            bytes = new byte[MAC_LENGTH + UDP_MULTIPLIER * macBytes.length];
-         }
-
+         bytes = new byte[MAC_LENGTH + UDP_MULTIPLIER * macBytes.length];
 
          for (int index = 0; index < MAC_LENGTH; index++) {
             bytes[index] = (byte) 0xff;
