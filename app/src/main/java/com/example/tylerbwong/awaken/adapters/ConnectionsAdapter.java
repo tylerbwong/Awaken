@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import com.example.tylerbwong.awaken.R;
 import com.example.tylerbwong.awaken.components.Connection;
 import com.example.tylerbwong.awaken.holders.ConnectionViewHolder;
-import com.example.tylerbwong.awaken.network.StatusUpdate;
 
 import java.util.List;
 
@@ -49,8 +48,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolde
       holder.mMac.setText(curConnection.getMac());
       holder.mLocation.setText(curConnection.getCity() + ", " + curConnection.getState());
       holder.mDate.setText(curConnection.getDate());
-      boolean status = StatusUpdate.getStatus(curConnection.getHost(),
-            Integer.parseInt(curConnection.getPortDev()));
+      boolean status = Boolean.parseBoolean(curConnection.getStatus());
       if (status) {
          holder.mStatus.setImageResource(R.drawable.active_marker);
       }

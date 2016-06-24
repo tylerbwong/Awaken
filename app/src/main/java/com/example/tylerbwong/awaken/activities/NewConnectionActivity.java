@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.tylerbwong.awaken.R;
 import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
 import com.example.tylerbwong.awaken.network.Location;
+import com.example.tylerbwong.awaken.network.StatusUpdate;
 
 /**
  * @author Tyler Wong
@@ -63,10 +64,11 @@ public class NewConnectionActivity extends AppCompatActivity {
       String city = newLocation.getCity();
       String state = newLocation.getStateProv();
       String country = newLocation.getCountryName();
+      String status = String.valueOf(StatusUpdate.getStatus(host, Integer.parseInt(devicePort)));
       String message;
       try {
          databaseHelper.insertConnection(nickname, host, mac, portWol,
-               devicePort, city, state, country, "", "");
+               devicePort, city, state, country, status, "");
          message = getResources().getString(R.string.new_connection_success);
          switchToMain();
       }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +29,7 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
    private SheetLayout mSheetLayout;
    private FloatingActionButton mFab;
    private RecyclerView mConnectionsList;
+   private SwipeRefreshLayout mRefreshLayout;
    private LinearLayout mEmptyView;
 
    private ConnectionsAdapter connectionsAdapter;
@@ -43,8 +45,16 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
 
       mSheetLayout = (SheetLayout) view.findViewById(R.id.bottom_sheet);
       mConnectionsList = (RecyclerView) view.findViewById(R.id.connection_list);
+      mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
       mFab = (FloatingActionButton) view.findViewById(R.id.fab);
       mEmptyView = (LinearLayout) view.findViewById(R.id.empty_layout);
+
+      mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+         @Override
+         public void onRefresh() {
+            // TODO refresh statuses
+         }
+      });
 
       mFab.setOnClickListener(new View.OnClickListener() {
          @Override

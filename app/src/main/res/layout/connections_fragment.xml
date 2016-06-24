@@ -5,11 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/connection_list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"/>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/connection_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -22,10 +29,10 @@
         android:src="@drawable/ic_add_white_48dp"
         app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal"
-        app:rippleColor="@color/colorAccent"
         app:layout_anchor="@+id/connection_list"
         app:layout_anchorGravity="bottom|end"
-        app:layout_behavior="com.example.tylerbwong.awaken.utilities.FABScrollBehavior"/>
+        app:layout_behavior="com.example.tylerbwong.awaken.utilities.FABScrollBehavior"
+        app:rippleColor="@color/colorAccent"/>
 
     <LinearLayout
         android:id="@+id/empty_layout"
