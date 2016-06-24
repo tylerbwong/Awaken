@@ -12,10 +12,11 @@ public class Connection {
    private String city;
    private String state;
    private String country;
+   private String status;
    private String date;
 
    public Connection(String nickname, String host, String mac, String portWol, String portDev,
-                     String city, String state, String country, String date) {
+                     String city, String state, String country, String status, String date) {
       this.nickname = nickname;
       this.host = host;
       this.mac = mac;
@@ -24,6 +25,7 @@ public class Connection {
       this.city = city;
       this.state = state;
       this.country = country;
+      this.status = status;
       this.date = date;
    }
 
@@ -57,6 +59,10 @@ public class Connection {
 
    public String getCountry() {
       return country;
+   }
+
+   public String getStatus() {
+      return status;
    }
 
    public String getDate() {

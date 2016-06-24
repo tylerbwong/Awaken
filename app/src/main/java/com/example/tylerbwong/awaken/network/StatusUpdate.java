@@ -47,6 +47,7 @@ public final class StatusUpdate {
          InetSocketAddress address = new InetSocketAddress(host, devicePort);
          Socket statusSocket = new Socket();
          statusSocket.connect(address, TIMEOUT);
+         statusSocket.close();
       }
       catch (IOException e) {
          status = INACTIVE;

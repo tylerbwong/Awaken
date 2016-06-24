@@ -9,6 +9,7 @@
     <!-- DESCRIPTIONS -->
     <string name="intro_one_description">Make sure your device is Wake-On-LAN enabled.</string>
     <string name="intro_two_description">Remotely wake up your Wake-On-LAN enabled devices!</string>
+    <string name="woken">has been woken!</string>
 
     <!-- LABELS -->
     <string name="enter">ENTER</string>

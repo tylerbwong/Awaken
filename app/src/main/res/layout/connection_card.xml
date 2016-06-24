@@ -85,8 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="italic"
-                    android:textSize="14sp"
-                    android:text="January 23, 2016 12:45 pm"/>
+                    android:textSize="14sp"/>
             </LinearLayout>
 
 

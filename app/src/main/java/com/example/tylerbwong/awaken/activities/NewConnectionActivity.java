@@ -66,7 +66,7 @@ public class NewConnectionActivity extends AppCompatActivity {
       String message;
       try {
          databaseHelper.insertConnection(nickname, host, mac, portWol,
-               devicePort, city, state, country, "");
+               devicePort, city, state, country, "", "");
          message = getResources().getString(R.string.new_connection_success);
          switchToMain();
       }

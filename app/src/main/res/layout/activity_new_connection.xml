@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/wol"
             android:textColor="@color/colorAccent"
-            android:inputType="text"
+            android:inputType="number"
             android:imeOptions="actionDone"
             android:textSize="20sp"/>
 

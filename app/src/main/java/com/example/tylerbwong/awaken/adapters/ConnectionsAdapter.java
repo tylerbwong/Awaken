@@ -47,8 +47,8 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolde
       holder.mNickname.setText(curConnection.getNickname());
       holder.mHost.setText(curConnection.getHost());
       holder.mMac.setText(curConnection.getMac());
-      holder.mLocation.setText(curConnection.getCity() + ", " + curConnection.getState() + ", " +
-            curConnection.getCountry());
+      holder.mLocation.setText(curConnection.getCity() + ", " + curConnection.getState());
+      holder.mDate.setText(curConnection.getDate());
       boolean status = StatusUpdate.getStatus(curConnection.getHost(),
             Integer.parseInt(curConnection.getPortDev()));
       if (status) {
