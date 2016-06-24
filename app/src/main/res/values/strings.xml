@@ -3,6 +3,8 @@
     <string name="app_name">Awaken</string>
     <string name="intro_one_title">Access Wake-On-LAN Devices</string>
     <string name="intro_two_title">Send A Wake Up Packet to Your Device</string>
+    <string name="new_connection">New Connection</string>
+    <string name="host_title">Enter Your\nHostname/IP Address</string>
 
     <!-- DESCRIPTIONS -->
     <string name="intro_one_description">Make sure your device is Wake-On-LAN enabled.</string>
@@ -11,6 +13,14 @@
     <!-- LABELS -->
     <string name="enter">ENTER</string>
     <string name="connections">Connections</string>
+    <string name="nickname">Nickname</string>
+    <string name="host_ip">Hostname/IP Address</string>
+    <string name="mac">MAC Address</string>
+    <string name="seven">7</string>
+    <string name="nine">9</string>
+    <string name="port">Device Port</string>
+    <string name="new_connection_success">Successfully created new connection!</string>
+    <string name="new_connection_fail">Failed to create new connection.</string>
 
     <!-- VALUES -->
     <string name="logo_transition">Logo transition</string>

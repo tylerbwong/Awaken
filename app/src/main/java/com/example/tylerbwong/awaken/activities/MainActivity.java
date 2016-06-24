@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.tylerbwong.awaken.R;
-import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
 import com.example.tylerbwong.awaken.fragments.ConnectionsFragment;
 
 /**
@@ -27,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
    private Fragment mCurrentFragment;
    private FragmentTransaction fragmentTransaction;
-
-   private ConnectionDatabaseHelper databaseHelper;
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
       mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
       actionBarDrawerToggle.syncState();
-
-      databaseHelper = new ConnectionDatabaseHelper(this);
    }
 
    private void hideKeyboard() {

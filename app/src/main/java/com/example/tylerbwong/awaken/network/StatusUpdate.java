@@ -1,5 +1,7 @@
 package com.example.tylerbwong.awaken.network;
 
+import android.os.StrictMode;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -35,6 +37,9 @@ public final class StatusUpdate {
     * @return the current status of the machine RUNNING or INACTIVE
     */
    public static String getStatus(String host, int devicePort) {
+      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+      StrictMode.setThreadPolicy(policy);
+
       String status = RUNNING;
 
       try {

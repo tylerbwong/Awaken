@@ -1,5 +1,7 @@
 package com.example.tylerbwong.awaken.network;
 
+import android.os.StrictMode;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -32,6 +34,9 @@ public class Location {
    private final static int DATA_LENGTH = 1024;
 
    public Location(String ipAddress) {
+      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+      StrictMode.setThreadPolicy(policy);
+
       try {
          InetAddress ip = InetAddress.getByName(ipAddress);
          ipAddress = convertIpByteArray(ip.getAddress());

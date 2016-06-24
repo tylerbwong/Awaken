@@ -6,6 +6,9 @@ repositories {
     maven {
         url "https://jitpack.io"
     }
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
 }
 
 android {
@@ -14,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.tylerbwong.awaken"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -37,6 +40,7 @@ dependencies {
     compile 'com.github.paolorotolo:appintro:4.0.0'
     compile 'com.github.coyarzun89:fabtransitionactivity:0.2.0'
     compile 'com.andrognito.pinlockview:pinlockview:1.0.1'
+    compile 'me.drozdzynski.library.steppers:steppers:0.3.3-SNAPSHOT'
     compile('com.googlecode.json-simple:json-simple:1.1.1') {
         exclude group: 'org.hamcrest', module: 'hamcrest-core'
     }

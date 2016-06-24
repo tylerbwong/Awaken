@@ -2,6 +2,7 @@ package com.example.tylerbwong.awaken.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -26,8 +27,9 @@ public class ConnectionDatabaseHelper extends SQLiteOpenHelper {
    private final static String DATE_COL = "lastWoken";
    private final static String CREATE_CONNECTIONS_TABLE = "CREATE TABLE IF NOT EXISTS " +
          "Connections(nickname VARCHAR, host VARCHAR, mac VARCHAR, portWol VARCHAR, " +
-         "portDev VARCHAR, city VARCHAR, state VARCHAR, country VARCHAR, lastWoken VARCHAR);";
-   private final static String DROP_CONNECTIONS_TABLE = "DROP TABLE IF EXISTS Connections;";
+         "portDev VARCHAR, city VARCHAR, state VARCHAR, country VARCHAR, lastWoken VARCHAR)";
+   private final static String DROP_CONNECTIONS_TABLE = "DROP TABLE IF EXISTS Connections";
+   private final static String QUERY_ALL_CONNECTIONS = "SELECT * FROM Connections";
 
    public ConnectionDatabaseHelper(Context context) {
       super(context, DATABASE_NAME, null, 1);
@@ -64,6 +66,27 @@ public class ConnectionDatabaseHelper extends SQLiteOpenHelper {
 
    public ArrayList<Connection> getAllConnections() {
       ArrayList<Connection> connections = new ArrayList<>();
+      Connection tempConnection;
+      SQLiteDatabase database = getReadableDatabase();
+      String nickname, host, mac, wolPort, devPort, city, state, country, date;
+      Cursor cursor = database.rawQuery(QUERY_ALL_CONNECTIONS, null);
+      cursor.moveToFirst();
+
+      while (!cursor.isAfterLast()) {
+         nickname = cursor.getString(cursor.getColumnIndex(NICKNAME_COL));
+         host = cursor.getString(cursor.getColumnIndex(HOST_COL));
+         mac = cursor.getString(cursor.getColumnIndex(MAC_COL));
+         wolPort = cursor.getString(cursor.getColumnIndex(WOL_PORT_COL));
+         devPort = cursor.getString(cursor.getColumnIndex(DEV_PORT_COL));
+         city = cursor.getString(cursor.getColumnIndex(CITY_COL));
+         state = cursor.getString(cursor.getColumnIndex(STATE_COL));
+         country = cursor.getString(cursor.getColumnIndex(COUNTRY_COL));
+         date = cursor.getString(cursor.getColumnIndex(DATE_COL));
+         tempConnection = new Connection(nickname, host, mac, wolPort, devPort,
+               city, state, country, date);
+         connections.add(tempConnection);
+         cursor.moveToNext();
+      }
       return connections;
    }
 }

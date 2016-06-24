@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.widget.LinearLayout;
 
 import com.example.tylerbwong.awaken.R;
 import com.example.tylerbwong.awaken.activities.NewConnectionActivity;
+import com.example.tylerbwong.awaken.adapters.ConnectionsAdapter;
+import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
 import com.github.fabtransitionactivity.SheetLayout;
 
 /**
@@ -24,8 +27,12 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
 
    private SheetLayout mSheetLayout;
    private FloatingActionButton mFab;
-   private RecyclerView mConnectionList;
+   private RecyclerView mConnectionsList;
    private LinearLayout mEmptyView;
+
+   private ConnectionsAdapter connectionsAdapter;
+
+   private ConnectionDatabaseHelper databaseHelper;
 
    private final static int REQUEST_CODE = 1;
 
@@ -35,7 +42,7 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
       View view = inflater.inflate(R.layout.connections_fragment, container, false);
 
       mSheetLayout = (SheetLayout) view.findViewById(R.id.bottom_sheet);
-      mConnectionList = (RecyclerView) view.findViewById(R.id.connection_list);
+      mConnectionsList = (RecyclerView) view.findViewById(R.id.connection_list);
       mFab = (FloatingActionButton) view.findViewById(R.id.fab);
       mEmptyView = (LinearLayout) view.findViewById(R.id.empty_layout);
 
@@ -53,6 +60,14 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
       if (actionBar != null) {
          actionBar.setTitle(R.string.connections);
       }
+
+      databaseHelper = new ConnectionDatabaseHelper(getContext());
+
+      LinearLayoutManager llm = new LinearLayoutManager(getContext());
+      llm.setOrientation(LinearLayoutManager.VERTICAL);
+      mConnectionsList.setLayoutManager(llm);
+      connectionsAdapter = new ConnectionsAdapter(getContext(), databaseHelper.getAllConnections());
+      mConnectionsList.setAdapter(connectionsAdapter);
 
       return view;
    }
