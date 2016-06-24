@@ -18,6 +18,7 @@
     <string name="mac">MAC Address</string>
     <string name="seven">7</string>
     <string name="nine">9</string>
+    <string name="wol">WOL Port</string>
     <string name="port">Device Port</string>
     <string name="new_connection_success">Successfully created new connection!</string>
     <string name="new_connection_fail">Failed to create new connection.</string>

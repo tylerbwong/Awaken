@@ -74,30 +74,24 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <RadioGroup
-        android:id="@+id/port_group"
-        android:layout_width="wrap_content"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/wol_layout"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal"
         android:layout_marginTop="20dp">
 
-        <RadioButton
-            android:id="@+id/seven"
-            android:layout_width="wrap_content"
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/wol_input"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/seven"
+            android:hint="@string/wol"
             android:textColor="@color/colorAccent"
-            android:textSize="20sp"
-            android:layout_marginEnd="30dp"/>
-        <RadioButton
-            android:id="@+id/nine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nine"
-            android:textColor="@color/colorAccent"
+            android:inputType="text"
+            android:imeOptions="actionDone"
             android:textSize="20sp"/>
-    </RadioGroup>
+
+    </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/port_layout"

@@ -6,8 +6,6 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.tylerbwong.awaken.R;
@@ -22,7 +20,7 @@ public class NewConnectionActivity extends AppCompatActivity {
    private TextInputEditText mNicknameInput;
    private TextInputEditText mHostInput;
    private TextInputEditText mMacInput;
-   private RadioGroup mPortGroup;
+   private TextInputEditText mWolPort;
    private TextInputEditText mDevicePort;
    private Button mEnterButton;
 
@@ -37,7 +35,7 @@ public class NewConnectionActivity extends AppCompatActivity {
       mNicknameInput = (TextInputEditText) findViewById(R.id.nickname_input);
       mHostInput = (TextInputEditText) findViewById(R.id.host_input);
       mMacInput = (TextInputEditText) findViewById(R.id.mac_input);
-      mPortGroup = (RadioGroup) findViewById(R.id.port_group);
+      mWolPort = (TextInputEditText) findViewById(R.id.wol_input);
       mDevicePort = (TextInputEditText) findViewById(R.id.port_input);
       mEnterButton = (Button) findViewById(R.id.enter_button);
 
@@ -59,9 +57,7 @@ public class NewConnectionActivity extends AppCompatActivity {
       String nickname = mNicknameInput.getText().toString();
       String host = mHostInput.getText().toString();
       String mac = mMacInput.getText().toString();
-      int portWolId = mPortGroup.getCheckedRadioButtonId();
-      RadioButton selectedPort = (RadioButton) mPortGroup.findViewById(portWolId);
-      String portWol = selectedPort.getText().toString();
+      String portWol = mWolPort.getText().toString();
       String devicePort = mDevicePort.getText().toString();
       Location newLocation = new Location(host);
       String city = newLocation.getCity();
