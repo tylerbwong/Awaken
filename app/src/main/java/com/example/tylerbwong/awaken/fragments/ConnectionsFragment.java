@@ -92,7 +92,7 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
       layoutManager = new LinearLayoutManager(getContext());
       layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
       mConnectionsList.setLayoutManager(layoutManager);
-      connectionsAdapter = new ConnectionsAdapter(getContext(), connections);
+      connectionsAdapter = new ConnectionsAdapter(mConnectionsList, connections);
       mConnectionsList.setAdapter(connectionsAdapter);
 
       refreshConnections();
@@ -111,7 +111,7 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
          databaseHelper.updateStatus(connections.get(index).getMac(), status);
       }
       connections = databaseHelper.getAllConnections();
-      connectionsAdapter = new ConnectionsAdapter(getContext(), connections);
+      connectionsAdapter = new ConnectionsAdapter(mConnectionsList, connections);
       mConnectionsList.setAdapter(connectionsAdapter);
    }
 

@@ -11,6 +11,7 @@ import android.view.View;
  */
 public class AnimatedRecyclerView extends RecyclerView{
    private boolean mScrollable;
+   private boolean mIsAnimatable = true;
 
    public AnimatedRecyclerView(Context context) {
       this(context, null);
@@ -33,18 +34,25 @@ public class AnimatedRecyclerView extends RecyclerView{
    @Override
    protected void onLayout(boolean changed, int l, int t, int r, int b) {
       super.onLayout(changed, l, t, r, b);
-      for (int i = 0; i < getChildCount(); i++) {
-         animate(getChildAt(i), i);
+      if (mIsAnimatable) {
+         for (int i = 0; i < getChildCount(); i++) {
+            animate(getChildAt(i), i);
 
-         if (i == getChildCount() - 1) {
-            getHandler().postDelayed(new Runnable() {
-               @Override
-               public void run() {
-                  mScrollable = true;
-               }
-            }, i * 100);
+            if (i == getChildCount() - 1) {
+               getHandler().postDelayed(new Runnable() {
+                  @Override
+                  public void run() {
+                     mScrollable = true;
+                  }
+               }, i * 100);
+            }
          }
       }
+      mIsAnimatable = true;
+   }
+
+   public void setIsAnimatable(boolean isAnimatable) {
+      this.mIsAnimatable = isAnimatable;
    }
 
    private void animate(View view, final int pos) {

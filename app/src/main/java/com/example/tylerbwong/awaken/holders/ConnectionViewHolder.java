@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.tylerbwong.awaken.R;
 import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
 import com.example.tylerbwong.awaken.network.Wake;
+import com.example.tylerbwong.awaken.utilities.AnimatedRecyclerView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,7 +32,7 @@ public class ConnectionViewHolder extends RecyclerView.ViewHolder {
    private final static String DATE_FORMAT = "MM/dd/yyyy HH:mm:ss";
    private ConnectionDatabaseHelper databaseHelper;
 
-   public ConnectionViewHolder(View view) {
+   public ConnectionViewHolder(View view, final AnimatedRecyclerView recyclerView) {
       super(view);
 
       mNickname = (TextView) view.findViewById(R.id.nickname_label);
@@ -52,6 +53,7 @@ public class ConnectionViewHolder extends RecyclerView.ViewHolder {
             Date date = new Date();
             String formatDate = dateFormat.format(date);
             databaseHelper.updateDate(mMac.getText().toString(), formatDate);
+            recyclerView.setIsAnimatable(false);
             mDate.setText(formatDate);
             Snackbar snackbar = Snackbar
                   .make(view, mNickname.getText().toString() + " " + view.getResources().getString(R.string.woken),

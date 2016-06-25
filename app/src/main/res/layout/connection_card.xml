@@ -16,7 +16,8 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_gravity="center"
-        android:background="@drawable/navy_ripple">
+        android:background="@drawable/navy_ripple"
+        android:nestedScrollingEnabled="true">
         <ImageButton
             android:id="@+id/edit_button"
             android:layout_width="wrap_content"
