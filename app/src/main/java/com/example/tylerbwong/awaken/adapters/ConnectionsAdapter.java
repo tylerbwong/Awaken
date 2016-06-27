@@ -1,6 +1,7 @@
 package com.example.tylerbwong.awaken.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import java.util.List;
 public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolder> {
 
    private List<Connection> connections;
+   private SparseBooleanArray selectedConnections;
    private AnimatedRecyclerView mRecyclerView;
 
    public ConnectionsAdapter(AnimatedRecyclerView recyclerView, List<Connection> connections) {
@@ -31,7 +33,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolde
 
    @Override
    public ConnectionViewHolder onCreateViewHolder(ViewGroup parent,
-                                                int viewType) {
+                                                  int viewType) {
       View view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.connection_card, parent, false);
 

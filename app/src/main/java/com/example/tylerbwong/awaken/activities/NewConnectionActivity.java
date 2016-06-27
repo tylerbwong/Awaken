@@ -132,7 +132,7 @@ public class NewConnectionActivity extends AppCompatActivity implements AsyncRes
    private void enterAction() {
       nickname = mNicknameInput.getText().toString();
       host = mHostInput.getText().toString();
-      mac = mMacInput.getText().toString();
+      mac = formatMac(mMacInput.getText().toString());
       portWol = mWolPort.getText().toString();
       devicePort = mDevicePort.getText().toString();
       Location newLocation = new Location(host);
@@ -157,5 +157,19 @@ public class NewConnectionActivity extends AppCompatActivity implements AsyncRes
          message = getResources().getString(R.string.new_connection_fail);
       }
       Toast.makeText(NewConnectionActivity.this, message, Toast.LENGTH_LONG).show();
+   }
+
+   private static String formatMac(String mac) {
+      String formattedMac = "";
+      mac = mac.replace("-", "");
+      mac = mac.replace(":", "");
+      for (int i = 0; i < mac.length(); i += 2) {
+         formattedMac += mac.substring(i, i + 2);
+         if (i < mac.length() - 2) {
+            formattedMac += ":";
+         }
+      }
+      formattedMac = formattedMac.toUpperCase();
+      return formattedMac;
    }
 }
