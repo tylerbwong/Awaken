@@ -33,7 +33,7 @@ public final class StatusUpdate extends AsyncTask<Pair<String, Integer>, Void, B
    /**
     * The async response.
     */
-   public AsyncResponse delegate = null;
+   public AsyncResponse mDelegate = null;
 
    /**
     * Gets the current status of the device in question. The method
@@ -86,6 +86,6 @@ public final class StatusUpdate extends AsyncTask<Pair<String, Integer>, Void, B
 
    @Override
    protected void onPostExecute(Boolean result) {
-      delegate.onTaskResult(result);
+      mDelegate.onTaskResult(result);
    }
 }

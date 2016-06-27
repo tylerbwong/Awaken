@@ -9,7 +9,7 @@ import android.view.View;
 /**
  * @author Connor Wong
  */
-public class AnimatedRecyclerView extends RecyclerView{
+public class AnimatedRecyclerView extends RecyclerView {
    private boolean mScrollable;
    private boolean mIsAnimatable = true;
 

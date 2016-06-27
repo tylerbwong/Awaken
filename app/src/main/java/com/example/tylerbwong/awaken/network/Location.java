@@ -17,10 +17,10 @@ import java.util.Map;
  * @author Connor Wong
  */
 public class Location {
-   private String data;
-   private JSONObject dataJson;
-   private JSONParser parser;
-   private Map locationData;
+   private String mData;
+   private JSONObject mDataJson;
+   private JSONParser mParser;
+   private Map mLocationData;
 
    private final static String DATA_URL = "http://api.db-ip.com/v2/9d5870706ebd1cfd8b0c679ca249110633efc9fc/";
    private final static String CITY_KEY = "city";
@@ -45,10 +45,10 @@ public class Location {
                ipAddress = convertIpByteArray(address.getAddress());
             }
          }
-         data = readUrl(DATA_URL + ipAddress);
-         parser = new JSONParser();
-         locationData = (Map) parser.parse(data);
-         dataJson = new JSONObject(locationData);
+         mData = readUrl(DATA_URL + ipAddress);
+         mParser = new JSONParser();
+         mLocationData = (Map) mParser.parse(mData);
+         mDataJson = new JSONObject(mLocationData);
       }
       catch (IOException | ParseException e) {
          e.printStackTrace();
@@ -56,31 +56,31 @@ public class Location {
    }
 
    public String getCity() {
-      return (String) dataJson.get(CITY_KEY);
+      return (String) mDataJson.get(CITY_KEY);
    }
 
    public String getStateProv() {
-      return (String) dataJson.get(STATE_KEY);
+      return (String) mDataJson.get(STATE_KEY);
    }
 
    public String getCountryCode() {
-      return (String) dataJson.get(COUNTRY_CODE_KEY);
+      return (String) mDataJson.get(COUNTRY_CODE_KEY);
    }
 
    public String getIpAddress() {
-      return (String) dataJson.get(IP_KEY);
+      return (String) mDataJson.get(IP_KEY);
    }
 
    public String getCountryName() {
-      return (String) dataJson.get(COUNTRY_NAME_KEY);
+      return (String) mDataJson.get(COUNTRY_NAME_KEY);
    }
 
    public String getContinentName() {
-      return (String) dataJson.get(CONTINENT_NAME_KEY);
+      return (String) mDataJson.get(CONTINENT_NAME_KEY);
    }
 
    public String getContinentCode() {
-      return (String) dataJson.get(CONTINENT_CODE_KEY);
+      return (String) mDataJson.get(CONTINENT_CODE_KEY);
    }
 
    private static String convertIpByteArray(byte[] ipAddress) {

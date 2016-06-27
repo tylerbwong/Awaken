@@ -1,7 +1,6 @@
 package com.example.tylerbwong.awaken.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +17,16 @@ import java.util.List;
  */
 public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolder> {
 
-   private List<Connection> connections;
-   private SparseBooleanArray selectedConnections;
+   private List<Connection> mConnections;
    private AnimatedRecyclerView mRecyclerView;
 
    public ConnectionsAdapter(AnimatedRecyclerView recyclerView, List<Connection> connections) {
       this.mRecyclerView = recyclerView;
-      this.connections = connections;
+      this.mConnections = connections;
    }
 
    public List<Connection> getConnections() {
-      return connections;
+      return mConnections;
    }
 
    @Override
@@ -43,14 +41,14 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolde
 
    @Override
    public void onBindViewHolder(final ConnectionViewHolder holder, int position) {
-      Connection curConnection = connections.get(position);
+      Connection curConnection = mConnections.get(position);
 
       holder.mNickname.setText(curConnection.getNickname());
       holder.mHost.setText(curConnection.getHost());
       holder.mMac.setText(curConnection.getMac());
       holder.mLocation.setText(curConnection.getCity() + ", " + curConnection.getState());
       holder.mDate.setText(curConnection.getDate());
-      boolean status = Boolean.parseBoolean(curConnection.getStatus());
+      boolean status = Boolean.parseBoolean(curConnection.getmStatus());
       if (status) {
          holder.mStatus.setImageResource(R.drawable.active_marker);
       }
@@ -61,7 +59,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolde
 
    @Override
    public int getItemCount() {
-      return connections.size();
+      return mConnections.size();
    }
 
    @Override

@@ -35,13 +35,13 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
    private FloatingActionButton mFab;
    private AnimatedRecyclerView mConnectionsList;
    private SwipeRefreshLayout mRefreshLayout;
-   LinearLayoutManager layoutManager;
+   LinearLayoutManager mLayoutManager;
    private LinearLayout mEmptyView;
-   private List<Connection> connections;
+   private List<Connection> mConnections;
 
-   private ConnectionsAdapter connectionsAdapter;
+   private ConnectionsAdapter mConnectionsAdapter;
 
-   private ConnectionDatabaseHelper databaseHelper;
+   private ConnectionDatabaseHelper mDatabaseHelper;
 
    private final static int REQUEST_CODE = 1;
    private final static int DURATION = 1000;
@@ -57,7 +57,7 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
       mFab = (FloatingActionButton) view.findViewById(R.id.fab);
       mEmptyView = (LinearLayout) view.findViewById(R.id.empty_layout);
 
-      databaseHelper = new ConnectionDatabaseHelper(getContext());
+      mDatabaseHelper = new ConnectionDatabaseHelper(getContext());
 
       mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
          @Override
@@ -87,13 +87,13 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
          actionBar.setTitle(R.string.connections);
       }
 
-      connections = databaseHelper.getAllConnections();
+      mConnections = mDatabaseHelper.getAllConnections();
 
-      layoutManager = new LinearLayoutManager(getContext());
-      layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-      mConnectionsList.setLayoutManager(layoutManager);
-      connectionsAdapter = new ConnectionsAdapter(mConnectionsList, connections);
-      mConnectionsList.setAdapter(connectionsAdapter);
+      mLayoutManager = new LinearLayoutManager(getContext());
+      mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+      mConnectionsList.setLayoutManager(mLayoutManager);
+      mConnectionsAdapter = new ConnectionsAdapter(mConnectionsList, mConnections);
+      mConnectionsList.setAdapter(mConnectionsAdapter);
 
       refreshConnections();
 
@@ -105,14 +105,14 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
    }
 
    private void refreshConnections() {
-      for (int index = 0; index < connections.size(); index++) {
-         String status = String.valueOf(StatusUpdate.refreshStatus(connections.get(index).getHost(),
-               Integer.valueOf(connections.get(index).getPortDev())));
-         databaseHelper.updateStatus(connections.get(index).getMac(), status);
+      for (int index = 0; index < mConnections.size(); index++) {
+         String status = String.valueOf(StatusUpdate.refreshStatus(mConnections.get(index).getHost(),
+               Integer.valueOf(mConnections.get(index).getmPortDev())));
+         mDatabaseHelper.updateStatus(mConnections.get(index).getMac(), status);
       }
-      connections = databaseHelper.getAllConnections();
-      connectionsAdapter = new ConnectionsAdapter(mConnectionsList, connections);
-      mConnectionsList.setAdapter(connectionsAdapter);
+      mConnections = mDatabaseHelper.getAllConnections();
+      mConnectionsAdapter = new ConnectionsAdapter(mConnectionsList, mConnections);
+      mConnectionsList.setAdapter(mConnectionsAdapter);
    }
 
    @Override

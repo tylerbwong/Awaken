@@ -25,37 +25,37 @@ public class NewConnectionActivity extends AppCompatActivity implements AsyncRes
    private TextInputEditText mNicknameInput;
    private TextInputEditText mHostInput;
    private TextInputEditText mMacInput;
-   private TextInputEditText mWolPort;
-   private TextInputEditText mDevicePort;
+   private TextInputEditText mWolPortInput;
+   private TextInputEditText mDevicePortInput;
    private Button mEnterButton;
 
-   private ConnectionDatabaseHelper databaseHelper;
-   private StatusUpdate statusUpdate;
-   private String nickname;
-   private String host;
-   private String mac;
-   private String portWol;
-   private String devicePort;
-   private String city;
-   private String state;
-   private String country;
-   private String status;
-   private boolean hasTextHost = false;
-   private boolean hasTextPortWol = false;
+   private ConnectionDatabaseHelper mDatabaseHelper;
+   private StatusUpdate mStatusUpdate;
+   private String mNickname;
+   private String mHost;
+   private String mMac;
+   private String mPortWol;
+   private String mDevicePort;
+   private String mCity;
+   private String mState;
+   private String mCountry;
+   private String mStatus;
+   private boolean mHasTextHost = false;
+   private boolean mHasTextPortWol = false;
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_new_connection);
-      databaseHelper = new ConnectionDatabaseHelper(this);
-      statusUpdate = new StatusUpdate();
-      statusUpdate.delegate = this;
+      mDatabaseHelper = new ConnectionDatabaseHelper(this);
+      mStatusUpdate = new StatusUpdate();
+      mStatusUpdate.mDelegate = this;
 
       mNicknameInput = (TextInputEditText) findViewById(R.id.nickname_input);
       mHostInput = (TextInputEditText) findViewById(R.id.host_input);
       mMacInput = (TextInputEditText) findViewById(R.id.mac_input);
-      mWolPort = (TextInputEditText) findViewById(R.id.wol_input);
-      mDevicePort = (TextInputEditText) findViewById(R.id.port_input);
+      mWolPortInput = (TextInputEditText) findViewById(R.id.wol_input);
+      mDevicePortInput = (TextInputEditText) findViewById(R.id.port_input);
       mEnterButton = (Button) findViewById(R.id.enter_button);
 
       mEnterButton.setOnClickListener(new View.OnClickListener() {
@@ -70,10 +70,10 @@ public class NewConnectionActivity extends AppCompatActivity implements AsyncRes
          @Override
          public void onTextChanged(CharSequence sequence, int start, int before, int count) {
             if (sequence.toString().trim().length() == 0) {
-               hasTextHost = false;
+               mHasTextHost = false;
             }
             else {
-               hasTextHost = true;
+               mHasTextHost = true;
             }
             checkFields();
          }
@@ -88,15 +88,15 @@ public class NewConnectionActivity extends AppCompatActivity implements AsyncRes
          }
       });
 
-      mWolPort.addTextChangedListener(new TextWatcher() {
+      mWolPortInput.addTextChangedListener(new TextWatcher() {
 
          @Override
          public void onTextChanged(CharSequence sequence, int start, int before, int count) {
             if (sequence.toString().trim().length() == 0) {
-               hasTextPortWol = false;
+               mHasTextPortWol = false;
             }
             else {
-               hasTextPortWol = true;
+               mHasTextPortWol = true;
             }
             checkFields();
          }
@@ -115,7 +115,7 @@ public class NewConnectionActivity extends AppCompatActivity implements AsyncRes
    }
 
    private void checkFields() {
-      if (hasTextHost && hasTextPortWol) {
+      if (mHasTextHost && mHasTextPortWol) {
          mEnterButton.setEnabled(true);
       }
       else {
@@ -130,26 +130,26 @@ public class NewConnectionActivity extends AppCompatActivity implements AsyncRes
    }
 
    private void enterAction() {
-      nickname = mNicknameInput.getText().toString();
-      host = mHostInput.getText().toString();
-      mac = formatMac(mMacInput.getText().toString());
-      portWol = mWolPort.getText().toString();
-      devicePort = mDevicePort.getText().toString();
-      Location newLocation = new Location(host);
-      city = newLocation.getCity();
-      state = newLocation.getStateProv();
-      country = newLocation.getCountryName();
-      statusUpdate.execute(new Pair<>(host, Integer.parseInt(devicePort)));
+      mNickname = mNicknameInput.getText().toString();
+      mHost = mHostInput.getText().toString();
+      mMac = formatMac(mMacInput.getText().toString());
+      mPortWol = mWolPortInput.getText().toString();
+      mDevicePort = mDevicePortInput.getText().toString();
+      Location newLocation = new Location(mHost);
+      mCity = newLocation.getCity();
+      mState = newLocation.getStateProv();
+      mCountry = newLocation.getCountryName();
+      mStatusUpdate.execute(new Pair<>(mHost, Integer.parseInt(mDevicePort)));
    }
 
    @Override
    public void onTaskResult(Boolean result) {
-      status = String.valueOf(result);
+      mStatus = String.valueOf(result);
 
       String message;
       try {
-         databaseHelper.insertConnection(nickname, host, mac, portWol,
-               devicePort, city, state, country, status, "");
+         mDatabaseHelper.insertConnection(mNickname, mHost, mMac, mPortWol,
+               mDevicePort, mCity, mState, mCountry, mStatus, "");
          message = getResources().getString(R.string.new_connection_success);
          switchToMain();
       }

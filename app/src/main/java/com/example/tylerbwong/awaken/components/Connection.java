@@ -4,68 +4,68 @@ package com.example.tylerbwong.awaken.components;
  * @author Tyler Wong
  */
 public class Connection {
-   private String nickname;
-   private String host;
-   private String mac;
-   private String portWol;
-   private String portDev;
-   private String city;
-   private String state;
-   private String country;
-   private String status;
-   private String date;
+   private String mNickname;
+   private String mHost;
+   private String mMac;
+   private String mPortWol;
+   private String mPortDev;
+   private String mCity;
+   private String mState;
+   private String mCountry;
+   private String mStatus;
+   private String mDate;
 
    public Connection(String nickname, String host, String mac, String portWol, String portDev,
                      String city, String state, String country, String status, String date) {
-      this.nickname = nickname;
-      this.host = host;
-      this.mac = mac;
-      this.portWol = portWol;
-      this.portDev = portDev;
-      this.city = city;
-      this.state = state;
-      this.country = country;
-      this.status = status;
-      this.date = date;
+      this.mNickname = nickname;
+      this.mHost = host;
+      this.mMac = mac;
+      this.mPortWol = portWol;
+      this.mPortDev = portDev;
+      this.mCity = city;
+      this.mState = state;
+      this.mCountry = country;
+      this.mStatus = status;
+      this.mDate = date;
    }
 
    public String getNickname() {
-      return nickname;
+      return mNickname;
    }
 
    public String getHost() {
-      return host;
+      return mHost;
    }
 
    public String getMac() {
-      return mac;
+      return mMac;
    }
 
-   public String getPortWol() {
-      return portWol;
+   public String getmPortWol() {
+      return mPortWol;
    }
 
-   public String getPortDev() {
-      return portDev;
+   public String getmPortDev() {
+      return mPortDev;
    }
 
    public String getCity() {
-      return city;
+      return mCity;
    }
 
    public String getState() {
-      return state;
+      return mState;
    }
 
-   public String getCountry() {
-      return country;
+   public String getmCountry() {
+      return mCountry;
    }
 
-   public String getStatus() {
-      return status;
+   public String getmStatus() {
+      return mStatus;
    }
 
    public String getDate() {
-      return date;
+      return mDate;
    }
 }

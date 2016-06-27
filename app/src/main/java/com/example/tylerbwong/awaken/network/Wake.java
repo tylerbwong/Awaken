@@ -11,25 +11,25 @@ public class Wake {
    /**
     * The target device's host name or ip address.
     */
-   private String host;
+   private String mHost;
 
    /**
     * The target device's MAC address.
     */
-   private String mac;
+   private String mMac;
 
    /**
     * This is the optional SecureOn password. User should make sure password is enabled
     */
 
-   private String pass;
+   private String mPass;
 
    /**
     * The port that WOL is used on (default is 7).
     */
-   private int port = 7;
+   private int mPort = 7;
 
-   private byte[] bytes;
+   private byte[] mBytes;
 
    /**
     * The length of the MAC address.
@@ -63,21 +63,21 @@ public class Wake {
     * @param mac the MAC address of the device
     */
    public Wake(String host, String mac) {
-      this.host = host;
-      this.mac = mac;
+      this.mHost = host;
+      this.mMac = mac;
    }
 
    public Wake(String host, String mac, String pass) {
-      this.host = host;
-      this.mac = mac;
-      this.pass = pass;
+      this.mHost = host;
+      this.mMac = mac;
+      this.mPass = pass;
    }
 
    public Wake(String host, String mac, String pass, int port) {
-      this.host = host;
-      this.mac = mac;
-      this.pass = pass;
-      this.port = port;
+      this.mHost = host;
+      this.mMac = mac;
+      this.mPass = pass;
+      this.mPort = port;
    }
 
    /**
@@ -89,9 +89,9 @@ public class Wake {
     * @param port the port that WOL is used on
     */
    public Wake(String host, String mac, int port) {
-      this.host = host;
-      this.mac = mac;
-      this.port = port;
+      this.mHost = host;
+      this.mMac = mac;
+      this.mPort = port;
    }
 
    /**
@@ -99,19 +99,19 @@ public class Wake {
     */
    public void sendPacket() {
       try {
-         byte[] macBytes = getMacBytes(mac);
-         bytes = new byte[MAC_LENGTH + UDP_MULTIPLIER * macBytes.length];
+         byte[] macBytes = getMacBytes(mMac);
+         mBytes = new byte[MAC_LENGTH + UDP_MULTIPLIER * macBytes.length];
 
          for (int index = 0; index < MAC_LENGTH; index++) {
-            bytes[index] = (byte) 0xff;
+            mBytes[index] = (byte) 0xff;
          }
 
-         for (int index = MAC_LENGTH; index < bytes.length; index += macBytes.length) {
-            System.arraycopy(macBytes, 0, bytes, index, macBytes.length);
+         for (int index = MAC_LENGTH; index < mBytes.length; index += macBytes.length) {
+            System.arraycopy(macBytes, 0, mBytes, index, macBytes.length);
          }
 
-         InetAddress address = InetAddress.getByName(host);
-         DatagramPacket packet = new DatagramPacket(bytes, bytes.length, address, port);
+         InetAddress address = InetAddress.getByName(mHost);
+         DatagramPacket packet = new DatagramPacket(mBytes, mBytes.length, address, mPort);
          DatagramSocket socket = new DatagramSocket();
 
          socket.send(packet);
@@ -128,7 +128,7 @@ public class Wake {
     * @return the host name/ip address as String
     */
    public String getHost() {
-      return host;
+      return mHost;
    }
 
    /**
@@ -137,7 +137,7 @@ public class Wake {
     * @return the mac address as a String
     */
    public String getMac() {
-      return mac;
+      return mMac;
    }
 
    /**
@@ -146,7 +146,7 @@ public class Wake {
     * @return the wol port as an int
     */
    public int getPort() {
-      return port;
+      return mPort;
    }
 
    private byte[] getMacBytes(String macStr) {

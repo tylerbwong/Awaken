@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
    private Toolbar mToolbar;
 
    private Fragment mCurrentFragment;
-   private FragmentTransaction fragmentTransaction;
+   private FragmentTransaction mFragmentTransaction;
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
       mNavigationView.getMenu().getItem(0).setChecked(true);
       ConnectionsFragment connectionsFragment = new ConnectionsFragment();
       mCurrentFragment = connectionsFragment;
-      fragmentTransaction = getSupportFragmentManager().beginTransaction();
-      fragmentTransaction.replace(R.id.frame, connectionsFragment);
-      fragmentTransaction.commit();
+      mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+      mFragmentTransaction.replace(R.id.frame, connectionsFragment);
+      mFragmentTransaction.commit();
 
       mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
                case R.id.connections:
                   ConnectionsFragment connectionsFragment = new ConnectionsFragment();
                   mCurrentFragment = connectionsFragment;
-                  fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                  fragmentTransaction.replace(R.id.frame, connectionsFragment);
-                  fragmentTransaction.commit();
+                  mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+                  mFragmentTransaction.replace(R.id.frame, connectionsFragment);
+                  mFragmentTransaction.commit();
                   return true;
                default:
                   return false;

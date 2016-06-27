@@ -30,7 +30,7 @@ public class ConnectionViewHolder extends RecyclerView.ViewHolder {
    public ImageButton mEditButton;
 
    private final static String DATE_FORMAT = "MM/dd/yyyy HH:mm:ss";
-   private ConnectionDatabaseHelper databaseHelper;
+   private ConnectionDatabaseHelper mDatabaseHelper;
 
    public ConnectionViewHolder(View view, final AnimatedRecyclerView recyclerView) {
       super(view);
@@ -46,19 +46,26 @@ public class ConnectionViewHolder extends RecyclerView.ViewHolder {
       view.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View view) {
-            databaseHelper = new ConnectionDatabaseHelper(view.getContext());
+            mDatabaseHelper = new ConnectionDatabaseHelper(view.getContext());
             Wake wake = new Wake(mHost.getText().toString(), mMac.getText().toString());
             wake.sendPacket();
             DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
             Date date = new Date();
             String formatDate = dateFormat.format(date);
-            databaseHelper.updateDate(mMac.getText().toString(), formatDate);
+            mDatabaseHelper.updateDate(mMac.getText().toString(), formatDate);
             recyclerView.setIsAnimatable(false);
             mDate.setText(formatDate);
             Snackbar snackbar = Snackbar
                   .make(view, mNickname.getText().toString() + " " + view.getResources().getString(R.string.woken),
                         Snackbar.LENGTH_LONG);
             snackbar.show();
+         }
+      });
+
+      view.setOnLongClickListener(new View.OnLongClickListener() {
+         @Override
+         public boolean onLongClick(View view) {
+            return true;
          }
       });
    }
