@@ -29,6 +29,7 @@ public class ConnectionViewHolder extends RecyclerView.ViewHolder {
    public ImageView mStatus;
    public ImageButton mEditButton;
 
+   private int mConnectionId;
    private final static String DATE_FORMAT = "MM/dd/yyyy HH:mm:ss";
    private ConnectionDatabaseHelper mDatabaseHelper;
 
@@ -52,7 +53,7 @@ public class ConnectionViewHolder extends RecyclerView.ViewHolder {
             DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
             Date date = new Date();
             String formatDate = dateFormat.format(date);
-            mDatabaseHelper.updateDate(mMac.getText().toString(), formatDate);
+            mDatabaseHelper.updateDate(mConnectionId, formatDate);
             recyclerView.setIsAnimatable(false);
             mDate.setText(formatDate);
             Snackbar snackbar = Snackbar
@@ -68,5 +69,9 @@ public class ConnectionViewHolder extends RecyclerView.ViewHolder {
             return true;
          }
       });
+   }
+
+   public void setId(int id) {
+      this.mConnectionId = id;
    }
 }

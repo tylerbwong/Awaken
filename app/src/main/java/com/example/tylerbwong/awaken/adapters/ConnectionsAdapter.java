@@ -55,6 +55,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolde
       else {
          holder.mStatus.setImageResource(R.drawable.inactive_marker);
       }
+      holder.setId(curConnection.getId());
    }
 
    @Override

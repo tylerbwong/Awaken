@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class ConnectionDatabaseHelper extends SQLiteOpenHelper {
    private final static String DATABASE_NAME = "Awaken.db";
    private final static String CONNECTIONS_TABLE = "Connections";
+   private final static String ID_COL = "_id";
    private final static String NICKNAME_COL = "nickname";
    private final static String HOST_COL = "host";
    private final static String MAC_COL = "mac";
@@ -27,7 +28,7 @@ public class ConnectionDatabaseHelper extends SQLiteOpenHelper {
    private final static String STATUS_COL = "status";
    private final static String DATE_COL = "lastWoken";
    private final static String CREATE_CONNECTIONS_TABLE = "CREATE TABLE IF NOT EXISTS " +
-         "Connections(nickname VARCHAR, host VARCHAR, mac VARCHAR, portWol VARCHAR, " +
+         "Connections(_id INTEGER PRIMARY KEY, nickname VARCHAR, host VARCHAR, mac VARCHAR, portWol VARCHAR, " +
          "portDev VARCHAR, city VARCHAR, state VARCHAR, country VARCHAR, status, VARCHAR, " +
          "lastWoken VARCHAR)";
    private final static String DROP_CONNECTIONS_TABLE = "DROP TABLE IF EXISTS Connections";
@@ -67,31 +68,33 @@ public class ConnectionDatabaseHelper extends SQLiteOpenHelper {
       return true;
    }
 
-   public void updateDate(String mac, String date) {
+   public void updateDate(int id, String date) {
       SQLiteDatabase database = getWritableDatabase();
-      String macFilter = MAC_COL + "=" + "'" + mac + "'";
+      String idFilter = ID_COL + "=" + "'" + id + "'";
       ContentValues contentValues = new ContentValues();
       contentValues.put(DATE_COL, date);
-      database.update(CONNECTIONS_TABLE, contentValues, macFilter, null);
+      database.update(CONNECTIONS_TABLE, contentValues, idFilter, null);
    }
 
-   public void updateStatus(String mac, String status) {
+   public void updateStatus(int id, String status) {
       SQLiteDatabase database = getWritableDatabase();
-      String macFilter = MAC_COL + "=" + "'" + mac + "'";
+      String idFilter = ID_COL + "=" + "'" + id + "'";
       ContentValues contentValues = new ContentValues();
       contentValues.put(STATUS_COL, status);
-      database.update(CONNECTIONS_TABLE, contentValues, macFilter, null);
+      database.update(CONNECTIONS_TABLE, contentValues, idFilter, null);
    }
 
    public ArrayList<Connection> getAllConnections() {
       ArrayList<Connection> connections = new ArrayList<>();
       Connection tempConnection;
       SQLiteDatabase database = getReadableDatabase();
+      int id;
       String nickname, host, mac, wolPort, devPort, city, state, country, status, date;
       Cursor cursor = database.rawQuery(QUERY_ALL_CONNECTIONS, null);
       cursor.moveToFirst();
 
       while (!cursor.isAfterLast()) {
+         id = cursor.getInt(cursor.getColumnIndex(ID_COL));
          nickname = cursor.getString(cursor.getColumnIndex(NICKNAME_COL));
          host = cursor.getString(cursor.getColumnIndex(HOST_COL));
          mac = cursor.getString(cursor.getColumnIndex(MAC_COL));
@@ -102,7 +105,7 @@ public class ConnectionDatabaseHelper extends SQLiteOpenHelper {
          country = cursor.getString(cursor.getColumnIndex(COUNTRY_COL));
          status = cursor.getString(cursor.getColumnIndex(STATUS_COL));
          date = cursor.getString(cursor.getColumnIndex(DATE_COL));
-         tempConnection = new Connection(nickname, host, mac, wolPort, devPort,
+         tempConnection = new Connection(id, nickname, host, mac, wolPort, devPort,
                city, state, country, status, date);
          connections.add(tempConnection);
          cursor.moveToNext();

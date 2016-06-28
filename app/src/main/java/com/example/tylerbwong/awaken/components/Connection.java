@@ -4,6 +4,7 @@ package com.example.tylerbwong.awaken.components;
  * @author Tyler Wong
  */
 public class Connection {
+   private int mId;
    private String mNickname;
    private String mHost;
    private String mMac;
@@ -15,8 +16,9 @@ public class Connection {
    private String mStatus;
    private String mDate;
 
-   public Connection(String nickname, String host, String mac, String portWol, String portDev,
+   public Connection(int id, String nickname, String host, String mac, String portWol, String portDev,
                      String city, String state, String country, String status, String date) {
+      this.mId = id;
       this.mNickname = nickname;
       this.mHost = host;
       this.mMac = mac;
@@ -27,6 +29,10 @@ public class Connection {
       this.mCountry = country;
       this.mStatus = status;
       this.mDate = date;
+   }
+
+   public int getId() {
+      return mId;
    }
 
    public String getNickname() {

@@ -106,9 +106,9 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
 
    private void refreshConnections() {
       for (int index = 0; index < mConnections.size(); index++) {
-         String status = String.valueOf(StatusUpdate.refreshStatus(mConnections.get(index).getHost(),
+         String status = String.valueOf(StatusUpdate.getStatus(mConnections.get(index).getHost(),
                Integer.valueOf(mConnections.get(index).getmPortDev())));
-         mDatabaseHelper.updateStatus(mConnections.get(index).getMac(), status);
+         mDatabaseHelper.updateStatus(mConnections.get(index).getId(), status);
       }
       mConnections = mDatabaseHelper.getAllConnections();
       mConnectionsAdapter = new ConnectionsAdapter(mConnectionsList, mConnections);
@@ -124,7 +124,7 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
    @Override
    public void onActivityResult(int requestCode, int resultCode, Intent data) {
       super.onActivityResult(requestCode, resultCode, data);
-      if(requestCode == REQUEST_CODE){
+      if (requestCode == REQUEST_CODE) {
          mSheetLayout.contractFab();
       }
    }

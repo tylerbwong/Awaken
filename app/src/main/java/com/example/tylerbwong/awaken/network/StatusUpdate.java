@@ -1,11 +1,6 @@
 package com.example.tylerbwong.awaken.network;
 
-import android.os.AsyncTask;
 import android.os.StrictMode;
-import android.util.Pair;
-
-import com.example.tylerbwong.awaken.interfaces.AsyncResponse;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -13,7 +8,7 @@ import java.net.Socket;
 /**
  * @author Tyler Wong
  */
-public final class StatusUpdate extends AsyncTask<Pair<String, Integer>, Void, Boolean> {
+public final class StatusUpdate {
    /**
     * How long the socket should wait for a response
     * before stopping.
@@ -31,41 +26,17 @@ public final class StatusUpdate extends AsyncTask<Pair<String, Integer>, Void, B
    public final static boolean INACTIVE = false;
 
    /**
-    * The async response.
-    */
-   public AsyncResponse mDelegate = null;
-
-   /**
     * Gets the current status of the device in question. The method
     * will attempt to establish a socket connection with the target
     * device. If no connection can be made, the device is considered
     * INACTIVE.
     *
-    * @param params - a variable amount of pairs of two arguments, host name and port number
+    * @param host - the name of the host/ip address
+    * @param devicePort - the port that the router forwards to your device
     * @return true if the current status of the machine is RUNNING or false if the current status is
     * INACTIVE
     */
-   @Override
-   protected Boolean doInBackground(Pair<String, Integer>... params) {
-      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-      StrictMode.setThreadPolicy(policy);
-
-      boolean status = RUNNING;
-
-      try {
-         InetSocketAddress address = new InetSocketAddress(params[0].first, params[0].second);
-         Socket statusSocket = new Socket();
-         statusSocket.connect(address, TIMEOUT);
-         statusSocket.close();
-      }
-      catch (IOException e) {
-         status = INACTIVE;
-      }
-
-      return status;
-   }
-
-   public static boolean refreshStatus(String host, int devicePort) {
+   public static boolean getStatus(String host, int devicePort) {
       StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
       StrictMode.setThreadPolicy(policy);
 
@@ -82,10 +53,5 @@ public final class StatusUpdate extends AsyncTask<Pair<String, Integer>, Void, B
       }
 
       return status;
-   }
-
-   @Override
-   protected void onPostExecute(Boolean result) {
-      mDelegate.onTaskResult(result);
    }
 }

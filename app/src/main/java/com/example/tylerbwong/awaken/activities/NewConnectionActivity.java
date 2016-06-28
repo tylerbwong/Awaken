@@ -6,12 +6,10 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.tylerbwong.awaken.interfaces.AsyncResponse;
 import com.example.tylerbwong.awaken.R;
 import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
 import com.example.tylerbwong.awaken.network.Location;
@@ -20,7 +18,7 @@ import com.example.tylerbwong.awaken.network.StatusUpdate;
 /**
  * @author Tyler Wong
  */
-public class NewConnectionActivity extends AppCompatActivity implements AsyncResponse {
+public class NewConnectionActivity extends AppCompatActivity {
 
    private TextInputEditText mNicknameInput;
    private TextInputEditText mHostInput;
@@ -30,7 +28,6 @@ public class NewConnectionActivity extends AppCompatActivity implements AsyncRes
    private Button mEnterButton;
 
    private ConnectionDatabaseHelper mDatabaseHelper;
-   private StatusUpdate mStatusUpdate;
    private String mNickname;
    private String mHost;
    private String mMac;
@@ -48,8 +45,6 @@ public class NewConnectionActivity extends AppCompatActivity implements AsyncRes
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_new_connection);
       mDatabaseHelper = new ConnectionDatabaseHelper(this);
-      mStatusUpdate = new StatusUpdate();
-      mStatusUpdate.mDelegate = this;
 
       mNicknameInput = (TextInputEditText) findViewById(R.id.nickname_input);
       mHostInput = (TextInputEditText) findViewById(R.id.host_input);
@@ -139,12 +134,7 @@ public class NewConnectionActivity extends AppCompatActivity implements AsyncRes
       mCity = newLocation.getCity();
       mState = newLocation.getStateProv();
       mCountry = newLocation.getCountryName();
-      mStatusUpdate.execute(new Pair<>(mHost, Integer.parseInt(mDevicePort)));
-   }
-
-   @Override
-   public void onTaskResult(Boolean result) {
-      mStatus = String.valueOf(result);
+      mStatus = String.valueOf(StatusUpdate.getStatus(mHost, Integer.parseInt(mDevicePort)));
 
       String message;
       try {
