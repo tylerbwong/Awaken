@@ -24,6 +24,7 @@
     <string name="last_woken_label">Last woken:</string>
     <string name="new_connection_success">Successfully created new connection!</string>
     <string name="new_connection_fail">Failed to create new connection.</string>
+    <string name="mac_address_invalid">MAC Address is invalid!</string>
 
     <!-- VALUES -->
     <string name="logo_transition">Logo transition</string>

@@ -8,6 +8,7 @@ import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -16,6 +17,9 @@ import com.example.tylerbwong.awaken.R;
 import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
 import com.example.tylerbwong.awaken.network.Location;
 import com.example.tylerbwong.awaken.network.StatusUpdate;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Tyler Wong
@@ -65,11 +69,7 @@ public class NewConnectionActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence sequence, int start, int before, int count) {
-                if (sequence.toString().trim().length() == 0) {
-                    mHasTextHost = false;
-                } else {
-                    mHasTextHost = true;
-                }
+                mHasTextHost = !(sequence.toString().trim().length() == 0);
                 checkFields();
             }
 
@@ -87,11 +87,7 @@ public class NewConnectionActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence sequence, int start, int before, int count) {
-                if (sequence.toString().trim().length() == 0) {
-                    mHasTextPortWol = false;
-                } else {
-                    mHasTextPortWol = true;
-                }
+                mHasTextPortWol = !(sequence.toString().trim().length() == 0);
                 checkFields();
             }
 
@@ -105,15 +101,36 @@ public class NewConnectionActivity extends AppCompatActivity {
             }
         });
 
+        mMacInput.addTextChangedListener(new TextWatcher() {
+            String noColons;
+            @Override
+            public void onTextChanged(CharSequence sequence, int start, int before, int count) {
+                final int noColLength = noColons.length();
+                final int length = sequence.toString().length();
+                if ((noColLength % 2 != 0 && noColLength != 0 && noColLength < 17
+                        && (length > 0)) && sequence.toString().charAt(length - 1) != ':') {
+                    mMacInput.setText(sequence.toString() + ":");
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {
+                noColons = sequence.toString().replace(":", "");
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (mMacInput.length() > 0) {
+                    mMacInput.setSelection(mMacInput.length());
+                }
+            }
+        });
+
         mEnterButton.setEnabled(false);
     }
 
     private void checkFields() {
-        if (mHasTextHost && mHasTextPortWol) {
-            mEnterButton.setEnabled(true);
-        } else {
-            mEnterButton.setEnabled(false);
-        }
+        mEnterButton.setEnabled(mHasTextHost && mHasTextPortWol);
     }
 
     private void switchToMain() {
@@ -123,8 +140,14 @@ public class NewConnectionActivity extends AppCompatActivity {
     }
 
     private void enterAction() {
-        new AsyncTaskCaller().execute();
-        switchToMain();
+        String message;
+        if (macIsValid(mMac = mMacInput.getText().toString().toUpperCase())) {
+            new AsyncTaskCaller().execute();
+            switchToMain();
+        } else {
+            message = getResources().getString(R.string.mac_address_invalid);
+            Toast.makeText(NewConnectionActivity.this, message, Toast.LENGTH_LONG).show();
+        }
     }
 
     private class AsyncTaskCaller extends AsyncTask<Void, Void, Pair<String, Location>> {
@@ -133,15 +156,16 @@ public class NewConnectionActivity extends AppCompatActivity {
             super.onPreExecute();
             mNickname = mNicknameInput.getText().toString();
             mHost = mHostInput.getText().toString();
-            mMac = formatMac(mMacInput.getText().toString());
             mPortWol = mWolPortInput.getText().toString();
             mDevicePort = mDevicePortInput.getText().toString();
         }
+
         @Override
         protected Pair<String, Location> doInBackground(Void... pars) {
             return new Pair<>(String.valueOf(StatusUpdate.getStatus(mHost,
                     Integer.parseInt(mDevicePort))), new Location(mHost));
         }
+
         @Override
         protected void onPostExecute(Pair<String, Location> statLoc) {
             super.onPostExecute(statLoc);
@@ -162,17 +186,9 @@ public class NewConnectionActivity extends AppCompatActivity {
         }
     }
 
-    private static String formatMac(String mac) {
-        String formattedMac = "";
-        mac = mac.replace("-", "");
-        mac = mac.replace(":", "");
-        for (int i = 0; i < mac.length(); i += 2) {
-            formattedMac += mac.substring(i, i + 2);
-            if (i < mac.length() - 2) {
-                formattedMac += ":";
-            }
-        }
-        formattedMac = formattedMac.toUpperCase();
-        return formattedMac;
+    private boolean macIsValid(String mac) {
+        Pattern p = Pattern.compile("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$");
+        Matcher m = p.matcher(mac);
+        return m.matches();
     }
 }

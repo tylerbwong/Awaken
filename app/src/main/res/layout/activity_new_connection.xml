@@ -71,7 +71,9 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:textColor="@color/colorAccent"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:digits="abcdef1234567890"
+            android:maxLength="17"/>
 
     </android.support.design.widget.TextInputLayout>
 
