@@ -5,6 +5,6 @@
         <item
             android:id="@+id/connections"
             android:checked="false"
-            android:title="@string/connections"/>
+            android:title="@string/connections" />
     </group>
 </menu>

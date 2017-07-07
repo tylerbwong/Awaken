@@ -38,4 +38,7 @@
         <item name="android:textColorHint">@color/colorAccent</item>
     </style>
 
+    <style name="AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+    </style>
 </resources>

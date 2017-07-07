@@ -12,31 +12,31 @@ import com.example.tylerbwong.awaken.R;
  * @author Tyler Wong
  */
 public class StartActivity extends AppCompatActivity {
-   private Button mEnterButton;
+    private Button mEnterButton;
 
-   @Override
-   protected void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_start);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_start);
 
-      mEnterButton = (Button) findViewById(R.id.enter_button);
+        mEnterButton = (Button) findViewById(R.id.enter_button);
 
-      mEnterButton.setOnClickListener(new View.OnClickListener() {
-         @Override
-         public void onClick(View view) {
-            Intent introIntent = new Intent(StartActivity.this, IntroActivity.class);
-            startActivity(introIntent);
-         }
-      });
+        mEnterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent introIntent = new Intent(StartActivity.this, IntroActivity.class);
+                startActivity(introIntent);
+            }
+        });
 
-      boolean logoTransition = getIntent().getBooleanExtra("logo_transition", false);
-      if (logoTransition) {
-         overridePendingTransition(R.anim.slow_transition, R.anim.slow_transition);
-      }
-   }
+        boolean logoTransition = getIntent().getBooleanExtra("logo_transition", false);
+        if (logoTransition) {
+            overridePendingTransition(R.anim.slow_transition, R.anim.slow_transition);
+        }
+    }
 
-   @Override
-   public void onBackPressed() {
+    @Override
+    public void onBackPressed() {
 
-   }
+    }
 }

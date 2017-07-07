@@ -8,7 +8,6 @@ import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -66,6 +65,10 @@ public class NewConnectionActivity extends AppCompatActivity {
         });
 
         mHostInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {
+
+            }
 
             @Override
             public void onTextChanged(CharSequence sequence, int start, int before, int count) {
@@ -74,26 +77,20 @@ public class NewConnectionActivity extends AppCompatActivity {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {
-
-            }
-
-            @Override
             public void afterTextChanged(Editable editable) {
             }
         });
 
         mWolPortInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {
+
+            }
 
             @Override
             public void onTextChanged(CharSequence sequence, int start, int before, int count) {
                 mHasTextPortWol = !(sequence.toString().trim().length() == 0);
                 checkFields();
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {
-
             }
 
             @Override
@@ -103,6 +100,12 @@ public class NewConnectionActivity extends AppCompatActivity {
 
         mMacInput.addTextChangedListener(new TextWatcher() {
             String noColons;
+
+            @Override
+            public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {
+                noColons = sequence.toString().replace(":", "");
+            }
+
             @Override
             public void onTextChanged(CharSequence sequence, int start, int before, int count) {
                 final int noColLength = noColons.length();
@@ -111,11 +114,6 @@ public class NewConnectionActivity extends AppCompatActivity {
                         && (length > 0)) && sequence.toString().charAt(length - 1) != ':') {
                     mMacInput.setText(sequence.toString() + ":");
                 }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {
-                noColons = sequence.toString().replace(":", "");
             }
 
             @Override

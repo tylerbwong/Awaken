@@ -17,55 +17,54 @@ import java.util.List;
  */
 public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolder> {
 
-   private List<Connection> mConnections;
-   private AnimatedRecyclerView mRecyclerView;
+    private List<Connection> mConnections;
+    private AnimatedRecyclerView mRecyclerView;
 
-   public ConnectionsAdapter(AnimatedRecyclerView recyclerView, List<Connection> connections) {
-      this.mRecyclerView = recyclerView;
-      this.mConnections = connections;
-   }
+    public ConnectionsAdapter(AnimatedRecyclerView recyclerView, List<Connection> connections) {
+        this.mRecyclerView = recyclerView;
+        this.mConnections = connections;
+    }
 
-   public List<Connection> getConnections() {
-      return mConnections;
-   }
+    public List<Connection> getConnections() {
+        return mConnections;
+    }
 
-   @Override
-   public ConnectionViewHolder onCreateViewHolder(ViewGroup parent,
-                                                  int viewType) {
-      View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.connection_card, parent, false);
+    @Override
+    public ConnectionViewHolder onCreateViewHolder(ViewGroup parent,
+                                                   int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.connection_card, parent, false);
 
-      ConnectionViewHolder viewHolder = new ConnectionViewHolder(view, mRecyclerView);
-      return viewHolder;
-   }
+        ConnectionViewHolder viewHolder = new ConnectionViewHolder(view, mRecyclerView);
+        return viewHolder;
+    }
 
-   @Override
-   public void onBindViewHolder(final ConnectionViewHolder holder, int position) {
-      Connection curConnection = mConnections.get(position);
+    @Override
+    public void onBindViewHolder(final ConnectionViewHolder holder, int position) {
+        Connection curConnection = mConnections.get(position);
 
-      holder.mNickname.setText(curConnection.getNickname());
-      holder.mHost.setText(curConnection.getHost());
-      holder.mMac.setText(curConnection.getMac());
-      holder.mLocation.setText(curConnection.getCity() + ", " + curConnection.getState());
-      holder.mDate.setText(curConnection.getDate());
-      boolean status = Boolean.parseBoolean(curConnection.getmStatus());
-      if (status) {
-         holder.mStatus.setImageResource(R.drawable.active_marker);
-      }
-      else {
-         holder.mStatus.setImageResource(R.drawable.inactive_marker);
-      }
-      holder.setId(curConnection.getId());
-   }
+        holder.mNickname.setText(curConnection.getNickname());
+        holder.mHost.setText(curConnection.getHost());
+        holder.mMac.setText(curConnection.getMac());
+        holder.mLocation.setText(curConnection.getCity() + ", " + curConnection.getState());
+        holder.mDate.setText(curConnection.getDate());
+        boolean status = Boolean.parseBoolean(curConnection.getmStatus());
+        if (status) {
+            holder.mStatus.setImageResource(R.drawable.active_marker);
+        } else {
+            holder.mStatus.setImageResource(R.drawable.inactive_marker);
+        }
+        holder.setId(curConnection.getId());
+    }
 
-   @Override
-   public int getItemCount() {
-      return mConnections.size();
-   }
+    @Override
+    public int getItemCount() {
+        return mConnections.size();
+    }
 
-   @Override
-   public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-      super.onAttachedToRecyclerView(recyclerView);
-   }
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
 }
 

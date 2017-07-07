@@ -20,82 +20,82 @@ import com.example.tylerbwong.awaken.fragments.ConnectionsFragment;
  * @author Tyler Wong
  */
 public class MainActivity extends AppCompatActivity {
-   private NavigationView mNavigationView;
-   private DrawerLayout mDrawerLayout;
-   private Toolbar mToolbar;
+    private NavigationView mNavigationView;
+    private DrawerLayout mDrawerLayout;
+    private Toolbar mToolbar;
 
-   private Fragment mCurrentFragment;
-   private FragmentTransaction mFragmentTransaction;
+    private Fragment mCurrentFragment;
+    private FragmentTransaction mFragmentTransaction;
 
-   @Override
-   protected void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-      mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-      mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-      mToolbar = (Toolbar) findViewById(R.id.toolbar);
-      setSupportActionBar(mToolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
-      mNavigationView.getMenu().getItem(0).setChecked(true);
-      ConnectionsFragment connectionsFragment = new ConnectionsFragment();
-      mCurrentFragment = connectionsFragment;
-      mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-      mFragmentTransaction.replace(R.id.frame, connectionsFragment);
-      mFragmentTransaction.commit();
+        mNavigationView.getMenu().getItem(0).setChecked(true);
+        ConnectionsFragment connectionsFragment = new ConnectionsFragment();
+        mCurrentFragment = connectionsFragment;
+        mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+        mFragmentTransaction.replace(R.id.frame, connectionsFragment);
+        mFragmentTransaction.commit();
 
-      mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
-         @Override
-         public boolean onNavigationItemSelected(MenuItem menuItem) {
-            mDrawerLayout.closeDrawers();
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                mDrawerLayout.closeDrawers();
 
-            switch (menuItem.getItemId()) {
-               case R.id.connections:
-                  ConnectionsFragment connectionsFragment = new ConnectionsFragment();
-                  mCurrentFragment = connectionsFragment;
-                  mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-                  mFragmentTransaction.replace(R.id.frame, connectionsFragment);
-                  mFragmentTransaction.commit();
-                  return true;
-               default:
-                  return false;
+                switch (menuItem.getItemId()) {
+                    case R.id.connections:
+                        ConnectionsFragment connectionsFragment = new ConnectionsFragment();
+                        mCurrentFragment = connectionsFragment;
+                        mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        mFragmentTransaction.replace(R.id.frame, connectionsFragment);
+                        mFragmentTransaction.commit();
+                        return true;
+                    default:
+                        return false;
+                }
             }
-         }
-      });
+        });
 
-      ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
-            this, mDrawerLayout, mToolbar, R.string.openDrawer, R.string.closeDrawer) {
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, mToolbar, R.string.openDrawer, R.string.closeDrawer) {
 
-         @Override
-         public void onDrawerClosed(View drawerView) {
-            super.onDrawerClosed(drawerView);
-            hideKeyboard();
-         }
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                hideKeyboard();
+            }
 
-         @Override
-         public void onDrawerOpened(View drawerView) {
-            super.onDrawerOpened(drawerView);
-            hideKeyboard();
-         }
-      };
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                hideKeyboard();
+            }
+        };
 
-      mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
-      actionBarDrawerToggle.syncState();
-   }
+        mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+    }
 
-   private void hideKeyboard() {
-      View view = getCurrentFocus();
+    private void hideKeyboard() {
+        View view = getCurrentFocus();
 
-      if (view != null) {
-         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-      }
-   }
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
-   @Override
-   public void onBackPressed() {
+    @Override
+    public void onBackPressed() {
 
-   }
+    }
 }

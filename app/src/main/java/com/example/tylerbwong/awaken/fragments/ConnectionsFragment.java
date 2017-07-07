@@ -31,101 +31,101 @@ import java.util.List;
  */
 public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAnimationEndListener {
 
-   private SheetLayout mSheetLayout;
-   private FloatingActionButton mFab;
-   private AnimatedRecyclerView mConnectionsList;
-   private SwipeRefreshLayout mRefreshLayout;
-   LinearLayoutManager mLayoutManager;
-   private LinearLayout mEmptyView;
-   private List<Connection> mConnections;
+    private SheetLayout mSheetLayout;
+    private FloatingActionButton mFab;
+    private AnimatedRecyclerView mConnectionsList;
+    private SwipeRefreshLayout mRefreshLayout;
+    LinearLayoutManager mLayoutManager;
+    private LinearLayout mEmptyView;
+    private List<Connection> mConnections;
 
-   private ConnectionsAdapter mConnectionsAdapter;
+    private ConnectionsAdapter mConnectionsAdapter;
 
-   private ConnectionDatabaseHelper mDatabaseHelper;
+    private ConnectionDatabaseHelper mDatabaseHelper;
 
-   private final static int REQUEST_CODE = 1;
-   private final static int DURATION = 1000;
+    private final static int REQUEST_CODE = 1;
+    private final static int DURATION = 1000;
 
-   @Nullable
-   @Override
-   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-      View view = inflater.inflate(R.layout.connections_fragment, container, false);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.connections_fragment, container, false);
 
-      mSheetLayout = (SheetLayout) view.findViewById(R.id.bottom_sheet);
-      mConnectionsList = (AnimatedRecyclerView) view.findViewById(R.id.connection_list);
-      mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
-      mFab = (FloatingActionButton) view.findViewById(R.id.fab);
-      mEmptyView = (LinearLayout) view.findViewById(R.id.empty_layout);
+        mSheetLayout = (SheetLayout) view.findViewById(R.id.bottom_sheet);
+        mConnectionsList = (AnimatedRecyclerView) view.findViewById(R.id.connection_list);
+        mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
+        mFab = (FloatingActionButton) view.findViewById(R.id.fab);
+        mEmptyView = (LinearLayout) view.findViewById(R.id.empty_layout);
 
-      mDatabaseHelper = new ConnectionDatabaseHelper(getContext());
+        mDatabaseHelper = new ConnectionDatabaseHelper(getContext());
 
-      mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-         @Override
-         public void onRefresh() {
-            new Handler().postDelayed(new Runnable() {
-               @Override
-               public void run() {
-                  refreshConnections();
-                  mRefreshLayout.setRefreshing(false);
-               }
-            }, DURATION);
-         }
-      });
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshConnections();
+                        mRefreshLayout.setRefreshing(false);
+                    }
+                }, DURATION);
+            }
+        });
 
-      mFab.setOnClickListener(new View.OnClickListener() {
-         @Override
-         public void onClick(View view) {
-            onFabClick();
-         }
-      });
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFabClick();
+            }
+        });
 
-      mSheetLayout.setFab(mFab);
-      mSheetLayout.setFabAnimationEndListener(this);
+        mSheetLayout.setFab(mFab);
+        mSheetLayout.setFabAnimationEndListener(this);
 
-      ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-      if (actionBar != null) {
-         actionBar.setTitle(R.string.connections);
-      }
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.connections);
+        }
 
-      mConnections = mDatabaseHelper.getAllConnections();
+        mConnections = mDatabaseHelper.getAllConnections();
 
-      mLayoutManager = new LinearLayoutManager(getContext());
-      mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-      mConnectionsList.setLayoutManager(mLayoutManager);
-      mConnectionsAdapter = new ConnectionsAdapter(mConnectionsList, mConnections);
-      mConnectionsList.setAdapter(mConnectionsAdapter);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mConnectionsList.setLayoutManager(mLayoutManager);
+        mConnectionsAdapter = new ConnectionsAdapter(mConnectionsList, mConnections);
+        mConnectionsList.setAdapter(mConnectionsAdapter);
 
-      refreshConnections();
+        refreshConnections();
 
-      return view;
-   }
+        return view;
+    }
 
-   private void onFabClick() {
-      mSheetLayout.expandFab();
-   }
+    private void onFabClick() {
+        mSheetLayout.expandFab();
+    }
 
-   private void refreshConnections() {
-      for (int index = 0; index < mConnections.size(); index++) {
-         String status = String.valueOf(StatusUpdate.getStatus(mConnections.get(index).getHost(),
-               Integer.valueOf(mConnections.get(index).getmPortDev())));
-         mDatabaseHelper.updateStatus(mConnections.get(index).getId(), status);
-      }
-      mConnections = mDatabaseHelper.getAllConnections();
-      mConnectionsAdapter = new ConnectionsAdapter(mConnectionsList, mConnections);
-      mConnectionsList.setAdapter(mConnectionsAdapter);
-   }
+    private void refreshConnections() {
+        for (int index = 0; index < mConnections.size(); index++) {
+            String status = String.valueOf(StatusUpdate.getStatus(mConnections.get(index).getHost(),
+                    Integer.valueOf(mConnections.get(index).getmPortDev())));
+            mDatabaseHelper.updateStatus(mConnections.get(index).getId(), status);
+        }
+        mConnections = mDatabaseHelper.getAllConnections();
+        mConnectionsAdapter = new ConnectionsAdapter(mConnectionsList, mConnections);
+        mConnectionsList.setAdapter(mConnectionsAdapter);
+    }
 
-   @Override
-   public void onFabAnimationEnd() {
-      Intent intent = new Intent(getContext(), NewConnectionActivity.class);
-      startActivityForResult(intent, REQUEST_CODE);
-   }
+    @Override
+    public void onFabAnimationEnd() {
+        Intent intent = new Intent(getContext(), NewConnectionActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
 
-   @Override
-   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-      super.onActivityResult(requestCode, resultCode, data);
-      if (requestCode == REQUEST_CODE) {
-         mSheetLayout.contractFab();
-      }
-   }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            mSheetLayout.contractFab();
+        }
+    }
 }

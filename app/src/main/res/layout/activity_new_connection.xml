@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/colorPrimary"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/title_label"
@@ -16,7 +16,7 @@
         android:text="@string/new_connection"
         android:textAlignment="textStart"
         android:textColor="@color/colorAccent"
-        android:textSize="40sp"/>
+        android:textSize="40sp" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/nickname_layout"
@@ -33,7 +33,7 @@
             android:maxLength="15"
             android:inputType="text"
             android:textColor="@color/colorAccent"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -52,7 +52,7 @@
             android:imeOptions="actionDone"
             android:inputType="textNoSuggestions"
             android:textColor="@color/colorAccent"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -73,7 +73,7 @@
             android:textColor="@color/colorAccent"
             android:textSize="20sp"
             android:digits="abcdef1234567890"
-            android:maxLength="17"/>
+            android:maxLength="17" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -92,7 +92,7 @@
             android:imeOptions="actionDone"
             android:inputType="number"
             android:textColor="@color/colorAccent"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -111,7 +111,7 @@
             android:imeOptions="actionDone"
             android:inputType="number"
             android:textColor="@color/colorAccent"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -125,6 +125,6 @@
         android:background="?attr/selectableItemBackground"
         android:text="@string/enter"
         android:textColor="@color/colorAccent"
-        android:textSize="20sp"/>
+        android:textSize="20sp" />
 
 </LinearLayout>
