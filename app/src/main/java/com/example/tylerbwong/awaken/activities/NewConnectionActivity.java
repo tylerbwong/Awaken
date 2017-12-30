@@ -50,12 +50,12 @@ public class NewConnectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_connection);
         mDatabaseHelper = new ConnectionDatabaseHelper(this);
 
-        mNicknameInput = (TextInputEditText) findViewById(R.id.nickname_input);
-        mHostInput = (TextInputEditText) findViewById(R.id.host_input);
-        mMacInput = (TextInputEditText) findViewById(R.id.mac_input);
-        mWolPortInput = (TextInputEditText) findViewById(R.id.wol_input);
-        mDevicePortInput = (TextInputEditText) findViewById(R.id.port_input);
-        mEnterButton = (Button) findViewById(R.id.enter_button);
+        mNicknameInput = findViewById(R.id.nickname_input);
+        mHostInput = findViewById(R.id.host_input);
+        mMacInput = findViewById(R.id.mac_input);
+        mWolPortInput = findViewById(R.id.wol_input);
+        mDevicePortInput = findViewById(R.id.port_input);
+        mEnterButton = findViewById(R.id.enter_button);
 
         mEnterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,13 +71,14 @@ public class NewConnectionActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onTextChanged(CharSequence sequence, int start, int before, int count) {
-                mHasTextHost = !(sequence.toString().trim().length() == 0);
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mHasTextHost = !(charSequence.toString().trim().length() == 0);
                 checkFields();
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
+
             }
         });
 
@@ -141,7 +142,6 @@ public class NewConnectionActivity extends AppCompatActivity {
         String message;
         if (macIsValid(mMac = mMacInput.getText().toString().toUpperCase())) {
             new AsyncTaskCaller().execute();
-            switchToMain();
         } else {
             message = getResources().getString(R.string.mac_address_invalid);
             Toast.makeText(NewConnectionActivity.this, message, Toast.LENGTH_LONG).show();
@@ -181,6 +181,7 @@ public class NewConnectionActivity extends AppCompatActivity {
                 message = getResources().getString(R.string.new_connection_fail);
             }
             Toast.makeText(NewConnectionActivity.this, message, Toast.LENGTH_LONG).show();
+            switchToMain();
         }
     }
 

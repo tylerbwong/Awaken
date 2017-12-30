@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.example.tylerbwong.awaken.R;
 import com.example.tylerbwong.awaken.activities.NewConnectionActivity;
 import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
+import com.example.tylerbwong.awaken.fragments.ConnectionRefresher;
 import com.example.tylerbwong.awaken.network.Wake;
 import com.example.tylerbwong.awaken.utilities.AnimatedRecyclerView;
 
@@ -38,18 +40,21 @@ public class ConnectionViewHolder extends RecyclerView.ViewHolder {
     private int mConnectionId;
     private final static String DATE_FORMAT = "MM/dd/yyyy HH:mm:ss";
     private ConnectionDatabaseHelper mDatabaseHelper;
+    private ConnectionRefresher mRefresher;
 
-    public ConnectionViewHolder(View view, final AnimatedRecyclerView recyclerView) {
+    public ConnectionViewHolder(View view, final AnimatedRecyclerView recyclerView, ConnectionRefresher refresher) {
         super(view);
 
-        mNickname = (TextView) view.findViewById(R.id.nickname_label);
-        mHost = (TextView) view.findViewById(R.id.host_label);
-        mMac = (TextView) view.findViewById(R.id.mac_label);
-        mLocation = (TextView) view.findViewById(R.id.location_label);
-        mStatus = (ImageView) view.findViewById(R.id.status_marker);
-        mDate = (TextView) view.findViewById(R.id.awoken_date_label);
-        mEditButton = (ImageButton) view.findViewById(R.id.edit_button);
-        mDeleteButton = (ImageButton) view.findViewById(R.id.delete_button);
+        mRefresher = refresher;
+
+        mNickname = view.findViewById(R.id.nickname_label);
+        mHost = view.findViewById(R.id.host_label);
+        mMac = view.findViewById(R.id.mac_label);
+        mLocation = view.findViewById(R.id.location_label);
+        mStatus = view.findViewById(R.id.status_marker);
+        mDate = view.findViewById(R.id.awoken_date_label);
+        mEditButton = view.findViewById(R.id.edit_button);
+        mDeleteButton = view.findViewById(R.id.delete_button);
         mDatabaseHelper = new ConnectionDatabaseHelper(view.getContext());
 
         view.setOnClickListener(new View.OnClickListener() {
@@ -99,8 +104,10 @@ public class ConnectionViewHolder extends RecyclerView.ViewHolder {
                         try {
                             mDatabaseHelper.deleteConnection(mConnectionId);
                             message = "Successfully deleted " + mNickname.getText().toString();
+                            mRefresher.refreshConnections();
                         } catch (Exception e) {
                             message = "Failed to delete " + mNickname.getText().toString();
+                            Log.e("failure", e.getMessage());
                         }
                         Toast.makeText(view.getContext(), message, Toast.LENGTH_LONG).show();
                     }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.example.tylerbwong.awaken.R;
 import com.example.tylerbwong.awaken.components.Connection;
+import com.example.tylerbwong.awaken.fragments.ConnectionRefresher;
 import com.example.tylerbwong.awaken.holders.ConnectionViewHolder;
 import com.example.tylerbwong.awaken.utilities.AnimatedRecyclerView;
 
@@ -19,14 +20,21 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolde
 
     private List<Connection> mConnections;
     private AnimatedRecyclerView mRecyclerView;
+    private ConnectionRefresher mRefresher;
 
-    public ConnectionsAdapter(AnimatedRecyclerView recyclerView, List<Connection> connections) {
+    public ConnectionsAdapter(AnimatedRecyclerView recyclerView, List<Connection> connections, ConnectionRefresher refresher) {
         this.mRecyclerView = recyclerView;
         this.mConnections = connections;
+        this.mRefresher = refresher;
     }
 
     public List<Connection> getConnections() {
         return mConnections;
+    }
+
+    public void setConnections(List<Connection> connections) {
+        mConnections = connections;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -35,7 +43,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolde
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.connection_card, parent, false);
 
-        ConnectionViewHolder viewHolder = new ConnectionViewHolder(view, mRecyclerView);
+        ConnectionViewHolder viewHolder = new ConnectionViewHolder(view, mRecyclerView, mRefresher);
         return viewHolder;
     }
 

@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * @author Tyler Wong
  */
-public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAnimationEndListener {
+public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAnimationEndListener, ConnectionRefresher {
 
     private SheetLayout mSheetLayout;
     private FloatingActionButton mFab;
@@ -51,11 +51,11 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.connections_fragment, container, false);
 
-        mSheetLayout = (SheetLayout) view.findViewById(R.id.bottom_sheet);
-        mConnectionsList = (AnimatedRecyclerView) view.findViewById(R.id.connection_list);
-        mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
-        mFab = (FloatingActionButton) view.findViewById(R.id.fab);
-        mEmptyView = (LinearLayout) view.findViewById(R.id.empty_layout);
+        mSheetLayout = view.findViewById(R.id.bottom_sheet);
+        mConnectionsList = view.findViewById(R.id.connection_list);
+        mRefreshLayout = view.findViewById(R.id.refresh_layout);
+        mFab = view.findViewById(R.id.fab);
+        mEmptyView = view.findViewById(R.id.empty_layout);
 
         mDatabaseHelper = new ConnectionDatabaseHelper(getContext());
 
@@ -92,10 +92,8 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
         mLayoutManager = new LinearLayoutManager(getContext());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mConnectionsList.setLayoutManager(mLayoutManager);
-        mConnectionsAdapter = new ConnectionsAdapter(mConnectionsList, mConnections);
+        mConnectionsAdapter = new ConnectionsAdapter(mConnectionsList, mConnections, this);
         mConnectionsList.setAdapter(mConnectionsAdapter);
-
-        refreshConnections();
 
         return view;
     }
@@ -104,15 +102,15 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
         mSheetLayout.expandFab();
     }
 
-    private void refreshConnections() {
+    @Override
+    public void refreshConnections() {
         for (int index = 0; index < mConnections.size(); index++) {
             String status = String.valueOf(StatusUpdate.getStatus(mConnections.get(index).getHost(),
                     Integer.valueOf(mConnections.get(index).getmPortDev())));
             mDatabaseHelper.updateStatus(mConnections.get(index).getId(), status);
         }
         mConnections = mDatabaseHelper.getAllConnections();
-        mConnectionsAdapter = new ConnectionsAdapter(mConnectionsList, mConnections);
-        mConnectionsList.setAdapter(mConnectionsAdapter);
+        mConnectionsAdapter.setConnections(mConnections);
     }
 
     @Override
@@ -127,5 +125,11 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
         if (requestCode == REQUEST_CODE) {
             mSheetLayout.contractFab();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshConnections();
     }
 }
