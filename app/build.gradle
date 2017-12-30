@@ -42,6 +42,8 @@ dependencies {
     compile 'com.github.coyarzun89:fabtransitionactivity:0.2.0'
     compile 'com.andrognito.pinlockview:pinlockview:1.0.1'
     compile 'me.drozdzynski.library.steppers:steppers:0.3.3-SNAPSHOT'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile('com.googlecode.json-simple:json-simple:1.1.1') {
         exclude group: 'org.hamcrest', module: 'hamcrest-core'
     }

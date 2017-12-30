@@ -16,13 +16,18 @@ import android.view.inputmethod.InputMethodManager;
 import com.example.tylerbwong.awaken.R;
 import com.example.tylerbwong.awaken.fragments.ConnectionsFragment;
 
+import butterknife.BindView;
+
 /**
  * @author Tyler Wong
  */
 public class MainActivity extends AppCompatActivity {
-    private NavigationView mNavigationView;
-    private DrawerLayout mDrawerLayout;
-    private Toolbar mToolbar;
+    @BindView(R.id.navigation_view)
+    NavigationView mNavigationView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     private Fragment mCurrentFragment;
     private FragmentTransaction mFragmentTransaction;
@@ -32,10 +37,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         mNavigationView.getMenu().getItem(0).setChecked(true);
