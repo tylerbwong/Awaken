@@ -17,6 +17,7 @@ import com.example.tylerbwong.awaken.R;
 import com.example.tylerbwong.awaken.fragments.ConnectionsFragment;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * @author Tyler Wong
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
 
         mNavigationView.getMenu().getItem(0).setChecked(true);
