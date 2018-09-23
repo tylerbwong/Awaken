@@ -106,7 +106,7 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
     public void refreshConnections() {
         for (int index = 0; index < mConnections.size(); index++) {
             String status = String.valueOf(StatusUpdate.getStatus(mConnections.get(index).getHost(),
-                    Integer.valueOf(mConnections.get(index).getmPortDev())));
+                    Integer.valueOf(mConnections.get(index).getPortDev())));
             mDatabaseHelper.updateStatus(mConnections.get(index).getId(), status);
         }
         mConnections = mDatabaseHelper.getAllConnections();

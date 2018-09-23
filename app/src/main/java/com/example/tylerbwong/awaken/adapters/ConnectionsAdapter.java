@@ -56,7 +56,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolde
         holder.mMac.setText(curConnection.getMac());
         holder.mLocation.setText(curConnection.getCity() + ", " + curConnection.getState());
         holder.mDate.setText(curConnection.getDate());
-        boolean status = Boolean.parseBoolean(curConnection.getmStatus());
+        boolean status = Boolean.parseBoolean(curConnection.getStatus());
         if (status) {
             holder.mStatus.setImageResource(R.drawable.active_marker);
         } else {
