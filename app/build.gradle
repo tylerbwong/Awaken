@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 repositories {
     mavenCentral()
@@ -41,6 +43,7 @@ dependencies {
     implementation 'com.github.coyarzun89:fabtransitionactivity:0.2.0'
     implementation 'com.andrognito.pinlockview:pinlockview:1.0.1'
     implementation 'me.drozdzynski.library.steppers:steppers:0.3.3-SNAPSHOT'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.70'
     implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
     implementation('com.googlecode.json-simple:json-simple:1.1.1') {
