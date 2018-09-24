@@ -35,8 +35,6 @@ public class Location {
     private final static int DATA_LENGTH = 1024;
 
     public Location(String ipAddress) {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
 
         try {
             InetAddress[] ip = InetAddress.getAllByName(ipAddress);
