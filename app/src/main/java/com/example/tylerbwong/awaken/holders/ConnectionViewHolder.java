@@ -60,8 +60,7 @@ public class ConnectionViewHolder extends RecyclerView.ViewHolder {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Wake wake = new Wake(mHost.getText().toString(), mMac.getText().toString());
-                wake.sendPacket();
+                Wake.INSTANCE.sendPacket(mHost.getText().toString(), mMac.getText().toString());
                 DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
                 Date date = new Date();
                 String formatDate = dateFormat.format(date);
