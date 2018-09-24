@@ -3,11 +3,26 @@ package com.example.tylerbwong.awaken.activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
+import com.example.tylerbwong.awaken.network.LocationServiceProvider;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.core.util.Pair;
 import androidx.appcompat.app.AppCompatActivity;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -17,6 +32,10 @@ import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
 import com.example.tylerbwong.awaken.network.Location;
 import com.example.tylerbwong.awaken.network.StatusUpdate;
 
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,6 +62,8 @@ public class NewConnectionActivity extends AppCompatActivity {
     private String mCountry;
     private boolean mHasTextHost = false;
     private boolean mHasTextPortWol = false;
+
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,57 +153,120 @@ public class NewConnectionActivity extends AppCompatActivity {
         mEnterButton.setEnabled(mHasTextHost && mHasTextPortWol);
     }
 
-    private void switchToMain() {
-        Intent mainIntent = new Intent(NewConnectionActivity.this, MainActivity.class);
-        startActivity(mainIntent);
-        finish();
-    }
-
     private void enterAction() {
+        mNickname = mNicknameInput.getText().toString();
+        mHost = mHostInput.getText().toString();
+        mPortWol = mWolPortInput.getText().toString();
+        mDevicePort = mDevicePortInput.getText().toString();
         String message;
         if (macIsValid(mMac = mMacInput.getText().toString().toUpperCase())) {
-            new AsyncTaskCaller().execute();
+            Disposable disposable = getIpAddress()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<String>() {
+                        @Override
+                        public void accept(String ipAddress) {
+                            makeLocationAndStatusRequest(ipAddress);
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) {
+                            Log.e("ERROR", throwable.getLocalizedMessage());
+                        }
+                    });
+            disposables.add(disposable);
         } else {
             message = getResources().getString(R.string.mac_address_invalid);
             Toast.makeText(NewConnectionActivity.this, message, Toast.LENGTH_LONG).show();
         }
     }
 
-    private class AsyncTaskCaller extends AsyncTask<Void, Void, Pair<String, Location>> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mNickname = mNicknameInput.getText().toString();
-            mHost = mHostInput.getText().toString();
-            mPortWol = mWolPortInput.getText().toString();
-            mDevicePort = mDevicePortInput.getText().toString();
-        }
+    private void makeLocationAndStatusRequest(String ipAddress) {
+        Single<Location> locationRequest = LocationServiceProvider.locationService.getLocation(ipAddress);
+        Single<Boolean> statusRequest = StatusUpdate.getStatus(ipAddress, Integer.parseInt(mDevicePort));
 
-        @Override
-        protected Pair<String, Location> doInBackground(Void... pars) {
-            return new Pair<>(String.valueOf(StatusUpdate.getStatus(mHost,
-                    Integer.parseInt(mDevicePort))), new Location(mHost));
-        }
-
-        @Override
-        protected void onPostExecute(Pair<String, Location> statLoc) {
-            super.onPostExecute(statLoc);
-            Location newLocation = statLoc.second;
-            mCity = newLocation.getCity();
-            mState = newLocation.getStateProv();
-            mCountry = newLocation.getCountryName();
-            String message;
-            try {
-                mDatabaseHelper.insertConnection(mNickname, mHost, mMac, mPortWol,
-                        mDevicePort, mCity, mState, mCountry, statLoc.first, "");
-                message = getResources().getString(R.string.new_connection_success);
-
-            } catch (Exception e) {
-                message = getResources().getString(R.string.new_connection_fail);
+        Disposable disposable = Single.zip(locationRequest, statusRequest, new BiFunction<Location, Boolean, Pair<Location, Boolean>>() {
+            @Override
+            public Pair<Location, Boolean> apply(Location location, Boolean status) {
+                return Pair.create(location, status);
             }
-            Toast.makeText(NewConnectionActivity.this, message, Toast.LENGTH_LONG).show();
-            switchToMain();
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Pair<Location, Boolean>>() {
+            @Override
+            public void accept(Pair<Location, Boolean> locationBooleanPair) {
+                onLocationStatusSuccess(locationBooleanPair);
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) {
+                Log.e("ERROR", throwable.getLocalizedMessage());
+            }
+        });
+        disposables.add(disposable);
+    }
+
+    private Single<String> getIpAddress() {
+        return Single.fromCallable(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                InetAddress[] ip = InetAddress.getAllByName(mHost);
+                for (InetAddress address : ip) {
+                    System.out.println(address.toString());
+                    if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
+                        mHost = convertIpByteArray(address.getAddress());
+                    }
+                }
+                return mHost;
+            }
+        });
+    }
+
+    private void onLocationStatusSuccess(Pair<Location, Boolean> result) {
+        Location location = result.first;
+        mCity = location.getCity();
+        mState = location.getRegionCode();
+        mCountry = location.getCountryName();
+
+        Disposable disposable = mDatabaseHelper.insertConnection(mNickname, mHost, mMac, mPortWol,
+                mDevicePort, mCity, mState, mCountry, String.valueOf(result.second), "")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action() {
+                    @Override
+                    public void run() {
+                        onFinish(getResources().getString(R.string.new_connection_success));
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        onFinish(getResources().getString(R.string.new_connection_fail));
+                    }
+                });
+        disposables.add(disposable);
+    }
+
+    private void onFinish(String message) {
+        Toast.makeText(NewConnectionActivity.this, message, Toast.LENGTH_LONG).show();
+        finish();
+    }
+
+    private static String convertIpByteArray(byte[] ipAddress) {
+        String result = "";
+
+        for (int index = 0; index < ipAddress.length; index++) {
+            result += ipAddress[index] & 0xFF;
+
+            if (index < ipAddress.length - 1) {
+                result += ".";
+            }
         }
+
+        return result;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        disposables.clear();
     }
 
     private boolean macIsValid(String mac) {

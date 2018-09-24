@@ -6,10 +6,16 @@ import android.os.Handler;
 import androidx.annotation.Nullable;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,7 +96,7 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
         mConnections = mDatabaseHelper.getAllConnections();
 
         mLayoutManager = new LinearLayoutManager(getContext());
-        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mLayoutManager.setOrientation(RecyclerView.VERTICAL);
         mConnectionsList.setLayoutManager(mLayoutManager);
         mConnectionsAdapter = new ConnectionsAdapter(mConnectionsList, mConnections, this);
         mConnectionsList.setAdapter(mConnectionsAdapter);
@@ -102,12 +108,25 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
         mSheetLayout.expandFab();
     }
 
+    @SuppressWarnings("CheckResult")
     @Override
     public void refreshConnections() {
         for (int index = 0; index < mConnections.size(); index++) {
-            String status = String.valueOf(StatusUpdate.getStatus(mConnections.get(index).getHost(),
-                    Integer.valueOf(mConnections.get(index).getPortDev())));
-            mDatabaseHelper.updateStatus(mConnections.get(index).getId(), status);
+            final int connectionId = mConnections.get(index).getId();
+            StatusUpdate.getStatus(mConnections.get(index).getHost(), Integer.valueOf(mConnections.get(index).getPortDev()))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<Boolean>() {
+                        @Override
+                        public void accept(Boolean status) {
+                            mDatabaseHelper.updateStatus(connectionId, String.valueOf(status));
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) {
+                            Log.e("ERROR", "Could not update status");
+                        }
+                    });
         }
         mConnections = mDatabaseHelper.getAllConnections();
         mConnectionsAdapter.setConnections(mConnections);

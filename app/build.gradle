@@ -39,14 +39,16 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'com.github.paolorotolo:appintro:4.1.0'
     implementation 'com.github.coyarzun89:fabtransitionactivity:0.2.0'
     implementation 'com.andrognito.pinlockview:pinlockview:1.0.1'
     implementation 'me.drozdzynski.library.steppers:steppers:0.3.3-SNAPSHOT'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.70'
     implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
-    implementation('com.googlecode.json-simple:json-simple:1.1.1') {
-        exclude group: 'org.hamcrest', module: 'hamcrest-core'
-    }
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
 }
