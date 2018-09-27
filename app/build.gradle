@@ -48,7 +48,6 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.github.coyarzun89:fabtransitionactivity:0.2.0'
     implementation 'com.andrognito.pinlockview:pinlockview:1.0.1'
-    implementation 'me.drozdzynski.library.steppers:steppers:0.3.3-SNAPSHOT'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71'
     implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
