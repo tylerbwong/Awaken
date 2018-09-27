@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.tylerbwong.awaken.R;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.net.Inet4Address;
@@ -18,6 +17,7 @@ import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
+import io.awaken.R;
 import io.awaken.database.ConnectionDatabaseHelper;
 import io.awaken.network.Location;
 import io.awaken.network.LocationServiceProvider;
