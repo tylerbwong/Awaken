@@ -1,4 +1,4 @@
-package com.example.tylerbwong.awaken.network
+package io.awaken.network
 
 import io.reactivex.Single
 import retrofit2.http.GET

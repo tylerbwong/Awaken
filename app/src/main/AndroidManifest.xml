@@ -1,18 +1,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.tylerbwong.awaken">
+    package="io.awaken">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name="io.awaken.AwakenApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_awaken"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/MainTheme"
-        android:name=".AwakenApplication">
+        android:theme="@style/MainTheme">
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name="io.awaken.activities.MainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.NewConnectionActivity"
+            android:name="io.awaken.activities.NewConnectionActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"

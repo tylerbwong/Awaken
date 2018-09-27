@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.example.tylerbwong.awaken.utilities.AnimatedRecyclerView
+        <io.awaken.utilities.AnimatedRecyclerView
             android:id="@+id/connection_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

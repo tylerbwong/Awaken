@@ -1,36 +1,36 @@
-package com.example.tylerbwong.awaken.fragments;
+package io.awaken.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.Nullable;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.example.tylerbwong.awaken.R;
-import com.example.tylerbwong.awaken.activities.NewConnectionActivity;
-import com.example.tylerbwong.awaken.adapters.ConnectionsAdapter;
-import com.example.tylerbwong.awaken.components.Connection;
-import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
-import com.example.tylerbwong.awaken.network.StatusUpdate;
-import com.example.tylerbwong.awaken.utilities.AnimatedRecyclerView;
 import com.github.fabtransitionactivity.SheetLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import io.awaken.R;
+import io.awaken.activities.NewConnectionActivity;
+import io.awaken.adapters.ConnectionsAdapter;
+import io.awaken.components.Connection;
+import io.awaken.database.ConnectionDatabaseHelper;
+import io.awaken.network.StatusUpdate;
+import io.awaken.utilities.AnimatedRecyclerView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author Tyler Wong

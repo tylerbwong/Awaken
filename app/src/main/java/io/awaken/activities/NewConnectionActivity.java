@@ -1,4 +1,4 @@
-package com.example.tylerbwong.awaken.activities;
+package io.awaken.activities;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,10 +9,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.tylerbwong.awaken.R;
-import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
-import com.example.tylerbwong.awaken.network.Location;
-import com.example.tylerbwong.awaken.network.LocationServiceProvider;
-import com.example.tylerbwong.awaken.network.StatusUpdate;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.net.Inet4Address;
@@ -22,6 +18,10 @@ import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
+import io.awaken.database.ConnectionDatabaseHelper;
+import io.awaken.network.Location;
+import io.awaken.network.LocationServiceProvider;
+import io.awaken.network.StatusUpdate;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

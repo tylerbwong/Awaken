@@ -1,4 +1,4 @@
-package com.example.tylerbwong.awaken.holders;
+package io.awaken.holders;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -9,12 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tylerbwong.awaken.R;
-import com.example.tylerbwong.awaken.activities.NewConnectionActivity;
-import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
-import com.example.tylerbwong.awaken.fragments.ConnectionRefresher;
-import com.example.tylerbwong.awaken.network.Wake;
-import com.example.tylerbwong.awaken.utilities.AnimatedRecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.DateFormat;
@@ -23,6 +17,12 @@ import java.util.Date;
 import java.util.Locale;
 
 import androidx.recyclerview.widget.RecyclerView;
+import io.awaken.R;
+import io.awaken.activities.NewConnectionActivity;
+import io.awaken.database.ConnectionDatabaseHelper;
+import io.awaken.fragments.ConnectionRefresher;
+import io.awaken.network.Wake;
+import io.awaken.utilities.AnimatedRecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 

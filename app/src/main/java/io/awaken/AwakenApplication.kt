@@ -1,7 +1,7 @@
-package com.example.tylerbwong.awaken
+package io.awaken
 
 import android.app.Application
-import com.example.tylerbwong.awaken.network.LocationServiceProvider
+import io.awaken.network.LocationServiceProvider
 
 class AwakenApplication : Application() {
     override fun onCreate() {

@@ -1,17 +1,17 @@
-package com.example.tylerbwong.awaken.adapters;
+package io.awaken.adapters;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.tylerbwong.awaken.R;
-import com.example.tylerbwong.awaken.components.Connection;
-import com.example.tylerbwong.awaken.fragments.ConnectionRefresher;
-import com.example.tylerbwong.awaken.holders.ConnectionViewHolder;
-import com.example.tylerbwong.awaken.utilities.AnimatedRecyclerView;
-
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
+import io.awaken.R;
+import io.awaken.components.Connection;
+import io.awaken.fragments.ConnectionRefresher;
+import io.awaken.holders.ConnectionViewHolder;
+import io.awaken.utilities.AnimatedRecyclerView;
 
 /**
  * @author Tyler Wong

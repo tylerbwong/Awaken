@@ -1,4 +1,4 @@
-package com.example.tylerbwong.awaken.components
+package io.awaken.components
 
 /**
  * @author Tyler Wong

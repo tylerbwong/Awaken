@@ -1,10 +1,11 @@
-package com.example.tylerbwong.awaken.utilities;
+package io.awaken.utilities;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * @author Connor Wong

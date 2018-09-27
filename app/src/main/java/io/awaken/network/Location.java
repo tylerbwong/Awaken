@@ -1,4 +1,4 @@
-package com.example.tylerbwong.awaken.network;
+package io.awaken.network;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,4 +1,4 @@
-package com.example.tylerbwong.awaken.network;
+package io.awaken.network;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

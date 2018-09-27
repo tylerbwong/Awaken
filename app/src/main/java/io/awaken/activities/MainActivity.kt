@@ -1,18 +1,16 @@
-package com.example.tylerbwong.awaken.activities
+package io.awaken.activities
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-
-import com.example.tylerbwong.awaken.R
-import com.example.tylerbwong.awaken.fragments.ConnectionsFragment
-
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import butterknife.ButterKnife
+import io.awaken.R
+import io.awaken.fragments.ConnectionsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 

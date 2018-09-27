@@ -1,4 +1,4 @@
-package com.example.tylerbwong.awaken.database;
+package io.awaken.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,11 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.tylerbwong.awaken.components.Connection;
-
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
 
+import io.awaken.components.Connection;
 import io.reactivex.Completable;
 
 /**
@@ -55,24 +53,21 @@ public class ConnectionDatabaseHelper extends SQLiteOpenHelper {
     public Completable insertConnection(final String nickname, final String host, final String mac, final String portWol,
                                         final String portDev, final String city, final String state, final String country,
                                         final String status, final String lastWoken) {
-        return Completable.fromCallable(new Callable<Object>() {
-            @Override
-            public Object call() {
-                SQLiteDatabase database = getWritableDatabase();
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(NICKNAME_COL, nickname);
-                contentValues.put(HOST_COL, host);
-                contentValues.put(MAC_COL, mac);
-                contentValues.put(WOL_PORT_COL, portWol);
-                contentValues.put(DEV_PORT_COL, portDev);
-                contentValues.put(CITY_COL, city);
-                contentValues.put(STATE_COL, state);
-                contentValues.put(COUNTRY_COL, country);
-                contentValues.put(STATUS_COL, status);
-                contentValues.put(DATE_COL, lastWoken);
-                database.insert(CONNECTIONS_TABLE, null, contentValues);
-                return null;
-            }
+        return Completable.fromCallable(() -> {
+            SQLiteDatabase database = getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(NICKNAME_COL, nickname);
+            contentValues.put(HOST_COL, host);
+            contentValues.put(MAC_COL, mac);
+            contentValues.put(WOL_PORT_COL, portWol);
+            contentValues.put(DEV_PORT_COL, portDev);
+            contentValues.put(CITY_COL, city);
+            contentValues.put(STATE_COL, state);
+            contentValues.put(COUNTRY_COL, country);
+            contentValues.put(STATUS_COL, status);
+            contentValues.put(DATE_COL, lastWoken);
+            database.insert(CONNECTIONS_TABLE, null, contentValues);
+            return null;
         });
     }
 
