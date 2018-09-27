@@ -166,7 +166,7 @@ public class NewConnectionActivity extends AppCompatActivity {
 
     private void makeLocationAndStatusRequest(String ipAddress) {
         Single<Location> locationRequest = LocationServiceProvider.locationService.getLocation(ipAddress);
-        Single<Boolean> statusRequest = StatusUpdate.getStatus(ipAddress, Integer.parseInt(mDevicePort));
+        Single<Boolean> statusRequest = StatusUpdate.isRunning(ipAddress, Integer.parseInt(mDevicePort));
 
         Disposable disposable = Single.zip(locationRequest, statusRequest, Pair::create)
                 .subscribeOn(Schedulers.io())

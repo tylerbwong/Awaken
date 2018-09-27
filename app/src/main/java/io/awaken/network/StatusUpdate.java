@@ -3,7 +3,6 @@ package io.awaken.network;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
 
@@ -15,17 +14,7 @@ public final class StatusUpdate {
      * How long the socket should wait for a response
      * before stopping.
      */
-    private final static int TIMEOUT = 500;
-
-    /**
-     * The device is running.
-     */
-    public final static boolean RUNNING = true;
-
-    /**
-     * The device is not running.
-     */
-    public final static boolean INACTIVE = false;
+    private static final int TIMEOUT = 500;
 
     /**
      * Gets the current status of the device in question. The method
@@ -38,21 +27,19 @@ public final class StatusUpdate {
      * @return true if the current status of the machine is RUNNING or false if the current status is
      * INACTIVE
      */
-    public static Single<Boolean> getStatus(final String host, final int devicePort) {
-        return Single.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() {
-                boolean status = RUNNING;
-                try {
-                    InetSocketAddress address = new InetSocketAddress(host, devicePort);
-                    Socket statusSocket = new Socket();
-                    statusSocket.connect(address, TIMEOUT);
-                    statusSocket.close();
-                } catch (IOException e) {
-                    status = INACTIVE;
-                }
-                return status;
+    public static Single<Boolean> isRunning(final String host, final int devicePort) {
+        return Single.fromCallable(() -> {
+            boolean status = true;
+            try {
+                InetSocketAddress address = new InetSocketAddress(host, devicePort);
+                Socket statusSocket = new Socket();
+                statusSocket.connect(address, TIMEOUT);
+                statusSocket.close();
             }
+            catch (IOException e) {
+                status = false;
+            }
+            return status;
         });
     }
 }
