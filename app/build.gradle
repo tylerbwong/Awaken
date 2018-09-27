@@ -28,7 +28,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -42,7 +45,7 @@ dependencies {
     implementation 'com.github.coyarzun89:fabtransitionactivity:0.2.0'
     implementation 'com.andrognito.pinlockview:pinlockview:1.0.1'
     implementation 'me.drozdzynski.library.steppers:steppers:0.3.3-SNAPSHOT'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.70'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71'
     implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'

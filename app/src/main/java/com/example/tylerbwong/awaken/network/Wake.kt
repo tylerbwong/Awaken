@@ -1,11 +1,12 @@
 package com.example.tylerbwong.awaken.network
 
+import io.reactivex.Completable
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
 
 /**
- * Creates a new wakeable device using the default port 7.
+ * Utility class for sending magic packets to WOL enabled devices.
  *
  * @param host the host name/ip address of the device
  * @param mac  the MAC address of the device
@@ -20,15 +21,13 @@ object Wake {
     private const val MAC_LENGTH = 6
 
     /**
-     * Magic packets must be 102 bytes. Length
-     * of the UDP packet.
+     * Magic packets must be 102 bytes. Length of the UDP packet.
      */
     private const val UDP_MULTIPLIER = 16
 
     private const val HEXADECIMAL = 16
     /**
-     * A delimiter for the target device's MAC
-     * address.
+     * A delimiter for the target device's MAC address.
      */
     private const val MAC_DELIMITER = "(\\:|\\-)"
 
@@ -44,8 +43,8 @@ object Wake {
      * Sends a magic packet to the target device to be woken up.
      */
     @JvmOverloads
-    fun sendPacket(host: String, mac: String, pass: String = "", port: Int = 7) {
-        try {
+    fun sendPacket(host: String, mac: String, pass: String = "", port: Int = 7): Completable {
+        return Completable.fromCallable {
             val macBytes = getMacBytes(mac)
             val bytes = ByteArray(MAC_LENGTH + UDP_MULTIPLIER * macBytes.size)
 
@@ -65,7 +64,6 @@ object Wake {
 
             socket.send(packet)
             socket.close()
-        } catch (e: Exception) {
         }
     }
 

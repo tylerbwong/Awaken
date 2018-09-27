@@ -1,25 +1,6 @@
 package com.example.tylerbwong.awaken.activities;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-
-import com.example.tylerbwong.awaken.network.LocationServiceProvider;
-import com.google.android.material.textfield.TextInputEditText;
-import androidx.core.util.Pair;
-import androidx.appcompat.app.AppCompatActivity;
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -30,14 +11,22 @@ import android.widget.Toast;
 import com.example.tylerbwong.awaken.R;
 import com.example.tylerbwong.awaken.database.ConnectionDatabaseHelper;
 import com.example.tylerbwong.awaken.network.Location;
+import com.example.tylerbwong.awaken.network.LocationServiceProvider;
 import com.example.tylerbwong.awaken.network.StatusUpdate;
+import com.google.android.material.textfield.TextInputEditText;
 
-import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author Tyler Wong
@@ -163,19 +152,13 @@ public class NewConnectionActivity extends AppCompatActivity {
             Disposable disposable = getIpAddress()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<String>() {
-                        @Override
-                        public void accept(String ipAddress) {
-                            makeLocationAndStatusRequest(ipAddress);
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) {
-                            Log.e("ERROR", throwable.getLocalizedMessage());
-                        }
-                    });
+                    .subscribe(
+                            this::makeLocationAndStatusRequest,
+                            throwable -> Log.e("ERROR", throwable.getLocalizedMessage())
+                    );
             disposables.add(disposable);
-        } else {
+        }
+        else {
             message = getResources().getString(R.string.mac_address_invalid);
             Toast.makeText(NewConnectionActivity.this, message, Toast.LENGTH_LONG).show();
         }
@@ -185,38 +168,26 @@ public class NewConnectionActivity extends AppCompatActivity {
         Single<Location> locationRequest = LocationServiceProvider.locationService.getLocation(ipAddress);
         Single<Boolean> statusRequest = StatusUpdate.getStatus(ipAddress, Integer.parseInt(mDevicePort));
 
-        Disposable disposable = Single.zip(locationRequest, statusRequest, new BiFunction<Location, Boolean, Pair<Location, Boolean>>() {
-            @Override
-            public Pair<Location, Boolean> apply(Location location, Boolean status) {
-                return Pair.create(location, status);
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Pair<Location, Boolean>>() {
-            @Override
-            public void accept(Pair<Location, Boolean> locationBooleanPair) {
-                onLocationStatusSuccess(locationBooleanPair);
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) {
-                Log.e("ERROR", throwable.getLocalizedMessage());
-            }
-        });
+        Disposable disposable = Single.zip(locationRequest, statusRequest, Pair::create)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        this::onLocationStatusSuccess,
+                        throwable -> Log.e("ERROR", throwable.getLocalizedMessage())
+                );
         disposables.add(disposable);
     }
 
     private Single<String> getIpAddress() {
-        return Single.fromCallable(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                InetAddress[] ip = InetAddress.getAllByName(mHost);
-                for (InetAddress address : ip) {
-                    System.out.println(address.toString());
-                    if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
-                        mHost = convertIpByteArray(address.getAddress());
-                    }
+        return Single.fromCallable(() -> {
+            InetAddress[] ip = InetAddress.getAllByName(mHost);
+            for (InetAddress address : ip) {
+                System.out.println(address.toString());
+                if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
+                    mHost = convertIpByteArray(address.getAddress());
                 }
-                return mHost;
             }
+            return mHost;
         });
     }
 
@@ -230,17 +201,10 @@ public class NewConnectionActivity extends AppCompatActivity {
                 mDevicePort, mCity, mState, mCountry, String.valueOf(result.second), "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action() {
-                    @Override
-                    public void run() {
-                        onFinish(getResources().getString(R.string.new_connection_success));
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) {
-                        onFinish(getResources().getString(R.string.new_connection_fail));
-                    }
-                });
+                .subscribe(
+                        () -> onFinish(getResources().getString(R.string.new_connection_success)),
+                        throwable -> onFinish(getResources().getString(R.string.new_connection_fail))
+                );
         disposables.add(disposable);
     }
 
