@@ -30,7 +30,7 @@
         app:fabSize="normal"
         app:layout_anchor="@+id/connection_list"
         app:layout_anchorGravity="bottom|end"
-        app:layout_behavior="com.example.tylerbwong.awaken.utilities.FABScrollBehavior"
+        app:layout_behavior="io.awaken.utilities.FABScrollBehavior"
         app:rippleColor="@color/colorAccent" />
 
     <LinearLayout
