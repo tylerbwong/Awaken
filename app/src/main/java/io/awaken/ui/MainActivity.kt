@@ -8,7 +8,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import butterknife.ButterKnife
 import io.awaken.R
 import io.awaken.ui.connections.ConnectionsFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,7 +24,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ButterKnife.bind(this)
         setSupportActionBar(toolbar)
 
         navigationView.menu.getItem(0).isChecked = true
