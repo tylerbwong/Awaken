@@ -11,7 +11,6 @@ import android.widget.Toast
 
 import com.google.android.material.snackbar.Snackbar
 
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -28,49 +27,43 @@ import io.reactivex.schedulers.Schedulers
 /**
  * @author Tyler Wong
  */
-class ConnectionViewHolder internal constructor(view: View, recyclerView: AnimatedRecyclerView, private val mRefresher: ConnectionRefresher) : RecyclerView.ViewHolder(view) {
+class ConnectionViewHolder(view: View, recyclerView: AnimatedRecyclerView, private val mRefresher: ConnectionRefresher) : RecyclerView.ViewHolder(view) {
 
-    internal var mNickname: TextView
-    internal var mHost: TextView
-    internal var mMac: TextView
-    internal var mLocation: TextView
-    internal var mDate: TextView
-    internal var mStatus: ImageView
+    internal val nickname = ViewCompat.requireViewById<TextView>(itemView, R.id.nickname_label)
+    internal val host = ViewCompat.requireViewById<TextView>(itemView, R.id.host_label)
+    internal val mac = ViewCompat.requireViewById<TextView>(itemView, R.id.mac_label)
+    internal val location = ViewCompat.requireViewById<TextView>(itemView, R.id.location_label)
+    internal val date = ViewCompat.requireViewById<TextView>(itemView, R.id.awoken_date_label)
+    internal val status = ViewCompat.requireViewById<ImageView>(itemView, R.id.status_marker)
 
-    private var mConnectionId: Int = 0
-    private val mDatabaseHelper: ConnectionDatabaseHelper
+    private var connectionId: Int = 0
+    private val databaseHelper: ConnectionDatabaseHelper
 
     init {
 
         val editButton = ViewCompat.requireViewById<ImageButton>(itemView, R.id.edit_button)
         val deleteButton = ViewCompat.requireViewById<ImageButton>(itemView, R.id.delete_button)
 
-        mNickname = ViewCompat.requireViewById(itemView, R.id.nickname_label)
-        mHost = ViewCompat.requireViewById(itemView, R.id.host_label)
-        mMac = ViewCompat.requireViewById(itemView, R.id.mac_label)
-        mLocation = ViewCompat.requireViewById(itemView, R.id.location_label)
-        mStatus = ViewCompat.requireViewById(itemView, R.id.status_marker)
-        mDate = ViewCompat.requireViewById(itemView, R.id.awoken_date_label)
-        mDatabaseHelper = ConnectionDatabaseHelper(view.context)
+        databaseHelper = ConnectionDatabaseHelper(view.context)
 
         view.setOnClickListener { itemView ->
-            Wake.sendPacket(mHost.text.toString(), mMac.text.toString())
+            Wake.sendPacket(host.text.toString(), mac.text.toString())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
                         val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.US)
                         val date = Date()
                         val formatDate = dateFormat.format(date)
-                        mDatabaseHelper.updateDate(mConnectionId, formatDate)
+                        databaseHelper.updateDate(connectionId, formatDate)
                         recyclerView.setIsAnimatable(false)
-                        mDate.text = formatDate
-                        Snackbar.make(itemView, mNickname.text.toString() + " "
+                        this.date.text = formatDate
+                        Snackbar.make(itemView, nickname.text.toString() + " "
                                 + itemView.resources.getString(R.string.woken),
                                 Snackbar.LENGTH_LONG).show()
                     }
         }
 
-        view.setOnLongClickListener { itemView -> true }
+        view.setOnLongClickListener { _ -> true }
 
         editButton.setOnClickListener { itemView ->
             val mainIntent = Intent(itemView.context, NewConnectionActivity::class.java)
@@ -79,16 +72,16 @@ class ConnectionViewHolder internal constructor(view: View, recyclerView: Animat
 
         deleteButton.setOnClickListener { itemView ->
             val builder = AlertDialog.Builder(itemView.context, R.style.AlertDialog)
-            builder.setMessage("Are you sure you want to delete " + mNickname.text.toString() + "?")
+            builder.setMessage("Are you sure you want to delete " + nickname.text.toString() + "?")
             builder.setNegativeButton(android.R.string.cancel, null)
             builder.setPositiveButton(android.R.string.ok) { dialog, which ->
                 var message: String
                 try {
-                    mDatabaseHelper.deleteConnection(mConnectionId)
-                    message = "Successfully deleted " + mNickname.text.toString()
+                    databaseHelper.deleteConnection(connectionId)
+                    message = "Successfully deleted " + nickname.text.toString()
                     mRefresher.refreshConnections()
                 } catch (e: Exception) {
-                    message = "Failed to delete " + mNickname.text.toString()
+                    message = "Failed to delete " + nickname.text.toString()
                     Log.e("failure", e.message)
                 }
 
@@ -100,10 +93,10 @@ class ConnectionViewHolder internal constructor(view: View, recyclerView: Animat
     }
 
     fun setId(id: Int) {
-        this.mConnectionId = id
+        this.connectionId = id
     }
 
     companion object {
-        private val DATE_FORMAT = "MM/dd/yyyy HH:mm:ss"
+        private const val DATE_FORMAT = "MM/dd/yyyy HH:mm:ss"
     }
 }
