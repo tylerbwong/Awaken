@@ -1,3 +1,4 @@
+@file:JvmName("StatusUpdate")
 package io.awaken.data.network
 
 import io.reactivex.Single
