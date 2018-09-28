@@ -1,4 +1,4 @@
-package io.awaken.network
+package io.awaken.data.network
 
 import io.reactivex.Completable
 import java.net.DatagramPacket

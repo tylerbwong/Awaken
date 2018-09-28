@@ -1,4 +1,4 @@
-package io.awaken.database;
+package io.awaken.data.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
-import io.awaken.components.Connection;
+import io.awaken.data.model.Connection;
 import io.reactivex.Completable;
 
 /**

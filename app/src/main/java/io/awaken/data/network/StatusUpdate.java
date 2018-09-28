@@ -1,4 +1,4 @@
-package io.awaken.network;
+package io.awaken.data.network;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

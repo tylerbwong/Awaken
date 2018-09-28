@@ -12,7 +12,7 @@
         android:theme="@style/MainTheme">
 
         <activity
-            android:name="io.awaken.activities.MainActivity"
+            android:name="io.awaken.ui.MainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="io.awaken.activities.NewConnectionActivity"
+            android:name="io.awaken.ui.connections.NewConnectionActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"

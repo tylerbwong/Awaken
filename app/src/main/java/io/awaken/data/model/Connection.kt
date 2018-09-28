@@ -1,6 +1,6 @@
-package io.awaken.components
+package io.awaken.data.model
 
-import io.awaken.network.StatusUpdate
+import io.awaken.data.network.StatusUpdate
 import io.reactivex.Single
 
 /**

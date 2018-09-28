@@ -1,10 +1,9 @@
-package io.awaken.activities;
+package io.awaken.ui.connections;
 
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -18,10 +17,10 @@ import java.util.regex.Pattern;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 import io.awaken.R;
-import io.awaken.database.ConnectionDatabaseHelper;
-import io.awaken.network.Location;
-import io.awaken.network.LocationServiceProvider;
-import io.awaken.network.StatusUpdate;
+import io.awaken.data.database.ConnectionDatabaseHelper;
+import io.awaken.data.model.Location;
+import io.awaken.data.network.LocationServiceProvider;
+import io.awaken.data.network.StatusUpdate;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -46,9 +45,6 @@ public class NewConnectionActivity extends AppCompatActivity {
     private String mMac;
     private String mPortWol;
     private String mDevicePort;
-    private String mCity;
-    private String mState;
-    private String mCountry;
     private boolean mHasTextHost = false;
     private boolean mHasTextPortWol = false;
 
@@ -67,12 +63,7 @@ public class NewConnectionActivity extends AppCompatActivity {
         mDevicePortInput = findViewById(R.id.port_input);
         mEnterButton = findViewById(R.id.enter_button);
 
-        mEnterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enterAction();
-            }
-        });
+        mEnterButton.setOnClickListener(view -> enterAction());
 
         mHostInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -193,12 +184,12 @@ public class NewConnectionActivity extends AppCompatActivity {
 
     private void onLocationStatusSuccess(Pair<Location, Boolean> result) {
         Location location = result.first;
-        mCity = location.getCity();
-        mState = location.getRegionCode();
-        mCountry = location.getCountryName();
+        String city = location.getCity();
+        String state = location.getRegionCode();
+        String country = location.getCountryName();
 
         Disposable disposable = mDatabaseHelper.insertConnection(mNickname, mHost, mMac, mPortWol,
-                mDevicePort, mCity, mState, mCountry, String.valueOf(result.second), "")
+                mDevicePort, city, state, country, String.valueOf(result.second), "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
