@@ -1,10 +1,10 @@
-package io.awaken.holders;
+package io.awaken.ui.connections;
 
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,13 +16,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import io.awaken.R;
-import io.awaken.activities.NewConnectionActivity;
-import io.awaken.database.ConnectionDatabaseHelper;
-import io.awaken.fragments.ConnectionRefresher;
-import io.awaken.network.Wake;
-import io.awaken.utilities.AnimatedRecyclerView;
+import io.awaken.data.database.ConnectionDatabaseHelper;
+import io.awaken.data.network.Wake;
+import io.awaken.ui.utils.AnimatedRecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -30,14 +29,13 @@ import io.reactivex.schedulers.Schedulers;
  * @author Tyler Wong
  */
 public class ConnectionViewHolder extends RecyclerView.ViewHolder {
-    public TextView mNickname;
-    public TextView mHost;
-    public TextView mMac;
-    public TextView mLocation;
-    public TextView mDate;
-    public ImageView mStatus;
-    public ImageButton mEditButton;
-    public ImageButton mDeleteButton;
+
+    TextView mNickname;
+    TextView mHost;
+    TextView mMac;
+    TextView mLocation;
+    TextView mDate;
+    ImageView mStatus;
 
     private int mConnectionId;
     private final static String DATE_FORMAT = "MM/dd/yyyy HH:mm:ss";
@@ -45,19 +43,20 @@ public class ConnectionViewHolder extends RecyclerView.ViewHolder {
     private ConnectionRefresher mRefresher;
 
     @SuppressWarnings("CheckResult")
-    public ConnectionViewHolder(View view, final AnimatedRecyclerView recyclerView, ConnectionRefresher refresher) {
+    ConnectionViewHolder(View view, final AnimatedRecyclerView recyclerView, ConnectionRefresher refresher) {
         super(view);
 
         mRefresher = refresher;
 
-        mNickname = view.findViewById(R.id.nickname_label);
-        mHost = view.findViewById(R.id.host_label);
-        mMac = view.findViewById(R.id.mac_label);
-        mLocation = view.findViewById(R.id.location_label);
-        mStatus = view.findViewById(R.id.status_marker);
-        mDate = view.findViewById(R.id.awoken_date_label);
-        mEditButton = view.findViewById(R.id.edit_button);
-        mDeleteButton = view.findViewById(R.id.delete_button);
+        Button editButton = ViewCompat.requireViewById(itemView, R.id.edit_button);
+        Button deleteButton = ViewCompat.requireViewById(itemView, R.id.delete_button);
+
+        mNickname = ViewCompat.requireViewById(itemView, R.id.nickname_label);
+        mHost = ViewCompat.requireViewById(itemView, R.id.host_label);
+        mMac = ViewCompat.requireViewById(itemView, R.id.mac_label);
+        mLocation = ViewCompat.requireViewById(itemView, R.id.location_label);
+        mStatus = ViewCompat.requireViewById(itemView, R.id.status_marker);
+        mDate = ViewCompat.requireViewById(itemView, R.id.awoken_date_label);
         mDatabaseHelper = new ConnectionDatabaseHelper(view.getContext());
 
         view.setOnClickListener(itemView ->
@@ -78,12 +77,12 @@ public class ConnectionViewHolder extends RecyclerView.ViewHolder {
 
         view.setOnLongClickListener(itemView -> true);
 
-        mEditButton.setOnClickListener(itemView -> {
+        editButton.setOnClickListener(itemView -> {
             Intent mainIntent = new Intent(itemView.getContext(), NewConnectionActivity.class);
             itemView.getContext().startActivity(mainIntent);
         });
 
-        mDeleteButton.setOnClickListener(itemView -> {
+        deleteButton.setOnClickListener(itemView -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext(), R.style.AlertDialog);
             builder.setMessage("Are you sure you want to delete " + mNickname.getText().toString() + "?");
             builder.setNegativeButton(android.R.string.cancel, null);

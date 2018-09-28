@@ -1,4 +1,4 @@
-package io.awaken.utilities;
+package io.awaken.ui.utils;
 
 import android.content.Context;
 import android.util.AttributeSet;

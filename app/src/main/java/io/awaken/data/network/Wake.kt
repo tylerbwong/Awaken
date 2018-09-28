@@ -1,4 +1,4 @@
-package io.awaken.network
+package io.awaken.data.network
 
 import io.reactivex.Completable
 import java.net.DatagramPacket
@@ -7,9 +7,6 @@ import java.net.InetAddress
 
 /**
  * Utility class for sending magic packets to WOL enabled devices.
- *
- * @param host the host name/ip address of the device
- * @param mac  the MAC address of the device
  *
  * @author Connor Wong
  */
@@ -29,9 +26,9 @@ object Wake {
     /**
      * A delimiter for the target device's MAC address.
      */
-    private const val MAC_DELIMITER = "(\\:|\\-)"
+    private const val MAC_DELIMITER = "([:-])"
 
-    private const val PASS_DELIMITER = "(\\:|\\-)"
+    private const val PASS_DELIMITER = "([:-])"
     /**
      * Invalid MAC address status message.
      */

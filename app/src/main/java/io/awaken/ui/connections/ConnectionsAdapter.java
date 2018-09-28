@@ -1,4 +1,4 @@
-package io.awaken.adapters;
+package io.awaken.ui.connections;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,12 +6,11 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import io.awaken.R;
-import io.awaken.components.Connection;
-import io.awaken.fragments.ConnectionRefresher;
-import io.awaken.holders.ConnectionViewHolder;
-import io.awaken.utilities.AnimatedRecyclerView;
+import io.awaken.data.model.Connection;
+import io.awaken.ui.utils.AnimatedRecyclerView;
 
 /**
  * @author Tyler Wong
@@ -22,7 +21,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolde
     private AnimatedRecyclerView mRecyclerView;
     private ConnectionRefresher mRefresher;
 
-    public ConnectionsAdapter(AnimatedRecyclerView recyclerView, List<Connection> connections, ConnectionRefresher refresher) {
+    ConnectionsAdapter(AnimatedRecyclerView recyclerView, List<Connection> connections, ConnectionRefresher refresher) {
         this.mRecyclerView = recyclerView;
         this.mConnections = connections;
         this.mRefresher = refresher;
@@ -37,9 +36,9 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolde
         notifyDataSetChanged();
     }
 
+    @NonNull
     @Override
-    public ConnectionViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+    public ConnectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.connection_card, parent, false);
 
@@ -48,7 +47,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolde
     }
 
     @Override
-    public void onBindViewHolder(final ConnectionViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ConnectionViewHolder holder, int position) {
         Connection curConnection = mConnections.get(position);
 
         holder.mNickname.setText(curConnection.getNickname());
@@ -71,7 +70,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionViewHolde
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
 }

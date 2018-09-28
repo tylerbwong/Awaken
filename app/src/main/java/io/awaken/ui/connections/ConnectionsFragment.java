@@ -1,4 +1,4 @@
-package io.awaken.fragments;
+package io.awaken.ui.connections;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,26 +7,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.github.fabtransitionactivity.SheetLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import io.awaken.R;
-import io.awaken.activities.NewConnectionActivity;
-import io.awaken.adapters.ConnectionsAdapter;
-import io.awaken.components.Connection;
-import io.awaken.database.ConnectionDatabaseHelper;
-import io.awaken.utilities.AnimatedRecyclerView;
+import io.awaken.data.database.ConnectionDatabaseHelper;
+import io.awaken.data.model.Connection;
+import io.awaken.ui.utils.AnimatedRecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -36,11 +35,7 @@ import io.reactivex.schedulers.Schedulers;
 public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAnimationEndListener, ConnectionRefresher {
 
     private SheetLayout mSheetLayout;
-    private FloatingActionButton mFab;
-    private AnimatedRecyclerView mConnectionsList;
     private SwipeRefreshLayout mRefreshLayout;
-    LinearLayoutManager mLayoutManager;
-    private LinearLayout mEmptyView;
     private List<Connection> mConnections;
 
     private ConnectionsAdapter mConnectionsAdapter;
@@ -52,14 +47,13 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.connections_fragment, container, false);
+        AnimatedRecyclerView connectionsList = ViewCompat.requireViewById(view, R.id.connection_list);
+        FloatingActionButton fab = ViewCompat.requireViewById(view, R.id.fab);
 
-        mSheetLayout = view.findViewById(R.id.bottom_sheet);
-        mConnectionsList = view.findViewById(R.id.connection_list);
-        mRefreshLayout = view.findViewById(R.id.refresh_layout);
-        mFab = view.findViewById(R.id.fab);
-        mEmptyView = view.findViewById(R.id.empty_layout);
+        mSheetLayout = ViewCompat.requireViewById(view, R.id.bottom_sheet);
+        mRefreshLayout = ViewCompat.requireViewById(view, R.id.refresh_layout);
 
         mDatabaseHelper = new ConnectionDatabaseHelper(getContext());
 
@@ -68,9 +62,9 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
             mRefreshLayout.setRefreshing(false);
         }, DURATION));
 
-        mFab.setOnClickListener(itemView -> onFabClick());
+        fab.setOnClickListener(itemView -> onFabClick());
 
-        mSheetLayout.setFab(mFab);
+        mSheetLayout.setFab(fab);
         mSheetLayout.setFabAnimationEndListener(this);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
@@ -80,11 +74,11 @@ public class ConnectionsFragment extends Fragment implements SheetLayout.OnFabAn
 
         mConnections = mDatabaseHelper.getAllConnections();
 
-        mLayoutManager = new LinearLayoutManager(getContext());
-        mLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        mConnectionsList.setLayoutManager(mLayoutManager);
-        mConnectionsAdapter = new ConnectionsAdapter(mConnectionsList, mConnections, this);
-        mConnectionsList.setAdapter(mConnectionsAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        connectionsList.setLayoutManager(layoutManager);
+        mConnectionsAdapter = new ConnectionsAdapter(connectionsList, mConnections, this);
+        connectionsList.setAdapter(mConnectionsAdapter);
 
         return view;
     }

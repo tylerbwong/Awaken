@@ -1,5 +1,6 @@
-package io.awaken.network
+package io.awaken.data.network
 
+import io.awaken.data.model.Location
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path

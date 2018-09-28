@@ -1,4 +1,4 @@
-package io.awaken.network
+package io.awaken.data.network
 
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
