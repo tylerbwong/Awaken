@@ -40,12 +40,7 @@ public class AnimatedRecyclerView extends RecyclerView {
                 animate(getChildAt(i), i);
 
                 if (i == getChildCount() - 1) {
-                    getHandler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mScrollable = true;
-                        }
-                    }, i * 100);
+                    getHandler().postDelayed(() -> mScrollable = true, i * 100);
                 }
             }
         }
