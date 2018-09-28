@@ -8,7 +8,5 @@ import io.reactivex.Single
  */
 class Connection(val id: Int, val nickname: String, val host: String, val mac: String, val portWol: String, val portDev: String,
                       val city: String, val state: String, val country: String, val status: String, val date: String) {
-    fun isRunning(): Single<Boolean> {
-        return StatusUpdate.isRunning(host, Integer.parseInt(portDev));
-    }
+    fun isRunning(): Single<Boolean> = StatusUpdate.isRunning(host, Integer.parseInt(portDev))
 }
