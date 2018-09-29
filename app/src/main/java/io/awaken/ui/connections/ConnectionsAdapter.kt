@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import io.awaken.R
 import io.awaken.data.model.Connection
+import io.awaken.fragments.ConnectionRefresher
 import io.awaken.ui.utils.AnimatedRecyclerView
 
 /**

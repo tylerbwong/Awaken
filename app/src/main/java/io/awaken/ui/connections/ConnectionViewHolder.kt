@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.awaken.R
 import io.awaken.data.database.ConnectionDatabaseHelper
 import io.awaken.data.network.Wake
+import io.awaken.fragments.ConnectionRefresher
 import io.awaken.ui.utils.AnimatedRecyclerView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
