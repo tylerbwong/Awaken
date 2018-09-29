@@ -5,12 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import io.awaken.R
 import io.awaken.data.model.Connection
-import io.awaken.ui.utils.AnimatedRecyclerView
 
 /**
  * @author Tyler Wong
  */
-internal class ConnectionsAdapter(private val recyclerView: AnimatedRecyclerView, private var connections: List<Connection>, private val refresher: ConnectionRefresher) : RecyclerView.Adapter<ConnectionViewHolder>() {
+internal class ConnectionsAdapter(private var connections: List<Connection>, private val refresher: ConnectionRefresher) : RecyclerView.Adapter<ConnectionViewHolder>() {
 
     fun setConnections(connections: List<Connection>) {
         this.connections = connections
@@ -21,7 +20,7 @@ internal class ConnectionsAdapter(private val recyclerView: AnimatedRecyclerView
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.connection_card, parent, false)
 
-        return ConnectionViewHolder(view, recyclerView, refresher)
+        return ConnectionViewHolder(view, refresher)
     }
 
     override fun onBindViewHolder(holder: ConnectionViewHolder, position: Int) {

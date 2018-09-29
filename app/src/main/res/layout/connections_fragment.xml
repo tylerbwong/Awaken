@@ -5,12 +5,12 @@
     android:layout_height="match_parent">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refresh_layout"
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <io.awaken.ui.utils.AnimatedRecyclerView
-            android:id="@+id/connection_list"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/connectionList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical" />
@@ -28,20 +28,19 @@
         android:src="@drawable/ic_add_white_48dp"
         app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal"
-        app:layout_anchor="@+id/connection_list"
+        app:layout_anchor="@+id/connectionList"
         app:layout_anchorGravity="bottom|end"
-        app:layout_behavior="io.awaken.ui.utils.FABScrollBehavior"
         app:rippleColor="@color/colorAccent" />
 
     <LinearLayout
-        android:id="@+id/empty_layout"
+        android:id="@+id/emptyLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical" />
 
     <com.github.fabtransitionactivity.SheetLayout
-        android:id="@+id/bottom_sheet"
+        android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
