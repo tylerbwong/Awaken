@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 import io.awaken.R;
 import io.awaken.data.database.ConnectionDatabaseHelper;
+import io.awaken.data.database.ConnectionDatabaseProvider;
 import io.awaken.data.model.Location;
 import io.awaken.data.network.LocationServiceProvider;
 import io.awaken.data.network.StatusUpdate;
@@ -54,7 +55,7 @@ public class NewConnectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_connection);
-        mDatabaseHelper = new ConnectionDatabaseHelper(this);
+        mDatabaseHelper = ConnectionDatabaseProvider.databaseHelper;
 
         mNicknameInput = findViewById(R.id.nickname_input);
         mHostInput = findViewById(R.id.host_input);

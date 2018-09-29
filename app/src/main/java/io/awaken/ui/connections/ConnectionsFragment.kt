@@ -2,29 +2,23 @@ package io.awaken.ui.connections
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.awaken.R
-import io.awaken.data.database.ConnectionDatabaseHelper
-import io.awaken.data.model.Connection
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.connections_fragment.*
 
 /**
  * @author Tyler Wong
  */
-class ConnectionsFragment : Fragment(), ConnectionRefresher {
-
-    private var connections = listOf<Connection>()
-
-    private lateinit var databaseHelper: ConnectionDatabaseHelper
+class ConnectionsFragment : Fragment() {
+    private lateinit var viewModel: ConnectionsViewModel
     private lateinit var connectionsAdapter: ConnectionsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -34,7 +28,7 @@ class ConnectionsFragment : Fragment(), ConnectionRefresher {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        refreshLayout.setOnRefreshListener { updateStatuses(connections) }
+        refreshLayout.setOnRefreshListener { viewModel.updateStatuses() }
 
         fab.setOnClickListener { _ ->
             val intent = Intent(context, NewConnectionActivity::class.java)
@@ -47,55 +41,21 @@ class ConnectionsFragment : Fragment(), ConnectionRefresher {
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = RecyclerView.VERTICAL
         connectionList.layoutManager = layoutManager
-        connectionsAdapter = ConnectionsAdapter(connections, this)
+        connectionsAdapter = ConnectionsAdapter {
+            viewModel.updateStatuses()
+        }
         connectionList.adapter = connectionsAdapter
 
-        databaseHelper = ConnectionDatabaseHelper(context)
+        viewModel = ViewModelProviders.of(this).get(ConnectionsViewModel::class.java).also {
+            it.connections.observe(this, Observer { connections ->
+                connectionsAdapter.setConnections(connections)
+                refreshLayout.isRefreshing = false
+            })
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        refreshConnections()
-    }
-
-    @Suppress("CheckResult")
-    override fun refreshConnections() {
-        databaseHelper.allConnections
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        {
-                            connections = it
-                            connectionsAdapter.setConnections(it)
-                            refreshLayout.isRefreshing = false
-                        },
-                        {
-                            Log.e("ERROR", it.localizedMessage)
-                            refreshLayout.isRefreshing = false
-                        }
-                )
-    }
-
-    @Suppress("CheckResult")
-    private fun updateStatuses(connections: List<Connection>) {
-
-        if (connections.isEmpty()) {
-            refreshConnections()
-        }
-
-        connections.forEach { connection ->
-            val connectionId = connection.id
-            connection.isRunning()
-                    .flatMap { databaseHelper.updateStatus(connectionId, it.toString()) }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            { _ -> refreshConnections() },
-                            {
-                                Log.e("ERROR", it.localizedMessage)
-                                refreshLayout.isRefreshing = false
-                            }
-                    )
-        }
+        viewModel.updateStatuses()
     }
 }

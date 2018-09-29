@@ -6,10 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import io.awaken.R
 import io.awaken.data.model.Connection
 
-/**
- * @author Tyler Wong
- */
-internal class ConnectionsAdapter(private var connections: List<Connection>, private val refresher: ConnectionRefresher) : RecyclerView.Adapter<ConnectionViewHolder>() {
+typealias ConnectionsRefreshListener = () -> Unit
+
+internal class ConnectionsAdapter(
+        private val refreshListener: ConnectionsRefreshListener
+) : RecyclerView.Adapter<ConnectionViewHolder>() {
+
+    private var connections = listOf<Connection>()
 
     fun setConnections(connections: List<Connection>) {
         this.connections = connections
@@ -20,7 +23,7 @@ internal class ConnectionsAdapter(private var connections: List<Connection>, pri
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.connection_card, parent, false)
 
-        return ConnectionViewHolder(view, refresher)
+        return ConnectionViewHolder(view, refreshListener)
     }
 
     override fun onBindViewHolder(holder: ConnectionViewHolder, position: Int) {
@@ -31,7 +34,7 @@ internal class ConnectionsAdapter(private var connections: List<Connection>, pri
         holder.mac.text = curConnection.mac
         holder.location.text = curConnection.city + ", " + curConnection.state
         holder.date.text = curConnection.date
-        val status = java.lang.Boolean.parseBoolean(curConnection.status)
+        val status = curConnection.status.toBoolean()
         if (status) {
             holder.status.setImageResource(R.drawable.active_marker)
         } else {
