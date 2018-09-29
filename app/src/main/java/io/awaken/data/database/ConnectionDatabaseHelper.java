@@ -37,7 +37,7 @@ public class ConnectionDatabaseHelper extends SQLiteOpenHelper {
     private final static String DROP_CONNECTIONS_TABLE = "DROP TABLE IF EXISTS Connections";
     private final static String QUERY_ALL_CONNECTIONS = "SELECT * FROM Connections";
 
-    public ConnectionDatabaseHelper(Context context) {
+    ConnectionDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
 

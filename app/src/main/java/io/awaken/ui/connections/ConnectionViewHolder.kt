@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import io.awaken.R
-import io.awaken.data.database.ConnectionDatabaseHelper
+import io.awaken.data.database.ConnectionDatabaseProvider
 import io.awaken.data.network.Wake
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -19,7 +19,10 @@ import java.util.*
 /**
  * @author Tyler Wong
  */
-class ConnectionViewHolder(view: View, private val refresher: ConnectionRefresher) : RecyclerView.ViewHolder(view) {
+class ConnectionViewHolder(
+        view: View,
+        private val refreshListener: ConnectionsRefreshListener
+) : RecyclerView.ViewHolder(view) {
 
     internal val nickname = itemView.nicknameLabel
     internal val host = itemView.hostLabel
@@ -29,7 +32,7 @@ class ConnectionViewHolder(view: View, private val refresher: ConnectionRefreshe
     internal val status = itemView.statusMarker
 
     internal var connectionId: Int = 0
-    private val databaseHelper = ConnectionDatabaseHelper(view.context)
+    private val databaseHelper = ConnectionDatabaseProvider.databaseHelper
 
     init {
 
@@ -68,7 +71,7 @@ class ConnectionViewHolder(view: View, private val refresher: ConnectionRefreshe
                 try {
                     databaseHelper.deleteConnection(connectionId)
                     message = "Successfully deleted " + nickname.text.toString()
-                    refresher.refreshConnections()
+                    refreshListener.invoke()
                 }
                 catch (e: Exception) {
                     message = "Failed to delete " + nickname.text.toString()
