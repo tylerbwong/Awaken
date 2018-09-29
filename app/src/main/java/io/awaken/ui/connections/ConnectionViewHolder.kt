@@ -27,7 +27,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * @author Tyler Wong
  */
-class ConnectionViewHolder(view: View, recyclerView: AnimatedRecyclerView, private val mRefresher: ConnectionRefresher) : RecyclerView.ViewHolder(view) {
+class ConnectionViewHolder(view: View, recyclerView: AnimatedRecyclerView, private val refresher: ConnectionRefresher) : RecyclerView.ViewHolder(view) {
 
     internal val nickname = ViewCompat.requireViewById<TextView>(itemView, R.id.nickname_label)
     internal val host = ViewCompat.requireViewById<TextView>(itemView, R.id.host_label)
@@ -36,15 +36,13 @@ class ConnectionViewHolder(view: View, recyclerView: AnimatedRecyclerView, priva
     internal val date = ViewCompat.requireViewById<TextView>(itemView, R.id.awoken_date_label)
     internal val status = ViewCompat.requireViewById<ImageView>(itemView, R.id.status_marker)
 
-    private var connectionId: Int = 0
-    private val databaseHelper: ConnectionDatabaseHelper
+    internal var connectionId: Int = 0
+    private val databaseHelper = ConnectionDatabaseHelper(view.context)
 
     init {
 
         val editButton = ViewCompat.requireViewById<ImageButton>(itemView, R.id.edit_button)
         val deleteButton = ViewCompat.requireViewById<ImageButton>(itemView, R.id.delete_button)
-
-        databaseHelper = ConnectionDatabaseHelper(view.context)
 
         view.setOnClickListener { itemView ->
             Wake.sendPacket(host.text.toString(), mac.text.toString())
@@ -79,7 +77,7 @@ class ConnectionViewHolder(view: View, recyclerView: AnimatedRecyclerView, priva
                 try {
                     databaseHelper.deleteConnection(connectionId)
                     message = "Successfully deleted " + nickname.text.toString()
-                    mRefresher.refreshConnections()
+                    refresher.refreshConnections()
                 } catch (e: Exception) {
                     message = "Failed to delete " + nickname.text.toString()
                     Log.e("failure", e.message)
@@ -90,10 +88,6 @@ class ConnectionViewHolder(view: View, recyclerView: AnimatedRecyclerView, priva
             builder.create()
             builder.show()
         }
-    }
-
-    fun setId(id: Int) {
-        this.connectionId = id
     }
 
     companion object {

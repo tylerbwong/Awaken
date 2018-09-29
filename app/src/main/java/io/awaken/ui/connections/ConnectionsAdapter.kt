@@ -12,10 +12,6 @@ import io.awaken.ui.utils.AnimatedRecyclerView
  */
 internal class ConnectionsAdapter(private val recyclerView: AnimatedRecyclerView, private var connections: List<Connection>, private val refresher: ConnectionRefresher) : RecyclerView.Adapter<ConnectionViewHolder>() {
 
-    fun getConnections(): List<Connection>? {
-        return connections
-    }
-
     fun setConnections(connections: List<Connection>) {
         this.connections = connections
         notifyDataSetChanged()
@@ -42,15 +38,9 @@ internal class ConnectionsAdapter(private val recyclerView: AnimatedRecyclerView
         } else {
             holder.status.setImageResource(R.drawable.inactive_marker)
         }
-        holder.setId(curConnection.id)
+        holder.connectionId = curConnection.id
     }
 
-    override fun getItemCount(): Int {
-        return connections.size
-    }
-
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-    }
+    override fun getItemCount() = connections.size
 }
 
