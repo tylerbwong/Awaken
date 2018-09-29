@@ -7,9 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.awaken.data.model.Connection;
 import io.reactivex.Completable;
+import io.reactivex.Single;
 
 /**
  * @author Tyler Wong
@@ -87,40 +89,46 @@ public class ConnectionDatabaseHelper extends SQLiteOpenHelper {
         database.update(CONNECTIONS_TABLE, contentValues, idFilter, null);
     }
 
-    public void updateStatus(int id, String status) {
-        SQLiteDatabase database = getWritableDatabase();
-        String idFilter = ID_COL + "=" + "'" + id + "'";
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(STATUS_COL, status);
-        database.update(CONNECTIONS_TABLE, contentValues, idFilter, null);
+    public Single<Boolean> updateStatus(int id, String status) {
+        return Single.fromCallable(() -> {
+            SQLiteDatabase database = getWritableDatabase();
+            String idFilter = ID_COL + "=" + "'" + id + "'";
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(STATUS_COL, status);
+            database.update(CONNECTIONS_TABLE, contentValues, idFilter, null);
+            return true;
+        });
     }
 
-    public ArrayList<Connection> getAllConnections() {
-        ArrayList<Connection> connections = new ArrayList<>();
-        Connection tempConnection;
-        SQLiteDatabase database = getReadableDatabase();
-        int id;
-        String nickname, host, mac, wolPort, devPort, city, state, country, status, date;
-        Cursor cursor = database.rawQuery(QUERY_ALL_CONNECTIONS, null);
-        cursor.moveToFirst();
+    public Single<List<Connection>> getAllConnections() {
+        return Single.fromCallable(() -> {
+            List<Connection> connections = new ArrayList<>();
+            Connection tempConnection;
+            SQLiteDatabase database = getReadableDatabase();
+            int id;
+            String nickname, host, mac, wolPort, devPort, city, state, country, status, date;
+            Cursor cursor = database.rawQuery(QUERY_ALL_CONNECTIONS, null);
+            cursor.moveToFirst();
 
-        while (!cursor.isAfterLast()) {
-            id = cursor.getInt(cursor.getColumnIndex(ID_COL));
-            nickname = cursor.getString(cursor.getColumnIndex(NICKNAME_COL));
-            host = cursor.getString(cursor.getColumnIndex(HOST_COL));
-            mac = cursor.getString(cursor.getColumnIndex(MAC_COL));
-            wolPort = cursor.getString(cursor.getColumnIndex(WOL_PORT_COL));
-            devPort = cursor.getString(cursor.getColumnIndex(DEV_PORT_COL));
-            city = cursor.getString(cursor.getColumnIndex(CITY_COL));
-            state = cursor.getString(cursor.getColumnIndex(STATE_COL));
-            country = cursor.getString(cursor.getColumnIndex(COUNTRY_COL));
-            status = cursor.getString(cursor.getColumnIndex(STATUS_COL));
-            date = cursor.getString(cursor.getColumnIndex(DATE_COL));
-            tempConnection = new Connection(id, nickname, host, mac, wolPort, devPort,
-                    city, state, country, status, date);
-            connections.add(tempConnection);
-            cursor.moveToNext();
-        }
-        return connections;
+            while (!cursor.isAfterLast()) {
+                id = cursor.getInt(cursor.getColumnIndex(ID_COL));
+                nickname = cursor.getString(cursor.getColumnIndex(NICKNAME_COL));
+                host = cursor.getString(cursor.getColumnIndex(HOST_COL));
+                mac = cursor.getString(cursor.getColumnIndex(MAC_COL));
+                wolPort = cursor.getString(cursor.getColumnIndex(WOL_PORT_COL));
+                devPort = cursor.getString(cursor.getColumnIndex(DEV_PORT_COL));
+                city = cursor.getString(cursor.getColumnIndex(CITY_COL));
+                state = cursor.getString(cursor.getColumnIndex(STATE_COL));
+                country = cursor.getString(cursor.getColumnIndex(COUNTRY_COL));
+                status = cursor.getString(cursor.getColumnIndex(STATUS_COL));
+                date = cursor.getString(cursor.getColumnIndex(DATE_COL));
+                tempConnection = new Connection(id, nickname, host, mac, wolPort, devPort,
+                        city, state, country, status, date);
+                connections.add(tempConnection);
+                cursor.moveToNext();
+            }
+            cursor.close();
+            return connections;
+        });
     }
 }

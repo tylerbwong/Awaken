@@ -22,11 +22,11 @@
         android:paddingBottom="10dp">
 
         <ImageButton
-            android:id="@+id/edit_button"
+            android:id="@+id/editButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/delete_button"
+            android:layout_toStartOf="@+id/deleteButton"
             android:background="@color/transparent"
             android:clickable="true"
             android:focusable="true"
@@ -35,7 +35,7 @@
             android:src="@drawable/ic_edit" />
 
         <ImageButton
-            android:id="@+id/delete_button"
+            android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -48,7 +48,6 @@
             android:src="@drawable/ic_delete" />
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -61,13 +60,13 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/status_marker"
+                    android:id="@+id/statusMarker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/active_marker" />
 
                 <TextView
-                    android:id="@+id/nickname_label"
+                    android:id="@+id/nicknameLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -75,20 +74,20 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/host_label"
+                android:id="@+id/hostLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/mac_label"
+                android:id="@+id/macLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/location_label"
+                android:id="@+id/locationLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -110,7 +109,7 @@
                     android:textStyle="italic" />
 
                 <TextView
-                    android:id="@+id/awoken_date_label"
+                    android:id="@+id/awokenDateLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
