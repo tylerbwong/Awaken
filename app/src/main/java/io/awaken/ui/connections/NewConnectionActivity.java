@@ -33,21 +33,21 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class NewConnectionActivity extends AppCompatActivity {
 
-    private TextInputEditText mNicknameInput;
-    private TextInputEditText mHostInput;
-    private TextInputEditText mMacInput;
-    private TextInputEditText mWolPortInput;
-    private TextInputEditText mDevicePortInput;
-    private Button mEnterButton;
+    private TextInputEditText nicknameInput;
+    private TextInputEditText hostInput;
+    private TextInputEditText macInput;
+    private TextInputEditText wolPortInput;
+    private TextInputEditText devicePortInput;
+    private Button enterButton;
 
-    private ConnectionDatabaseHelper mDatabaseHelper;
-    private String mNickname;
-    private String mHost;
-    private String mMac;
-    private String mPortWol;
-    private String mDevicePort;
-    private boolean mHasTextHost = false;
-    private boolean mHasTextPortWol = false;
+    private ConnectionDatabaseHelper databaseHelper;
+    private String nickname;
+    private String host;
+    private String mac;
+    private String portWol;
+    private String devicePort;
+    private boolean hasTextHost = false;
+    private boolean hasTextPortWol = false;
 
     private final CompositeDisposable disposables = new CompositeDisposable();
 
@@ -55,18 +55,18 @@ public class NewConnectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_connection);
-        mDatabaseHelper = ConnectionDatabaseProvider.databaseHelper;
+        databaseHelper = ConnectionDatabaseProvider.databaseHelper;
 
-        mNicknameInput = findViewById(R.id.nickname_input);
-        mHostInput = findViewById(R.id.host_input);
-        mMacInput = findViewById(R.id.mac_input);
-        mWolPortInput = findViewById(R.id.wol_input);
-        mDevicePortInput = findViewById(R.id.port_input);
-        mEnterButton = findViewById(R.id.enter_button);
+        nicknameInput = findViewById(R.id.nickname_input);
+        hostInput = findViewById(R.id.host_input);
+        macInput = findViewById(R.id.mac_input);
+        wolPortInput = findViewById(R.id.wol_input);
+        devicePortInput = findViewById(R.id.port_input);
+        enterButton = findViewById(R.id.enter_button);
 
-        mEnterButton.setOnClickListener(view -> enterAction());
+        enterButton.setOnClickListener(view -> enterAction());
 
-        mHostInput.addTextChangedListener(new TextWatcher() {
+        hostInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {
 
@@ -74,7 +74,7 @@ public class NewConnectionActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mHasTextHost = !(charSequence.toString().trim().length() == 0);
+                hasTextHost = !(charSequence.toString().trim().length() == 0);
                 checkFields();
             }
 
@@ -84,7 +84,7 @@ public class NewConnectionActivity extends AppCompatActivity {
             }
         });
 
-        mWolPortInput.addTextChangedListener(new TextWatcher() {
+        wolPortInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {
 
@@ -92,7 +92,7 @@ public class NewConnectionActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence sequence, int start, int before, int count) {
-                mHasTextPortWol = !(sequence.toString().trim().length() == 0);
+                hasTextPortWol = !(sequence.toString().trim().length() == 0);
                 checkFields();
             }
 
@@ -101,7 +101,7 @@ public class NewConnectionActivity extends AppCompatActivity {
             }
         });
 
-        mMacInput.addTextChangedListener(new TextWatcher() {
+        macInput.addTextChangedListener(new TextWatcher() {
             String noColons;
 
             @Override
@@ -115,32 +115,32 @@ public class NewConnectionActivity extends AppCompatActivity {
                 final int length = sequence.toString().length();
                 if ((noColLength % 2 != 0 && noColLength != 0 && noColLength < 17
                         && (length > 0)) && sequence.toString().charAt(length - 1) != ':') {
-                    mMacInput.setText(sequence.toString() + ":");
+                    macInput.setText(sequence.toString() + ":");
                 }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (mMacInput.length() > 0) {
-                    mMacInput.setSelection(mMacInput.length());
+                if (macInput.length() > 0) {
+                    macInput.setSelection(macInput.length());
                 }
             }
         });
 
-        mEnterButton.setEnabled(false);
+        enterButton.setEnabled(false);
     }
 
     private void checkFields() {
-        mEnterButton.setEnabled(mHasTextHost && mHasTextPortWol);
+        enterButton.setEnabled(hasTextHost && hasTextPortWol);
     }
 
     private void enterAction() {
-        mNickname = mNicknameInput.getText().toString();
-        mHost = mHostInput.getText().toString();
-        mPortWol = mWolPortInput.getText().toString();
-        mDevicePort = mDevicePortInput.getText().toString();
+        nickname = nicknameInput.getText().toString();
+        host = hostInput.getText().toString();
+        portWol = wolPortInput.getText().toString();
+        devicePort = devicePortInput.getText().toString();
         String message;
-        if (macIsValid(mMac = mMacInput.getText().toString().toUpperCase())) {
+        if (macIsValid(mac = macInput.getText().toString().toUpperCase())) {
             Disposable disposable = getIpAddress()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -158,7 +158,7 @@ public class NewConnectionActivity extends AppCompatActivity {
 
     private void makeLocationAndStatusRequest(String ipAddress) {
         Single<Location> locationRequest = LocationServiceProvider.locationService.getLocation(ipAddress);
-        Single<Boolean> statusRequest = StatusUpdate.isRunning(ipAddress, Integer.parseInt(mDevicePort));
+        Single<Boolean> statusRequest = StatusUpdate.isRunning(ipAddress, Integer.parseInt(devicePort));
 
         Disposable disposable = Single.zip(locationRequest, statusRequest, Pair::create)
                 .subscribeOn(Schedulers.io())
@@ -172,14 +172,14 @@ public class NewConnectionActivity extends AppCompatActivity {
 
     private Single<String> getIpAddress() {
         return Single.fromCallable(() -> {
-            InetAddress[] ip = InetAddress.getAllByName(mHost);
+            InetAddress[] ip = InetAddress.getAllByName(host);
             for (InetAddress address : ip) {
                 System.out.println(address.toString());
                 if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
-                    mHost = convertIpByteArray(address.getAddress());
+                    host = convertIpByteArray(address.getAddress());
                 }
             }
-            return mHost;
+            return host;
         });
     }
 
@@ -189,8 +189,8 @@ public class NewConnectionActivity extends AppCompatActivity {
         String state = location.getRegionCode();
         String country = location.getCountryName();
 
-        Disposable disposable = mDatabaseHelper.insertConnection(mNickname, mHost, mMac, mPortWol,
-                mDevicePort, city, state, country, String.valueOf(result.second), "")
+        Disposable disposable = databaseHelper.insertConnection(nickname, host, mac, portWol,
+                devicePort, city, state, country, String.valueOf(result.second), "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
