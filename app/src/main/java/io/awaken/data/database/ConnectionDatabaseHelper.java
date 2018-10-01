@@ -32,7 +32,7 @@ public class ConnectionDatabaseHelper extends SQLiteOpenHelper {
     private final static String DATE_COL = "lastWoken";
     private final static String CREATE_CONNECTIONS_TABLE = "CREATE TABLE IF NOT EXISTS " +
             "Connections(_id INTEGER PRIMARY KEY, nickname VARCHAR, host VARCHAR, mac VARCHAR, portWol VARCHAR, " +
-            "portDev VARCHAR, city VARCHAR, state VARCHAR, country VARCHAR, status, VARCHAR, " +
+            "portDev VARCHAR, city VARCHAR, state VARCHAR, country VARCHAR, status VARCHAR, " +
             "lastWoken VARCHAR)";
     private final static String DROP_CONNECTIONS_TABLE = "DROP TABLE IF EXISTS Connections";
     private final static String QUERY_ALL_CONNECTIONS = "SELECT * FROM Connections";
@@ -68,7 +68,7 @@ public class ConnectionDatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(COUNTRY_COL, country);
             contentValues.put(STATUS_COL, status);
             contentValues.put(DATE_COL, lastWoken);
-            database.insert(CONNECTIONS_TABLE, null, contentValues);
+            database.insertOrThrow(CONNECTIONS_TABLE, null, contentValues);
             return null;
         });
     }
@@ -77,7 +77,6 @@ public class ConnectionDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = getWritableDatabase();
         String idFilter = ID_COL + "=" + "'" + id + "'";
         database.delete(CONNECTIONS_TABLE, idFilter, null);
-        database.close();
         return true;
     }
 
@@ -98,6 +97,28 @@ public class ConnectionDatabaseHelper extends SQLiteOpenHelper {
             database.update(CONNECTIONS_TABLE, contentValues, idFilter, null);
             return true;
         });
+    }
+
+    public List<String> getConnection(int id) {
+        List<String> connection = new ArrayList<>();
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor = database.rawQuery(QUERY_ALL_CONNECTIONS + " WHERE " + ID_COL + " = ?", new String[]{String.valueOf(id)});
+        cursor.moveToFirst();
+        if (!cursor.isAfterLast()) {
+            connection.add(cursor.getString(cursor.getColumnIndex(NICKNAME_COL)));
+            connection.add(cursor.getString(cursor.getColumnIndex(HOST_COL)));
+            connection.add(cursor.getString(cursor.getColumnIndex(MAC_COL)));
+            connection.add(cursor.getString(cursor.getColumnIndex(WOL_PORT_COL)));
+            connection.add(cursor.getString(cursor.getColumnIndex(DEV_PORT_COL)));
+            connection.add(cursor.getString(cursor.getColumnIndex(CITY_COL)));
+            connection.add(cursor.getString(cursor.getColumnIndex(STATE_COL)));
+            connection.add(cursor.getString(cursor.getColumnIndex(COUNTRY_COL)));
+            connection.add(cursor.getString(cursor.getColumnIndex(STATUS_COL)));
+            connection.add(cursor.getString(cursor.getColumnIndex(DATE_COL)));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return connection;
     }
 
     public Single<List<Connection>> getAllConnections() {
