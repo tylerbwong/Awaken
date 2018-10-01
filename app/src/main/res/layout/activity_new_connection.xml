@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nickname"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionNext"
             android:maxLength="15"
             android:inputType="text"
             android:textColor="@color/colorAccent"
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/host_ip"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionNext"
             android:inputType="textNoSuggestions"
             android:textColor="@color/colorAccent"
             android:textSize="20sp" />
@@ -68,10 +68,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/mac"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionNext"
             android:inputType="text"
             android:textColor="@color/colorAccent"
             android:textSize="20sp"
+            android:singleLine="true"
             android:digits="abcdef1234567890"
             android:maxLength="17" />
 
@@ -89,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/wol"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionNext"
             android:inputType="number"
             android:textColor="@color/colorAccent"
             android:textSize="20sp" />
