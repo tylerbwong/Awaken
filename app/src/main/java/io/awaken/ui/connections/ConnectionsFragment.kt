@@ -30,7 +30,7 @@ class ConnectionsFragment : Fragment() {
 
         refreshLayout.setOnRefreshListener { viewModel.updateStatuses() }
 
-        fab.setOnClickListener { _ ->
+        fab.setOnClickListener {
             val intent = Intent(context, NewConnectionActivity::class.java)
             startActivity(intent)
         }

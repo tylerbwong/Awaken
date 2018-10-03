@@ -36,7 +36,7 @@ class ConnectionsViewModel : ViewModel() {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
-                            { _ -> refreshConnections() },
+                            { refreshConnections() },
                             { Log.e("ERROR", it.localizedMessage) }
                     )
         }

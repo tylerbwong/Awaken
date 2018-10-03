@@ -1,4 +1,4 @@
-package io.awaken.network
+package io.awaken.data.model
 
 import com.google.gson.annotations.SerializedName
 

@@ -39,13 +39,4 @@
         android:layout_gravity="center"
         android:orientation="vertical" />
 
-    <com.github.fabtransitionactivity.SheetLayout
-        android:id="@+id/bottomSheet"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom"
-        android:elevation="2dp"
-        app:ft_color="@color/colorPrimary"
-        app:ft_container_gravity="center" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
