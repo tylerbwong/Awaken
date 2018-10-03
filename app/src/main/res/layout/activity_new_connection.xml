@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/title_label"
+        android:id="@+id/titleLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
@@ -19,13 +19,13 @@
         android:textSize="40sp" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/nickname_layout"
+        android:id="@+id/nicknameLayout"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/nickname_input"
+            android:id="@+id/nicknameInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nickname"
@@ -38,14 +38,14 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/host_layout"
+        android:id="@+id/hostLayout"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/host_input"
+            android:id="@+id/hostInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/host_ip"
@@ -57,14 +57,14 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/mac_layout"
+        android:id="@+id/macLayout"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/mac_input"
+            android:id="@+id/macInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/mac"
@@ -79,14 +79,14 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/wol_layout"
+        android:id="@+id/wolLayout"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/wol_input"
+            android:id="@+id/wolInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/wol"
@@ -98,14 +98,14 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/port_layout"
+        android:id="@+id/portLayout"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/port_input"
+            android:id="@+id/portInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/port"
@@ -117,7 +117,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/enter_button"
+        android:id="@+id/enterButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"

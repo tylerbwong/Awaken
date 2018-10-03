@@ -1,12 +1,27 @@
 package io.awaken.data.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import io.awaken.data.network.isRunning
 import io.reactivex.Single
 
 /**
  * @author Tyler Wong
  */
-class Connection(val id: Int, val nickname: String, val host: String, val mac: String, val portWol: String, val portDev: String,
-                      val city: String, val state: String, val country: String, val status: String, val date: String) {
+@Entity(tableName = "connection_table")
+data class Connection(
+        @PrimaryKey @ColumnInfo(name = "id") val id: Int,
+        val nickname: String,
+        val host: String,
+        val mac: String,
+        val portWol: String,
+        val portDev: String,
+        val city: String,
+        val state: String,
+        val country: String,
+        val status: String,
+        val date: String
+) {
     fun isRunning(): Single<Boolean> = isRunning(host, Integer.parseInt(portDev))
 }
