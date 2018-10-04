@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
 import io.awaken.R
 import io.awaken.data.database.ConnectionDatabaseProvider
+import io.awaken.data.model.Connection
 import io.awaken.data.model.Location
 import io.awaken.data.network.LocationServiceProvider
 import io.awaken.data.network.isRunning
@@ -163,8 +164,17 @@ class NewConnectionActivity : AppCompatActivity() {
         val state = location?.regionCode
         val country = location?.countryName
 
-        val disposable = databaseHelper.insertConnection(nickname, host, mac, portWol,
-                devicePort, city, state, country, result.second.toString(), "")
+        val connection = Connection(nickname,
+                host,
+                mac,
+                portWol,
+                devicePort,
+                city,
+                state,
+                country,
+                result.second.toString(), "")
+
+        val disposable = databaseHelper.insertConnection(connection)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

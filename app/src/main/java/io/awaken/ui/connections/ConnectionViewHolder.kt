@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import io.awaken.R
 import io.awaken.data.database.ConnectionDatabaseProvider
+import io.awaken.data.model.Connection
 import io.awaken.data.network.Wake
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -56,7 +57,7 @@ class ConnectionViewHolder(
                     }
         }
 
-        view.setOnLongClickListener { _ -> true }
+        view.setOnLongClickListener { true }
 
         editButton.setOnClickListener { itemView ->
             val mainIntent = Intent(itemView.context, NewConnectionActivity::class.java)
@@ -69,7 +70,7 @@ class ConnectionViewHolder(
             builder.setNegativeButton(android.R.string.cancel, null)
             builder.setPositiveButton(android.R.string.ok) { _, _ ->
                 var message: String
-                var connection: List<String>? = null
+                var connection: Connection? = null
                 try {
                     connection = databaseHelper.getConnection(connectionId)
                     databaseHelper.deleteConnection(connectionId)
@@ -81,17 +82,8 @@ class ConnectionViewHolder(
                 }
 
                 Snackbar.make(itemView, message, Snackbar.LENGTH_LONG)
-                        .setAction("UNDO") { _ ->
-                            val disposable = databaseHelper.insertConnection(connection?.get(0),
-                                    connection?.get(1),
-                                    connection?.get(2),
-                                    connection?.get(3),
-                                    connection?.get(4),
-                                    connection?.get(5),
-                                    connection?.get(6),
-                                    connection?.get(7),
-                                    connection?.get(8),
-                                    connection?.get(9))
+                        .setAction("UNDO") {
+                            val disposable = databaseHelper.insertConnection(connection)
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe()
