@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.activity_new_connection.*
 import java.net.Inet4Address
 import java.net.InetAddress
 import java.util.regex.Pattern
-import kotlin.experimental.and
 
 /**
  * @author Tyler Wong
@@ -29,26 +28,26 @@ import kotlin.experimental.and
 class NewConnectionActivity : AppCompatActivity() {
 
     private var databaseHelper = ConnectionDatabaseProvider.databaseHelper
-    private var mNickname: String? = null
-    private var mHost: String? = null
-    private var mMac: String? = null
-    private var mPortWol: String? = null
-    private var mDevicePort: String? = null
-    private var mHasTextHost = false
-    private var mHasTextPortWol = false
+    private var nickname: String? = null
+    private var host: String? = null
+    private var mac: String? = null
+    private var portWol: String? = null
+    private var devicePort: String? = null
+    private var hasTextHost = false
+    private var hasTextPortWol = false
 
     private val disposables = CompositeDisposable()
 
     private val ipAddress: Single<String>
         get() = Single.fromCallable {
-            val ip = InetAddress.getAllByName(mHost)
+            val ip = InetAddress.getAllByName(host)
             for (address in ip) {
                 println(address.toString())
                 if (!address.isLoopbackAddress && address is Inet4Address) {
-                    mHost = convertIpByteArray(address.getAddress())
+                    host = address.hostAddress
                 }
             }
-            mHost
+            host
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +62,7 @@ class NewConnectionActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                mHasTextHost = charSequence.isNotEmpty()
+                hasTextHost = charSequence.isNotEmpty()
                 checkFields()
             }
 
@@ -78,7 +77,7 @@ class NewConnectionActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(sequence: CharSequence, start: Int, before: Int, count: Int) {
-                mHasTextPortWol = sequence.isNotEmpty()
+                hasTextPortWol = sequence.isNotEmpty()
                 checkFields()
             }
 
@@ -112,17 +111,17 @@ class NewConnectionActivity : AppCompatActivity() {
     }
 
     private fun checkFields() {
-        enterButton.isEnabled = mHasTextHost && mHasTextPortWol
+        enterButton.isEnabled = hasTextHost && hasTextPortWol
     }
 
     private fun enterAction() {
-        mNickname = nicknameInput.text.toString()
-        mHost = hostInput.text.toString()
-        mPortWol = wolInput.text.toString()
-        mDevicePort = portInput.text.toString()
+        nickname = nicknameInput.text.toString()
+        host = hostInput.text.toString()
+        portWol = wolInput.text.toString()
+        devicePort = portInput.text.toString()
         val message: String
         val tempMac = macInput.text.toString().toUpperCase().also {
-            mMac = it
+            mac = it
         }
         if (macIsValid(tempMac)) {
             val disposable = ipAddress
@@ -142,7 +141,7 @@ class NewConnectionActivity : AppCompatActivity() {
 
     private fun makeLocationAndStatusRequest(ipAddress: String) {
         val locationRequest = LocationServiceProvider.locationService.getLocation(ipAddress)
-        val statusRequest = isRunning(ipAddress, Integer.parseInt(mDevicePort!!))
+        val statusRequest = isRunning(ipAddress, Integer.parseInt(devicePort!!))
 
         val disposable = Single.zip<Location, Boolean, Pair<Location, Boolean>>(
                 locationRequest,
@@ -164,8 +163,8 @@ class NewConnectionActivity : AppCompatActivity() {
         val state = location?.regionCode
         val country = location?.countryName
 
-        val disposable = databaseHelper.insertConnection(mNickname, mHost, mMac, mPortWol,
-                mDevicePort, city, state, country, result.second.toString(), "")
+        val disposable = databaseHelper.insertConnection(nickname, host, mac, portWol,
+                devicePort, city, state, country, result.second.toString(), "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -180,27 +179,13 @@ class NewConnectionActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun convertIpByteArray(ipAddress: ByteArray): String {
-        var result = ""
-
-        for (index in ipAddress.indices) {
-            result += ipAddress[index] and 0xFF.toByte()
-
-            if (index < ipAddress.size - 1) {
-                result += "."
-            }
-        }
-
-        return result
-    }
-
     override fun onPause() {
         super.onPause()
         disposables.clear()
     }
 
     private fun macIsValid(mac: String): Boolean {
-        val p = Pattern.compile("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$")
+        val p = Pattern.compile("^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$")
         val m = p.matcher(mac)
         return m.matches()
     }
