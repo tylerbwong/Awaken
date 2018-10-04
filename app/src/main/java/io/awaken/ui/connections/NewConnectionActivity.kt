@@ -29,11 +29,11 @@ import java.util.regex.Pattern
 class NewConnectionActivity : AppCompatActivity() {
 
     private var databaseHelper = ConnectionDatabaseProvider.databaseHelper
-    private var nickname: String? = null
-    private var host: String? = null
-    private var mac: String? = null
-    private var portWol: String? = null
-    private var devicePort: String? = null
+    private var nickname: String = ""
+    private var host: String = ""
+    private var mac: String = ""
+    private var portWol: String = ""
+    private var devicePort: String = ""
     private var hasTextHost = false
     private var hasTextPortWol = false
 
@@ -116,6 +116,7 @@ class NewConnectionActivity : AppCompatActivity() {
     }
 
     private fun enterAction() {
+        enterButton.isEnabled = false
         nickname = nicknameInput.text.toString()
         host = hostInput.text.toString()
         portWol = wolInput.text.toString()
@@ -164,7 +165,8 @@ class NewConnectionActivity : AppCompatActivity() {
         val state = location?.regionCode
         val country = location?.countryName
 
-        val connection = Connection(nickname,
+        val connection = Connection(
+                nickname,
                 host,
                 mac,
                 portWol,

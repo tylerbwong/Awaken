@@ -86,9 +86,10 @@ class ConnectionViewHolder(
                             val disposable = databaseHelper.insertConnection(connection)
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe()
+                                    .subscribe(
+                                            refreshListener::invoke
+                                    )
                             disposables.add(disposable)
-                            refreshListener.invoke()
                         }.show()
             }
             builder.create()
