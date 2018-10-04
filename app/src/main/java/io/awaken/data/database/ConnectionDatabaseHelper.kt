@@ -2,15 +2,12 @@ package io.awaken.data.database
 
 import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-
-import java.util.ArrayList
-
 import io.awaken.data.model.Connection
 import io.reactivex.Completable
 import io.reactivex.Single
+import java.util.*
 
 /**
  * @author Tyler Wong
@@ -54,6 +51,7 @@ class ConnectionDatabaseHelper internal constructor(context: Context) : SQLiteOp
                 cursor.moveToNext()
             }
             cursor.close()
+            database.close()
             connections
         }
 
@@ -81,6 +79,7 @@ class ConnectionDatabaseHelper internal constructor(context: Context) : SQLiteOp
             contentValues.put(STATUS_COL, connection?.status)
             contentValues.put(DATE_COL, connection?.date)
             database.insertOrThrow(CONNECTIONS_TABLE, null, contentValues)
+            database.close()
             null
         }
     }
@@ -89,6 +88,7 @@ class ConnectionDatabaseHelper internal constructor(context: Context) : SQLiteOp
         val database = writableDatabase
         val idFilter = "$ID_COL='$id'"
         database.delete(CONNECTIONS_TABLE, idFilter, null)
+        database.close()
         return true
     }
 
@@ -98,6 +98,7 @@ class ConnectionDatabaseHelper internal constructor(context: Context) : SQLiteOp
         val contentValues = ContentValues()
         contentValues.put(DATE_COL, date)
         database.update(CONNECTIONS_TABLE, contentValues, idFilter, null)
+        database.close()
     }
 
     fun updateStatus(id: Int, status: String): Single<Boolean> {
@@ -107,6 +108,7 @@ class ConnectionDatabaseHelper internal constructor(context: Context) : SQLiteOp
             val contentValues = ContentValues()
             contentValues.put(STATUS_COL, status)
             database.update(CONNECTIONS_TABLE, contentValues, idFilter, null)
+            database.close()
             true
         }
     }
@@ -131,28 +133,29 @@ class ConnectionDatabaseHelper internal constructor(context: Context) : SQLiteOp
             cursor.moveToNext()
         }
         cursor.close()
+        database.close()
         return connection
     }
 
     companion object {
-        private val DATABASE_NAME = "Awaken.db"
-        private val CONNECTIONS_TABLE = "Connections"
-        private val ID_COL = "_id"
-        private val NICKNAME_COL = "nickname"
-        private val HOST_COL = "host"
-        private val MAC_COL = "mac"
-        private val WOL_PORT_COL = "portWol"
-        private val DEV_PORT_COL = "portDev"
-        private val CITY_COL = "city"
-        private val STATE_COL = "state"
-        private val COUNTRY_COL = "country"
-        private val STATUS_COL = "status"
-        private val DATE_COL = "lastWoken"
-        private val CREATE_CONNECTIONS_TABLE = "CREATE TABLE IF NOT EXISTS " +
+        private const val DATABASE_NAME = "Awaken.db"
+        private const val CONNECTIONS_TABLE = "Connections"
+        private const val ID_COL = "_id"
+        private const val NICKNAME_COL = "nickname"
+        private const val HOST_COL = "host"
+        private const val MAC_COL = "mac"
+        private const val WOL_PORT_COL = "portWol"
+        private const val DEV_PORT_COL = "portDev"
+        private const val CITY_COL = "city"
+        private const val STATE_COL = "state"
+        private const val COUNTRY_COL = "country"
+        private const val STATUS_COL = "status"
+        private const val DATE_COL = "lastWoken"
+        private const val CREATE_CONNECTIONS_TABLE = "CREATE TABLE IF NOT EXISTS " +
                 "Connections(_id INTEGER PRIMARY KEY, nickname VARCHAR, host VARCHAR, mac VARCHAR, portWol VARCHAR, " +
                 "portDev VARCHAR, city VARCHAR, state VARCHAR, country VARCHAR, status VARCHAR, " +
                 "lastWoken VARCHAR)"
-        private val DROP_CONNECTIONS_TABLE = "DROP TABLE IF EXISTS Connections"
-        private val QUERY_ALL_CONNECTIONS = "SELECT * FROM Connections"
+        private const val DROP_CONNECTIONS_TABLE = "DROP TABLE IF EXISTS Connections"
+        private const val QUERY_ALL_CONNECTIONS = "SELECT * FROM Connections"
     }
 }
