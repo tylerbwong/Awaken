@@ -23,7 +23,7 @@ private const val TIMEOUT = 500
  * @return true if the current status of the machine is RUNNING or false if the current status is
  * INACTIVE
  */
-fun isRunning(host: String, devicePort: Int): Single<Boolean> {
+fun isRunning(host: String?, devicePort: Int): Single<Boolean> {
     return Single.fromCallable {
         var status = true
         try {
