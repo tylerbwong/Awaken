@@ -11,7 +11,6 @@ import io.awaken.data.database.ConnectionDatabaseProvider
 import io.awaken.data.model.Connection
 import io.awaken.data.network.Wake
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.connection_card.view.*
 import java.text.SimpleDateFormat
@@ -31,7 +30,6 @@ class ConnectionViewHolder(
     internal val location = itemView.locationLabel
     internal val date = itemView.awokenDateLabel
     internal val status = itemView.statusMarker
-    private val disposables = CompositeDisposable()
 
     internal var connectionId: Int = 0
     private val databaseHelper = ConnectionDatabaseProvider.databaseHelper
@@ -57,6 +55,7 @@ class ConnectionViewHolder(
                     }
         }
 
+        // Potential use for multi-select
         view.setOnLongClickListener { true }
 
         editButton.setOnClickListener { itemView ->
@@ -71,26 +70,30 @@ class ConnectionViewHolder(
             builder.setPositiveButton(android.R.string.ok) { _, _ ->
                 var message: String
                 var connection: Connection? = null
+                var wasDeletionSuccessful = false
                 try {
                     connection = databaseHelper.getConnection(connectionId)
                     databaseHelper.deleteConnection(connectionId)
                     message = "Successfully deleted " + nickname.text.toString()
                     refreshListener.invoke()
+                    wasDeletionSuccessful = true
                 } catch (e: Exception) {
                     message = "Failed to delete " + nickname.text.toString()
                     Log.e("failure", e.message)
                 }
 
-                Snackbar.make(itemView, message, Snackbar.LENGTH_LONG)
-                        .setAction("UNDO") {
-                            val disposable = databaseHelper.insertConnection(connection)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(
-                                            refreshListener::invoke
-                                    )
-                            disposables.add(disposable)
-                        }.show()
+                val snackbar = Snackbar.make(itemView, message, Snackbar.LENGTH_LONG)
+                if (wasDeletionSuccessful && connection != null) {
+                    snackbar.setAction("UNDO") {
+                        databaseHelper.insertConnection(connection)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(
+                                        refreshListener::invoke
+                                )
+                    }
+                }
+                snackbar.show()
             }
             builder.create()
             builder.show()

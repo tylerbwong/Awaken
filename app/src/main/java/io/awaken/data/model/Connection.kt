@@ -21,7 +21,7 @@ data class Connection(
         val country: String?,
         val status: String,
         val date: String,
-        @PrimaryKey @ColumnInfo(name = "id") val id: Int = 0
+        @PrimaryKey @ColumnInfo(name = "id") val id: Int = -1
         ) {
     fun isRunning(): Single<Boolean> = isRunning(host, Integer.parseInt(portDev))
 }
