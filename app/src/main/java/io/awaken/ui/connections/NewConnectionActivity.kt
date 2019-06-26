@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
 import io.awaken.R
 import io.awaken.data.database.ConnectionDatabaseProvider
+import io.awaken.data.model.Connection
 import io.awaken.data.model.Location
 import io.awaken.data.network.LocationServiceProvider
 import io.awaken.data.network.isRunning
@@ -28,11 +29,11 @@ import java.util.regex.Pattern
 class NewConnectionActivity : AppCompatActivity() {
 
     private var databaseHelper = ConnectionDatabaseProvider.databaseHelper
-    private var nickname: String? = null
-    private var host: String? = null
-    private var mac: String? = null
-    private var portWol: String? = null
-    private var devicePort: String? = null
+    private var nickname: String = ""
+    private var host: String = ""
+    private var mac: String = ""
+    private var portWol: String = ""
+    private var devicePort: String = ""
     private var hasTextHost = false
     private var hasTextPortWol = false
 
@@ -115,6 +116,7 @@ class NewConnectionActivity : AppCompatActivity() {
     }
 
     private fun enterAction() {
+        enterButton.isEnabled = false
         nickname = nicknameInput.text.toString()
         host = hostInput.text.toString()
         portWol = wolInput.text.toString()
@@ -163,8 +165,18 @@ class NewConnectionActivity : AppCompatActivity() {
         val state = location?.regionCode
         val country = location?.countryName
 
-        val disposable = databaseHelper.insertConnection(nickname, host, mac, portWol,
-                devicePort, city, state, country, result.second.toString(), "")
+        val connection = Connection(
+                nickname,
+                host,
+                mac,
+                portWol,
+                devicePort,
+                city,
+                state,
+                country,
+                result.second.toString(), "")
+
+        val disposable = databaseHelper.insertConnection(connection)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

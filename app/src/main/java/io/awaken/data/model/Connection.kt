@@ -11,17 +11,17 @@ import io.reactivex.Single
  */
 @Entity(tableName = "connection_table")
 data class Connection(
-        @PrimaryKey @ColumnInfo(name = "id") val id: Int,
-        val nickname: String?,
-        val host: String?,
-        val mac: String?,
-        val portWol: String?,
+        val nickname: String,
+        val host: String,
+        val mac: String,
+        val portWol: String,
         val portDev: String,
         val city: String?,
         val state: String?,
         val country: String?,
         val status: String,
-        val date: String
-) {
+        val date: String,
+        @PrimaryKey @ColumnInfo(name = "id") val id: Int = -1
+        ) {
     fun isRunning(): Single<Boolean> = isRunning(host, Integer.parseInt(portDev))
 }

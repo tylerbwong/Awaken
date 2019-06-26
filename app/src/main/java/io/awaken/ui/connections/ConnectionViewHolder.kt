@@ -4,11 +4,11 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import io.awaken.R
 import io.awaken.data.database.ConnectionDatabaseProvider
+import io.awaken.data.model.Connection
 import io.awaken.data.network.Wake
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -55,7 +55,8 @@ class ConnectionViewHolder(
                     }
         }
 
-        view.setOnLongClickListener { _ -> true }
+        // Potential use for multi-select
+        view.setOnLongClickListener { true }
 
         editButton.setOnClickListener { itemView ->
             val mainIntent = Intent(itemView.context, NewConnectionActivity::class.java)
@@ -66,19 +67,33 @@ class ConnectionViewHolder(
             val builder = AlertDialog.Builder(itemView.context, R.style.AlertDialog)
             builder.setMessage("Are you sure you want to delete " + nickname.text.toString() + "?")
             builder.setNegativeButton(android.R.string.cancel, null)
-            builder.setPositiveButton(android.R.string.ok) { dialog, which ->
+            builder.setPositiveButton(android.R.string.ok) { _, _ ->
                 var message: String
+                var connection: Connection? = null
+                var wasDeletionSuccessful = false
                 try {
+                    connection = databaseHelper.getConnection(connectionId)
                     databaseHelper.deleteConnection(connectionId)
                     message = "Successfully deleted " + nickname.text.toString()
                     refreshListener.invoke()
-                }
-                catch (e: Exception) {
+                    wasDeletionSuccessful = true
+                } catch (e: Exception) {
                     message = "Failed to delete " + nickname.text.toString()
                     Log.e("failure", e.message)
                 }
 
-                Toast.makeText(itemView.context, message, Toast.LENGTH_LONG).show()
+                val snackbar = Snackbar.make(itemView, message, Snackbar.LENGTH_LONG)
+                if (wasDeletionSuccessful && connection != null) {
+                    snackbar.setAction("UNDO") {
+                        databaseHelper.insertConnection(connection)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(
+                                        refreshListener::invoke
+                                )
+                    }
+                }
+                snackbar.show()
             }
             builder.create()
             builder.show()
