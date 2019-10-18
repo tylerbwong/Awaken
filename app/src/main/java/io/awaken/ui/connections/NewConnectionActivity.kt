@@ -143,7 +143,7 @@ class NewConnectionActivity : AppCompatActivity() {
 
     private fun makeLocationAndStatusRequest(ipAddress: String) {
         val locationRequest = LocationServiceProvider.locationService.getLocation(ipAddress)
-        val statusRequest = isRunning(ipAddress, Integer.parseInt(devicePort!!))
+        val statusRequest = isRunning(ipAddress, Integer.parseInt(devicePort))
 
         val disposable = Single.zip<Location, Boolean, Pair<Location, Boolean>>(
                 locationRequest,
@@ -197,7 +197,7 @@ class NewConnectionActivity : AppCompatActivity() {
     }
 
     private fun macIsValid(mac: String): Boolean {
-        val p = Pattern.compile("^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$")
+        val p = Pattern.compile("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$")
         val m = p.matcher(mac)
         return m.matches()
     }
