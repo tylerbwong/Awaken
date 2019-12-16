@@ -43,17 +43,21 @@ object Wake {
     fun sendPacket(host: String, mac: String, pass: String = "", port: Int = 7): Completable {
         return Completable.fromCallable {
             val macBytes = getMacBytes(mac)
-            val bytes = ByteArray(MAC_LENGTH + UDP_MULTIPLIER * macBytes.size)
+            val passBytes = getPassBytes(pass)
+            val noPassSize = MAC_LENGTH + UDP_MULTIPLIER * macBytes.size;
+            val bytes = ByteArray(noPassSize + passBytes.size)
 
             for (index in 0 until MAC_LENGTH) {
                 bytes[index] = 0xff.toByte()
             }
 
             var index = MAC_LENGTH
-            while (index < bytes.size) {
+            while (index < noPassSize) {
                 System.arraycopy(macBytes, 0, bytes, index, macBytes.size)
                 index += macBytes.size
             }
+
+            System.arraycopy(passBytes, 0, bytes, index, passBytes.size)
 
             val address = InetAddress.getByName(host)
             val packet = DatagramPacket(bytes, bytes.size, address, port)
@@ -86,6 +90,10 @@ object Wake {
     private fun getPassBytes(passStr: String): ByteArray {
         val bytes = ByteArray(passStr.length)
         val pass = passStr.split(PASS_DELIMITER.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+
+        if (pass.size == 0) {
+            return bytes
+        }
 
         if ((pass.size != 4) or (pass.size != 6)) {
             throw IllegalArgumentException(INVALID_PASS)
