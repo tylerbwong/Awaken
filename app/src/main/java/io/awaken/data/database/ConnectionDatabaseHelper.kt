@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteOpenHelper
 import io.awaken.data.model.Connection
 import io.reactivex.Completable
 import io.reactivex.Single
-import java.util.*
 
 /**
  * @author Tyler Wong
@@ -139,15 +138,15 @@ class ConnectionDatabaseHelper internal constructor(context: Context) : SQLiteOp
         if (!cursor.isAfterLast) {
             connection = Connection(
                     cursor.getString(cursor.getColumnIndex(NICKNAME_COL)),
-            cursor.getString(cursor.getColumnIndex(HOST_COL)),
-            cursor.getString(cursor.getColumnIndex(MAC_COL)),
-            cursor.getString(cursor.getColumnIndex(WOL_PORT_COL)),
-            cursor.getString(cursor.getColumnIndex(DEV_PORT_COL)),
-            cursor.getString(cursor.getColumnIndex(CITY_COL)),
-            cursor.getString(cursor.getColumnIndex(STATE_COL)),
-            cursor.getString(cursor.getColumnIndex(COUNTRY_COL)),
-            cursor.getString(cursor.getColumnIndex(STATUS_COL)),
-            cursor.getString(cursor.getColumnIndex(DATE_COL)))
+                    cursor.getString(cursor.getColumnIndex(HOST_COL)),
+                    cursor.getString(cursor.getColumnIndex(MAC_COL)),
+                    cursor.getString(cursor.getColumnIndex(WOL_PORT_COL)),
+                    cursor.getString(cursor.getColumnIndex(DEV_PORT_COL)),
+                    cursor.getString(cursor.getColumnIndex(CITY_COL)),
+                    cursor.getString(cursor.getColumnIndex(STATE_COL)),
+                    cursor.getString(cursor.getColumnIndex(COUNTRY_COL)),
+                    cursor.getString(cursor.getColumnIndex(STATUS_COL)),
+                    cursor.getString(cursor.getColumnIndex(DATE_COL)))
             cursor.moveToNext()
         }
         cursor.close()

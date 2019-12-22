@@ -91,7 +91,7 @@ object Wake {
         val bytes = ByteArray(passStr.length)
         val pass = passStr.split(PASS_DELIMITER.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-        if (pass.size == 0) {
+        if (pass.isEmpty()) {
             return bytes
         }
 

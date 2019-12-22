@@ -38,10 +38,10 @@ class MainActivity : AppCompatActivity() {
 
             when (menuItem.itemId) {
                 R.id.connections -> {
-                    val connectionsFragment = ConnectionsFragment()
-                    currentFragment = connectionsFragment
+                    val fragment = ConnectionsFragment()
+                    currentFragment = fragment
                     fragmentTransaction = supportFragmentManager.beginTransaction()
-                    fragmentTransaction?.replace(R.id.frame, connectionsFragment)
+                    fragmentTransaction?.replace(R.id.frame, fragment)
                     fragmentTransaction?.commit()
                     true
                 }

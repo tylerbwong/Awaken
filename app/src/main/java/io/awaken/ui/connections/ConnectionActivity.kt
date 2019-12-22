@@ -21,6 +21,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_connection.*
 import java.net.Inet4Address
 import java.net.InetAddress
+import java.util.*
 import java.util.regex.Pattern
 
 /**
@@ -133,7 +134,7 @@ class ConnectionActivity : AppCompatActivity() {
         portWol = wolInput.text.toString()
         devicePort = portInput.text.toString()
         val message: String
-        val tempMac = macInput.text.toString().toUpperCase().also {
+        val tempMac = macInput.text.toString().toUpperCase(Locale.ROOT).also {
             mac = it
         }
         if (macIsValid(tempMac)) {
