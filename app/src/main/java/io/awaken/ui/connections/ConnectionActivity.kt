@@ -43,13 +43,6 @@ class ConnectionActivity : AppCompatActivity() {
 
     private val ipAddress: Single<String>
         get() = Single.fromCallable {
-            val ip = InetAddress.getAllByName(host)
-            for (address in ip) {
-                println(address.toString())
-                if (!address.isLoopbackAddress && address is Inet4Address) {
-                    host = address.hostAddress
-                }
-            }
             host
         }
 
@@ -66,8 +59,10 @@ class ConnectionActivity : AppCompatActivity() {
             macInput.setText(connection?.mac)
             wolInput.setText(connection?.portWol)
             portInput.setText(connection?.portDev)
-            enterButton.isEnabled = true
+            hasTextHost = true
+            hasTextPortWol = true
         }
+        checkFields()
 
         enterButton.setOnClickListener { enterAction() }
 
