@@ -18,7 +18,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_new_connection.*
+import kotlinx.android.synthetic.main.activity_connection.*
 import java.net.Inet4Address
 import java.net.InetAddress
 import java.util.regex.Pattern
@@ -26,9 +26,10 @@ import java.util.regex.Pattern
 /**
  * @author Tyler Wong
  */
-class NewConnectionActivity : AppCompatActivity() {
+class ConnectionActivity : AppCompatActivity() {
 
     private var databaseHelper = ConnectionDatabaseProvider.databaseHelper
+    private var connectionId: Int? = null
     private var nickname: String = ""
     private var host: String = ""
     private var mac: String = ""
@@ -53,7 +54,19 @@ class NewConnectionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_new_connection)
+        setContentView(R.layout.activity_connection)
+
+        connectionId = this.intent.extras?.getInt("connectionId")
+        connectionId?.let {
+            val connection = databaseHelper.getConnection(it)
+            titleLabel.text = getString(R.string.edit_connection)
+            nicknameInput.setText(connection?.nickname)
+            hostInput.setText(connection?.host)
+            macInput.setText(connection?.mac)
+            wolInput.setText(connection?.portWol)
+            portInput.setText(connection?.portDev)
+            enterButton.isEnabled = true
+        }
 
         enterButton.setOnClickListener { enterAction() }
 
@@ -107,8 +120,6 @@ class NewConnectionActivity : AppCompatActivity() {
                 }
             }
         })
-
-        enterButton.isEnabled = false
     }
 
     private fun checkFields() {
@@ -134,10 +145,9 @@ class NewConnectionActivity : AppCompatActivity() {
                             { throwable -> Log.e("ERROR", throwable.localizedMessage) }
                     )
             disposables.add(disposable)
-        }
-        else {
+        } else {
             message = resources.getString(R.string.mac_address_invalid)
-            Toast.makeText(this@NewConnectionActivity, message, Toast.LENGTH_LONG).show()
+            Toast.makeText(this@ConnectionActivity, message, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -174,20 +184,29 @@ class NewConnectionActivity : AppCompatActivity() {
                 city,
                 state,
                 country,
-                result.second.toString(), "")
+                result.second.toString(), "",
+                connectionId ?: -1)
 
-        val disposable = databaseHelper.insertConnection(connection)
+        val disposable = if (connectionId != null) {
+            databaseHelper.updateConnection(connection)
+        } else {
+            databaseHelper.insertConnection(connection)
+        }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        { onFinish(resources.getString(R.string.new_connection_success)) },
-                        { onFinish(resources.getString(R.string.new_connection_fail)) }
+                        {
+                            onFinish(resources.getString(if (connectionId != null) R.string.edit_connection_success else R.string.new_connection_success))
+                        },
+                        {
+                            onFinish(resources.getString(if (connectionId != null) R.string.edit_connection_fail else R.string.new_connection_fail))
+                        }
                 )
         disposables.add(disposable)
     }
 
     private fun onFinish(message: String) {
-        Toast.makeText(this@NewConnectionActivity, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(this@ConnectionActivity, message, Toast.LENGTH_LONG).show()
         finish()
     }
 

@@ -2,6 +2,7 @@
     <!-- TITLES -->
     <string name="app_name">Awaken</string>
     <string name="new_connection">New Connection</string>
+    <string name="edit_connection">Edit Connection</string>
     <string name="host_title">Enter Your\nHostname/IP Address</string>
 
     <!-- DESCRIPTIONS -->
@@ -20,6 +21,8 @@
     <string name="last_woken_label">Last woken:</string>
     <string name="new_connection_success">Successfully created new connection!</string>
     <string name="new_connection_fail">Failed to create new connection.</string>
+    <string name="edit_connection_success">Successfully updated connection!</string>
+    <string name="edit_connection_fail">Failed to updated connection.</string>
     <string name="mac_address_invalid">MAC Address is invalid!</string>
 
     <!-- VALUES -->

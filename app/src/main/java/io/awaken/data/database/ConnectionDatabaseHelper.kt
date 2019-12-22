@@ -83,6 +83,25 @@ class ConnectionDatabaseHelper internal constructor(context: Context) : SQLiteOp
         }
     }
 
+    fun updateConnection(connection: Connection): Completable {
+        return Completable.fromCallable {
+            val database = writableDatabase
+            val contentValues = ContentValues()
+            contentValues.put(NICKNAME_COL, connection.nickname)
+            contentValues.put(HOST_COL, connection.host)
+            contentValues.put(MAC_COL, connection.mac)
+            contentValues.put(WOL_PORT_COL, connection.portWol)
+            contentValues.put(DEV_PORT_COL, connection.portDev)
+            contentValues.put(CITY_COL, connection.city)
+            contentValues.put(STATE_COL, connection.state)
+            contentValues.put(COUNTRY_COL, connection.country)
+            contentValues.put(STATUS_COL, connection.status)
+            contentValues.put(DATE_COL, connection.date)
+            database.update(CONNECTIONS_TABLE, contentValues, "$ID_COL=?", arrayOf(connection.id.toString()))
+            database.close()
+        }
+    }
+
     fun deleteConnection(id: Int): Boolean {
         val database = writableDatabase
         val idFilter = "$ID_COL='$id'"

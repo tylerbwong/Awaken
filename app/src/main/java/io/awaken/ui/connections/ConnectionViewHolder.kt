@@ -59,7 +59,8 @@ class ConnectionViewHolder(
         view.setOnLongClickListener { true }
 
         editButton.setOnClickListener { itemView ->
-            val mainIntent = Intent(itemView.context, NewConnectionActivity::class.java)
+            val mainIntent = Intent(itemView.context, ConnectionActivity::class.java)
+            mainIntent.putExtra("connectionId", connectionId)
             itemView.context.startActivity(mainIntent)
         }
 
