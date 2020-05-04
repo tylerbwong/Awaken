@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import io.awaken.data.ConnectionDao
 import io.awaken.data.model.Connection
 
-@Database(entities = [Connection::class], version = 1)
+@Database(entities = [Connection::class], version = 1, exportSchema = false)
 abstract class AwakenDatabase : RoomDatabase() {
     abstract fun connectionDao(): ConnectionDao
 }
