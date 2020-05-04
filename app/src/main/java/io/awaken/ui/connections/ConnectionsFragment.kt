@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.awaken.R
@@ -46,7 +46,7 @@ class ConnectionsFragment : Fragment() {
         }
         connectionList.adapter = connectionsAdapter
 
-        viewModel = ViewModelProviders.of(this).get(ConnectionsViewModel::class.java).also {
+        viewModel = ViewModelProvider(this).get(ConnectionsViewModel::class.java).also {
             it.connections.observe(this, Observer { connections ->
                 connectionsAdapter.setConnections(connections)
                 refreshLayout.isRefreshing = false
