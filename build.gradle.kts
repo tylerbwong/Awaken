@@ -5,8 +5,8 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0-alpha08'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72'
+        classpath("com.android.tools.build:gradle:4.1.0-alpha09")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72")
     }
 }
 
@@ -17,6 +17,6 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+task("clean", Delete::class) {
+    delete(rootProject.buildDir)
 }
