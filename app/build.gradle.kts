@@ -46,7 +46,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.1.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.google.android.material:material:1.1.0")
 
     // kotlin
@@ -55,8 +55,8 @@ dependencies {
     // network
     implementation("io.reactivex.rxjava2:rxjava:2.2.19")
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
-    implementation("com.squareup.retrofit2:retrofit:2.8.1")
-    implementation("com.squareup.retrofit2:adapter-rxjava2:2.8.1")
-    implementation("com.squareup.retrofit2:converter-gson:2.8.1")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.google.code.gson:gson:2.8.6")
 }
